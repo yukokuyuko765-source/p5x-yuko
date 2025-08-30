@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CRTChart from "./CRTChart";
-import ParameterControls from "./ParameterControls";
+import AttackPowerControls from "./AttackPowerControls";
+import CRTControls from "./CRTControls";
 import AttackMultiplierControls from "./AttackMultiplierControls";
 import EnemyDefenseControls from "./EnemyDefenseControls";
 import SkillCoeffControls from "./SkillCoeffControls";
@@ -8,11 +8,9 @@ import WeaknessCoeffControls from "./WeaknessCoeffControls";
 import FinalAttackMultiplierControls from "./FinalAttackMultiplierControls";
 import OtherCoeffControls from "./OtherCoeffControls";
 import RandomCoeffControls from "./RandomCoeffControls";
-import FormulaDisplay from "./FormulaDisplay";
 import CalculationResult from "./CalculationResult";
-import InfoPanel from "./InfoPanel";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
-import { ChartData, CRTExpectationCalculatorProps } from "../types";
+import { CRTExpectationCalculatorProps } from "../types";
 import {
   allyDamageBuffs as allyBuffsData,
   enemyDamageDebuffs as enemyDebuffsData,
@@ -60,20 +58,6 @@ const CRTExpectationCalculator: React.FC<
     multiplier: number
   ): number => {
     return (rate * multiplier + (100 - rate) * 100) / 100;
-  };
-
-  // グラフデータの生成
-  const generateChartData = (): ChartData => {
-    const data: number[] = [];
-    const labels: string[] = [];
-
-    // CRT倍率の値を150%から300%まで生成
-    for (let b = 150; b <= 300; b += 2) {
-      labels.push(b + "%");
-      data.push(calculateCRTExpectation(crtRate, b));
-    }
-
-    return { labels, data };
   };
 
   // 攻撃倍率の計算
@@ -144,24 +128,18 @@ const CRTExpectationCalculator: React.FC<
     <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
       {/* ヘッダー */}
       <div className="bg-gradient-to-r from-primary-500 to-purple-600 text-white p-8 text-center">
-        <h1 className="text-4xl font-light mb-2">
-          CRT期待値 = CRT発生率% × CRT倍率% + (100% - CRT発生率%) × 100%
-        </h1>
+        <h1 className="text-4xl font-light mb-2">ダメージ計算ツール</h1>
         <p className="text-xl opacity-90">
-          CRT発生率とCRT倍率を調整してグラフの変化を確認してください
+          パラメータを調整してダメージを計算してください
         </p>
       </div>
 
       {/* コンテンツ */}
       <div className="p-8">
-        {/* パラメータコントロール */}
-        <ParameterControls
+        {/* 攻撃力コントロール */}
+        <AttackPowerControls
           attackPower={attackPower}
           setAttackPower={setAttackPower}
-          crtRate={crtRate}
-          setCrtRate={setCrtRate}
-          crtMultiplier={crtMultiplier}
-          setCrtMultiplier={setCrtMultiplier}
         />
 
         {/* 攻撃倍率コントロール */}
@@ -194,6 +172,15 @@ const CRTExpectationCalculator: React.FC<
           setWindStrike={setWindStrike}
           selectedPreset={selectedPreset}
           setSelectedPreset={setSelectedPreset}
+        />
+
+        {/* CRT期待値コントロール */}
+        <CRTControls
+          crtRate={crtRate}
+          setCrtRate={setCrtRate}
+          crtMultiplier={crtMultiplier}
+          setCrtMultiplier={setCrtMultiplier}
+          currentExpectation={currentExpectation}
         />
 
         {/* スキル係数コントロール */}
@@ -229,34 +216,6 @@ const CRTExpectationCalculator: React.FC<
           randomCoeffMax={randomCoeffMax}
           setRandomCoeffMax={setRandomCoeffMax}
         />
-
-        {/* 計算式表示 */}
-        <FormulaDisplay
-          attackPower={attackPower}
-          attackMultiplier={currentAttackMultiplier}
-          enemyDefense={currentEnemyDefense}
-          skillCoeff={skillCoeff}
-          weaknessCoeff={weaknessCoeff}
-          finalAttackMultiplier={finalAttackMultiplier}
-          otherCoeff={otherCoeff}
-          randomCoeffEnabled={randomCoeffEnabled}
-          randomCoeffMin={randomCoeffMin}
-          randomCoeffMax={randomCoeffMax}
-          crtRate={crtRate}
-          crtMultiplier={crtMultiplier}
-          currentExpectation={currentExpectation}
-        />
-
-        {/* グラフ */}
-        <CRTChart
-          chartData={generateChartData()}
-          crtRate={crtRate}
-          crtMultiplier={crtMultiplier}
-          currentExpectation={currentExpectation}
-        />
-
-        {/* 情報パネル */}
-        <InfoPanel />
       </div>
 
       {/* 計算結果ブロック */}
