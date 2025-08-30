@@ -3,6 +3,7 @@ import AttackPowerControls from "./AttackPowerControls";
 import CRTControls from "./CRTControls";
 import AttackMultiplierControls from "./AttackMultiplierControls";
 import EnemyDefenseControls from "./EnemyDefenseControls";
+import EnemyDefenseChart from "./EnemyDefenseChart";
 import SkillCoeffControls from "./SkillCoeffControls";
 import WeaknessCoeffControls from "./WeaknessCoeffControls";
 import FinalAttackMultiplierControls from "./FinalAttackMultiplierControls";

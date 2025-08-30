@@ -1,6 +1,7 @@
 import React from "react";
 import enemyData from "../data/enemyData.json";
 import { Enemy } from "../types";
+import EnemyDefenseChart from "./EnemyDefenseChart";
 
 interface EnemyDefenseControlsProps {
   defense: number;
@@ -162,6 +163,14 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
           </div>
         )}
       </div>
+
+      {/* 敵防御力計算グラフ */}
+      <EnemyDefenseChart
+        defense={defense}
+        additionalDefenseCoeff={additionalDefenseCoeff}
+        penetration={penetration}
+        windStrike={windStrike}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 防御力設定 */}
