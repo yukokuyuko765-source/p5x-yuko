@@ -3,8 +3,6 @@ export interface ChartData {
   data: number[];
 }
 
-export interface CRTExpectationCalculatorProps {}
-
 export interface DamageCalculatorProps {}
 
 export interface ParameterControlsProps {

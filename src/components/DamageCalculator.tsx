@@ -10,7 +10,7 @@ import OtherCoeffControls from "./OtherCoeffControls";
 import RandomCoeffControls from "./RandomCoeffControls";
 import CalculationResult from "./CalculationResult";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
-import { CRTExpectationCalculatorProps } from "../types";
+import { DamageCalculatorProps } from "../types";
 import {
   allyDamageBuffs as allyBuffsData,
   enemyDamageDebuffs as enemyDebuffsData,
@@ -22,9 +22,7 @@ import {
   defenseDebuffOptions as defenseDebuffOptionsData,
 } from "../data/enemyDefenseData";
 
-const CRTExpectationCalculator: React.FC<
-  CRTExpectationCalculatorProps
-> = () => {
+const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [attackPower, setAttackPower] = useState<number>(1000);
   const [attackMultiplierStat, setAttackMultiplierStat] = useState<number>(0);
   const [allyDamageBuffs, setAllyDamageBuffs] = useState<string[]>([]);
@@ -238,4 +236,4 @@ const CRTExpectationCalculator: React.FC<
   );
 };
 
-export default CRTExpectationCalculator;
+export default DamageCalculator;
