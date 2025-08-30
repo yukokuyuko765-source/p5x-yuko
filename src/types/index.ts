@@ -20,6 +20,13 @@ export interface FormulaDisplayProps {
   attackPower: number;
   attackMultiplier: number;
   enemyDefense: number;
+  skillCoeff: number;
+  weaknessCoeff: number;
+  finalAttackMultiplier: number;
+  otherCoeff: number;
+  randomCoeffEnabled: boolean;
+  randomCoeffMin: number;
+  randomCoeffMax: number;
   crtRate: number;
   crtMultiplier: number;
   currentExpectation: number;

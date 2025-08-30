@@ -3,6 +3,11 @@ import CRTChart from "./CRTChart";
 import ParameterControls from "./ParameterControls";
 import AttackMultiplierControls from "./AttackMultiplierControls";
 import EnemyDefenseControls from "./EnemyDefenseControls";
+import SkillCoeffControls from "./SkillCoeffControls";
+import WeaknessCoeffControls from "./WeaknessCoeffControls";
+import FinalAttackMultiplierControls from "./FinalAttackMultiplierControls";
+import OtherCoeffControls from "./OtherCoeffControls";
+import RandomCoeffControls from "./RandomCoeffControls";
 import FormulaDisplay from "./FormulaDisplay";
 import InfoPanel from "./InfoPanel";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
@@ -37,6 +42,14 @@ const CRTExpectationCalculator: React.FC<
   const [defenseDebuffs, setDefenseDebuffs] = useState<string[]>([]);
   const [windStrike, setWindStrike] = useState<boolean>(false);
   const [selectedPreset, setSelectedPreset] = useState<string>("normal");
+  const [skillCoeff, setSkillCoeff] = useState<number>(1.0);
+  const [weaknessCoeff, setWeaknessCoeff] = useState<number>(1.0);
+  const [finalAttackMultiplier, setFinalAttackMultiplier] =
+    useState<number>(100);
+  const [otherCoeff, setOtherCoeff] = useState<number>(100);
+  const [randomCoeffEnabled, setRandomCoeffEnabled] = useState<boolean>(false);
+  const [randomCoeffMin, setRandomCoeffMin] = useState<number>(95);
+  const [randomCoeffMax, setRandomCoeffMax] = useState<number>(105);
   const [crtRate, setCrtRate] = useState<number>(50);
   const [crtMultiplier, setCrtMultiplier] = useState<number>(150);
 
@@ -182,11 +195,52 @@ const CRTExpectationCalculator: React.FC<
           setSelectedPreset={setSelectedPreset}
         />
 
+        {/* スキル係数コントロール */}
+        <SkillCoeffControls
+          skillCoeff={skillCoeff}
+          setSkillCoeff={setSkillCoeff}
+        />
+
+        {/* 弱点係数コントロール */}
+        <WeaknessCoeffControls
+          weaknessCoeff={weaknessCoeff}
+          setWeaknessCoeff={setWeaknessCoeff}
+        />
+
+        {/* 最終攻撃倍率コントロール */}
+        <FinalAttackMultiplierControls
+          finalAttackMultiplier={finalAttackMultiplier}
+          setFinalAttackMultiplier={setFinalAttackMultiplier}
+        />
+
+        {/* その他係数コントロール */}
+        <OtherCoeffControls
+          otherCoeff={otherCoeff}
+          setOtherCoeff={setOtherCoeff}
+        />
+
+        {/* ランダム係数コントロール */}
+        <RandomCoeffControls
+          randomCoeffEnabled={randomCoeffEnabled}
+          setRandomCoeffEnabled={setRandomCoeffEnabled}
+          randomCoeffMin={randomCoeffMin}
+          setRandomCoeffMin={setRandomCoeffMin}
+          randomCoeffMax={randomCoeffMax}
+          setRandomCoeffMax={setRandomCoeffMax}
+        />
+
         {/* 計算式表示 */}
         <FormulaDisplay
           attackPower={attackPower}
           attackMultiplier={currentAttackMultiplier}
           enemyDefense={currentEnemyDefense}
+          skillCoeff={skillCoeff}
+          weaknessCoeff={weaknessCoeff}
+          finalAttackMultiplier={finalAttackMultiplier}
+          otherCoeff={otherCoeff}
+          randomCoeffEnabled={randomCoeffEnabled}
+          randomCoeffMin={randomCoeffMin}
+          randomCoeffMax={randomCoeffMax}
           crtRate={crtRate}
           crtMultiplier={crtMultiplier}
           currentExpectation={currentExpectation}

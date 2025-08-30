@@ -5,6 +5,13 @@ const FormulaDisplay: React.FC<FormulaDisplayProps> = ({
   attackPower,
   attackMultiplier,
   enemyDefense,
+  skillCoeff,
+  weaknessCoeff,
+  finalAttackMultiplier,
+  otherCoeff,
+  randomCoeffEnabled,
+  randomCoeffMin,
+  randomCoeffMax,
   crtRate,
   crtMultiplier,
   currentExpectation,
@@ -16,8 +23,15 @@ const FormulaDisplay: React.FC<FormulaDisplayProps> = ({
       </h3>
       <div className="text-2xl font-bold text-gray-800 font-mono">
         攻撃力: {attackPower.toLocaleString()} | 攻撃倍率: {attackMultiplier}% |
-        敵防御力計算: {enemyDefense.toFixed(1)}% | CRT期待値 = {crtRate}% ×{" "}
-        {crtMultiplier}% + {100 - crtRate}% × 100% ={" "}
+        敵防御力計算: {enemyDefense.toFixed(1)}% | スキル係数:{" "}
+        {(skillCoeff * 100).toFixed(1)}% | 弱点係数:{" "}
+        {(weaknessCoeff * 100).toFixed(0)}% | 最終攻撃倍率:{" "}
+        {finalAttackMultiplier.toFixed(1)}% | その他係数:{" "}
+        {otherCoeff.toFixed(1)}% | ランダム係数:{" "}
+        {randomCoeffEnabled
+          ? `${randomCoeffMin.toFixed(1)}% ～ ${randomCoeffMax.toFixed(1)}%`
+          : "100% (無効)"}{" "}
+        | CRT期待値 = {crtRate}% × {crtMultiplier}% + {100 - crtRate}% × 100% ={" "}
         {currentExpectation.toFixed(1)}%
       </div>
     </div>
