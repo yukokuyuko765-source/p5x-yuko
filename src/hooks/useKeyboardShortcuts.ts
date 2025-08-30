@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 
 export const useKeyboardShortcuts = (
+  attackPower: number,
+  setAttackPower: React.Dispatch<React.SetStateAction<number>>,
+  attackMultiplierStat: number,
+  setAttackMultiplierStat: React.Dispatch<React.SetStateAction<number>>,
   crtRate: number,
-  setCrtRate: (value: number) => void,
+  setCrtRate: React.Dispatch<React.SetStateAction<number>>,
   crtMultiplier: number,
-  setCrtMultiplier: (value: number) => void
+  setCrtMultiplier: React.Dispatch<React.SetStateAction<number>>
 ): void => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -12,17 +16,25 @@ export const useKeyboardShortcuts = (
 
       switch (e.key) {
         case "ArrowLeft":
-          if (e.ctrlKey) {
-            setCrtRate((prev) => Math.max(0, prev - step));
+          if (e.ctrlKey && e.shiftKey) {
+            setAttackPower((prev: number) => Math.max(100, prev - step * 100));
+          } else if (e.ctrlKey) {
+            setAttackMultiplierStat((prev: number) => Math.max(0, prev - step));
           } else {
-            setCrtMultiplier((prev) => Math.max(150, prev - step));
+            setCrtRate((prev: number) => Math.max(0, prev - step));
           }
           break;
         case "ArrowRight":
-          if (e.ctrlKey) {
-            setCrtRate((prev) => Math.min(100, prev + step));
+          if (e.ctrlKey && e.shiftKey) {
+            setAttackPower((prev: number) =>
+              Math.min(10000, prev + step * 100)
+            );
+          } else if (e.ctrlKey) {
+            setAttackMultiplierStat((prev: number) =>
+              Math.min(200, prev + step)
+            );
           } else {
-            setCrtMultiplier((prev) => Math.min(300, prev + step));
+            setCrtRate((prev: number) => Math.min(100, prev + step));
           }
           break;
         default:
@@ -32,16 +44,18 @@ export const useKeyboardShortcuts = (
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [setCrtRate, setCrtMultiplier]);
+  }, [setAttackPower, setAttackMultiplierStat, setCrtRate, setCrtMultiplier]);
 
   // ダブルクリックでリセット
   useEffect(() => {
     const handleDoubleClick = (): void => {
+      setAttackPower(1000);
+      setAttackMultiplierStat(0);
       setCrtRate(50);
       setCrtMultiplier(150);
     };
 
     document.addEventListener("dblclick", handleDoubleClick);
     return () => document.removeEventListener("dblclick", handleDoubleClick);
-  }, [setCrtRate, setCrtMultiplier]);
+  }, [setAttackPower, setAttackMultiplierStat, setCrtRate, setCrtMultiplier]);
 };

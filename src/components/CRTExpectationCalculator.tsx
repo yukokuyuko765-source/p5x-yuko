@@ -1,17 +1,35 @@
 import React, { useState } from "react";
 import CRTChart from "./CRTChart";
 import ParameterControls from "./ParameterControls";
+import AttackMultiplierControls from "./AttackMultiplierControls";
 import FormulaDisplay from "./FormulaDisplay";
 import InfoPanel from "./InfoPanel";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { ChartData, CRTExpectationCalculatorProps } from "../types";
+import {
+  allyDamageBuffs as allyBuffsData,
+  enemyDamageDebuffs as enemyDebuffsData,
+  attributeMultipliers as attributeMultsData,
+} from "../data/attackMultiplierData";
 
-const CRTExpectationCalculator: React.FC<CRTExpectationCalculatorProps> = () => {
+const CRTExpectationCalculator: React.FC<
+  CRTExpectationCalculatorProps
+> = () => {
+  const [attackPower, setAttackPower] = useState<number>(1000);
+  const [attackMultiplierStat, setAttackMultiplierStat] = useState<number>(0);
+  const [allyDamageBuffs, setAllyDamageBuffs] = useState<string[]>([]);
+  const [enemyDamageDebuffs, setEnemyDamageDebuffs] = useState<string[]>([]);
+  const [attributeMultipliers, setAttributeMultipliers] = useState<string[]>(
+    []
+  );
   const [crtRate, setCrtRate] = useState<number>(50);
   const [crtMultiplier, setCrtMultiplier] = useState<number>(150);
 
   // CRT期待値の計算関数
-  const calculateCRTExpectation = (rate: number, multiplier: number): number => {
+  const calculateCRTExpectation = (
+    rate: number,
+    multiplier: number
+  ): number => {
     return (rate * multiplier + (100 - rate) * 100) / 100;
   };
 
@@ -29,11 +47,41 @@ const CRTExpectationCalculator: React.FC<CRTExpectationCalculatorProps> = () => 
     return { labels, data };
   };
 
+  // 攻撃倍率の計算
+  const calculateAttackMultiplier = (): number => {
+    const allyTotal = allyDamageBuffs.reduce((total, id) => {
+      const buff = allyBuffsData.find((b) => b.id === id);
+      return total + (buff?.value || 0);
+    }, 0);
+
+    const enemyTotal = enemyDamageDebuffs.reduce((total, id) => {
+      const debuff = enemyDebuffsData.find((d) => d.id === id);
+      return total + (debuff?.value || 0);
+    }, 0);
+
+    const attributeTotal = attributeMultipliers.reduce((total, id) => {
+      const attr = attributeMultsData.find((a) => a.id === id);
+      return total + (attr?.value || 0);
+    }, 0);
+
+    return 100 + attackMultiplierStat + allyTotal + enemyTotal + attributeTotal;
+  };
+
   // 現在の期待値
   const currentExpectation = calculateCRTExpectation(crtRate, crtMultiplier);
+  const currentAttackMultiplier = calculateAttackMultiplier();
 
   // キーボードショートカット
-  useKeyboardShortcuts(crtRate, setCrtRate, crtMultiplier, setCrtMultiplier);
+  useKeyboardShortcuts(
+    attackPower,
+    setAttackPower,
+    attackMultiplierStat,
+    setAttackMultiplierStat,
+    crtRate,
+    setCrtRate,
+    crtMultiplier,
+    setCrtMultiplier
+  );
 
   return (
     <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
@@ -51,14 +99,30 @@ const CRTExpectationCalculator: React.FC<CRTExpectationCalculatorProps> = () => 
       <div className="p-8">
         {/* パラメータコントロール */}
         <ParameterControls
+          attackPower={attackPower}
+          setAttackPower={setAttackPower}
           crtRate={crtRate}
           setCrtRate={setCrtRate}
           crtMultiplier={crtMultiplier}
           setCrtMultiplier={setCrtMultiplier}
         />
 
+        {/* 攻撃倍率コントロール */}
+        <AttackMultiplierControls
+          attackMultiplierStat={attackMultiplierStat}
+          setAttackMultiplierStat={setAttackMultiplierStat}
+          allyDamageBuffs={allyDamageBuffs}
+          setAllyDamageBuffs={setAllyDamageBuffs}
+          enemyDamageDebuffs={enemyDamageDebuffs}
+          setEnemyDamageDebuffs={setEnemyDamageDebuffs}
+          attributeMultipliers={attributeMultipliers}
+          setAttributeMultipliers={setAttributeMultipliers}
+        />
+
         {/* 計算式表示 */}
         <FormulaDisplay
+          attackPower={attackPower}
+          attackMultiplier={currentAttackMultiplier}
           crtRate={crtRate}
           crtMultiplier={crtMultiplier}
           currentExpectation={currentExpectation}

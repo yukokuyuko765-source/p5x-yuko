@@ -2,6 +2,8 @@ import React from "react";
 import { FormulaDisplayProps } from "../types";
 
 const FormulaDisplay: React.FC<FormulaDisplayProps> = ({
+  attackPower,
+  attackMultiplier,
   crtRate,
   crtMultiplier,
   currentExpectation,
@@ -12,6 +14,7 @@ const FormulaDisplay: React.FC<FormulaDisplayProps> = ({
         現在のCRT期待値計算
       </h3>
       <div className="text-2xl font-bold text-gray-800 font-mono">
+        攻撃力: {attackPower.toLocaleString()} | 攻撃倍率: {attackMultiplier}% |
         CRT期待値 = {crtRate}% × {crtMultiplier}% + {100 - crtRate}% × 100% ={" "}
         {currentExpectation.toFixed(1)}%
       </div>

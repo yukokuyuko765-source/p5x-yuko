@@ -2,6 +2,8 @@ import React from "react";
 import { ParameterControlsProps } from "../types";
 
 const ParameterControls: React.FC<ParameterControlsProps> = ({
+  attackPower,
+  setAttackPower,
   crtRate,
   setCrtRate,
   crtMultiplier,
@@ -15,6 +17,14 @@ const ParameterControls: React.FC<ParameterControlsProps> = ({
     }
   };
 
+  const handleAttackPowerChange = (value: string): void => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.max(100, Math.min(10000, numValue));
+      setAttackPower(clampedValue);
+    }
+  };
+
   const handleMultiplierChange = (value: string): void => {
     const numValue = parseInt(value);
     if (!isNaN(numValue)) {
@@ -24,7 +34,40 @@ const ParameterControls: React.FC<ParameterControlsProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+      {/* 攻撃力 */}
+      <div className="flex flex-col">
+        <label className="font-semibold mb-3 text-gray-700 text-lg">
+          攻撃力
+        </label>
+        <div className="flex items-center gap-4 mb-3">
+          <input
+            type="range"
+            className="slider"
+            min="100"
+            max="10000"
+            value={attackPower}
+            onChange={(e) => setAttackPower(parseInt(e.target.value))}
+            step="100"
+          />
+          <div className="min-w-[80px] px-3 py-2 bg-primary-500 text-white rounded-lg text-center font-semibold text-sm">
+            {attackPower.toLocaleString()}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            className="w-24 px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
+            min="100"
+            max="10000"
+            value={attackPower}
+            onChange={(e) => handleAttackPowerChange(e.target.value)}
+            step="100"
+            placeholder="100-10000"
+          />
+        </div>
+      </div>
+
       {/* CRT発生率 */}
       <div className="flex flex-col">
         <label className="font-semibold mb-3 text-gray-700 text-lg">

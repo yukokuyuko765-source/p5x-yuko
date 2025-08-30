@@ -5,7 +5,11 @@ export interface ChartData {
 
 export interface CRTExpectationCalculatorProps {}
 
+export interface DamageCalculatorProps {}
+
 export interface ParameterControlsProps {
+  attackPower: number;
+  setAttackPower: (value: number) => void;
   crtRate: number;
   setCrtRate: (value: number) => void;
   crtMultiplier: number;
@@ -13,6 +17,8 @@ export interface ParameterControlsProps {
 }
 
 export interface FormulaDisplayProps {
+  attackPower: number;
+  attackMultiplier: number;
   crtRate: number;
   crtMultiplier: number;
   currentExpectation: number;
