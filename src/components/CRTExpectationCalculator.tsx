@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CRTChart from "./CRTChart";
 import ParameterControls from "./ParameterControls";
 import AttackMultiplierControls from "./AttackMultiplierControls";
+import EnemyDefenseControls from "./EnemyDefenseControls";
 import FormulaDisplay from "./FormulaDisplay";
 import InfoPanel from "./InfoPanel";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
@@ -11,6 +12,11 @@ import {
   enemyDamageDebuffs as enemyDebuffsData,
   attributeMultipliers as attributeMultsData,
 } from "../data/attackMultiplierData";
+import {
+  defensePresets,
+  penetrationOptions as penetrationOptionsData,
+  defenseDebuffOptions as defenseDebuffOptionsData,
+} from "../data/enemyDefenseData";
 
 const CRTExpectationCalculator: React.FC<
   CRTExpectationCalculatorProps
@@ -22,6 +28,15 @@ const CRTExpectationCalculator: React.FC<
   const [attributeMultipliers, setAttributeMultipliers] = useState<string[]>(
     []
   );
+  const [defense, setDefense] = useState<number>(300);
+  const [additionalDefenseCoeff, setAdditionalDefenseCoeff] =
+    useState<number>(10);
+  const [penetration, setPenetration] = useState<number>(0);
+  const [penetrationBuffs, setPenetrationBuffs] = useState<string[]>([]);
+  const [defenseDebuff, setDefenseDebuff] = useState<number>(0);
+  const [defenseDebuffs, setDefenseDebuffs] = useState<string[]>([]);
+  const [windStrike, setWindStrike] = useState<boolean>(false);
+  const [selectedPreset, setSelectedPreset] = useState<string>("normal");
   const [crtRate, setCrtRate] = useState<number>(50);
   const [crtMultiplier, setCrtMultiplier] = useState<number>(150);
 
@@ -67,9 +82,37 @@ const CRTExpectationCalculator: React.FC<
     return 100 + attackMultiplierStat + allyTotal + enemyTotal + attributeTotal;
   };
 
+  // 敵防御力の計算
+  const calculateEnemyDefense = (): number => {
+    const penetrationTotal = penetrationBuffs.reduce((total, id) => {
+      const option = penetrationOptionsData.find((opt) => opt.id === id);
+      return total + (option?.value || 0);
+    }, 0);
+
+    const defenseDebuffTotal = defenseDebuffs.reduce((total, id) => {
+      const option = defenseDebuffOptionsData.find((opt) => opt.id === id);
+      return total + (option?.value || 0);
+    }, 0);
+
+    const totalPenetration = penetration + penetrationTotal;
+    const totalDefenseDebuff = defenseDebuff + defenseDebuffTotal;
+    let defenseCoeff =
+      ((100 + additionalDefenseCoeff) * (100 - totalPenetration)) / 100 -
+      totalDefenseDebuff;
+
+    // 風襲状態異常の場合は防御係数に0.88をかける
+    if (windStrike) {
+      defenseCoeff *= 0.88;
+    }
+    const numerator = (defense * defenseCoeff) / 100;
+    const denominator = numerator + 1400;
+    return 100 - (numerator / denominator) * 100;
+  };
+
   // 現在の期待値
   const currentExpectation = calculateCRTExpectation(crtRate, crtMultiplier);
   const currentAttackMultiplier = calculateAttackMultiplier();
+  const currentEnemyDefense = calculateEnemyDefense();
 
   // キーボードショートカット
   useKeyboardShortcuts(
@@ -119,10 +162,31 @@ const CRTExpectationCalculator: React.FC<
           setAttributeMultipliers={setAttributeMultipliers}
         />
 
+        {/* 敵防御力計算コントロール */}
+        <EnemyDefenseControls
+          defense={defense}
+          setDefense={setDefense}
+          additionalDefenseCoeff={additionalDefenseCoeff}
+          setAdditionalDefenseCoeff={setAdditionalDefenseCoeff}
+          penetration={penetration}
+          setPenetration={setPenetration}
+          penetrationBuffs={penetrationBuffs}
+          setPenetrationBuffs={setPenetrationBuffs}
+          defenseDebuff={defenseDebuff}
+          setDefenseDebuff={setDefenseDebuff}
+          defenseDebuffs={defenseDebuffs}
+          setDefenseDebuffs={setDefenseDebuffs}
+          windStrike={windStrike}
+          setWindStrike={setWindStrike}
+          selectedPreset={selectedPreset}
+          setSelectedPreset={setSelectedPreset}
+        />
+
         {/* 計算式表示 */}
         <FormulaDisplay
           attackPower={attackPower}
           attackMultiplier={currentAttackMultiplier}
+          enemyDefense={currentEnemyDefense}
           crtRate={crtRate}
           crtMultiplier={crtMultiplier}
           currentExpectation={currentExpectation}

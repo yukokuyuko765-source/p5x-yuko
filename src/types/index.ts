@@ -19,6 +19,7 @@ export interface ParameterControlsProps {
 export interface FormulaDisplayProps {
   attackPower: number;
   attackMultiplier: number;
+  enemyDefense: number;
   crtRate: number;
   crtMultiplier: number;
   currentExpectation: number;
