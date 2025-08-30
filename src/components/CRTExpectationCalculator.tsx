@@ -9,6 +9,7 @@ import FinalAttackMultiplierControls from "./FinalAttackMultiplierControls";
 import OtherCoeffControls from "./OtherCoeffControls";
 import RandomCoeffControls from "./RandomCoeffControls";
 import FormulaDisplay from "./FormulaDisplay";
+import CalculationResult from "./CalculationResult";
 import InfoPanel from "./InfoPanel";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { ChartData, CRTExpectationCalculatorProps } from "../types";
@@ -257,6 +258,23 @@ const CRTExpectationCalculator: React.FC<
         {/* 情報パネル */}
         <InfoPanel />
       </div>
+
+      {/* 計算結果ブロック */}
+      <CalculationResult
+        attackPower={attackPower}
+        attackMultiplier={currentAttackMultiplier}
+        enemyDefense={currentEnemyDefense}
+        skillCoeff={skillCoeff}
+        weaknessCoeff={weaknessCoeff}
+        finalAttackMultiplier={finalAttackMultiplier}
+        otherCoeff={otherCoeff}
+        randomCoeffEnabled={randomCoeffEnabled}
+        randomCoeffMin={randomCoeffMin}
+        randomCoeffMax={randomCoeffMax}
+        crtRate={crtRate}
+        crtMultiplier={crtMultiplier}
+        currentExpectation={currentExpectation}
+      />
     </div>
   );
 };
