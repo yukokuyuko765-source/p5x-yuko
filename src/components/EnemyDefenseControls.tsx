@@ -1,4 +1,5 @@
 import React from "react";
+import { NumericFormat } from "react-number-format";
 import enemyData from "../data/enemyData.json";
 import { Enemy } from "../types";
 import EnemyDefenseChart from "./EnemyDefenseChart";
@@ -32,34 +33,30 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   selectedEnemy,
   setSelectedEnemy,
 }) => {
-  const handleDefenseChange = (value: string): void => {
-    const numValue = parseInt(value);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(2000, numValue));
+  const handleDefenseChange = (value: number): void => {
+    if (!isNaN(value)) {
+      const clampedValue = Math.max(0, Math.min(10000, value));
       setDefense(clampedValue);
     }
   };
 
-  const handleAdditionalDefenseCoeffChange = (value: string): void => {
-    const numValue = parseFloat(value);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(200, numValue));
+  const handleAdditionalDefenseCoeffChange = (value: number): void => {
+    if (!isNaN(value)) {
+      const clampedValue = Math.max(0, Math.min(200, value));
       setAdditionalDefenseCoeff(clampedValue);
     }
   };
 
-  const handlePenetrationChange = (value: string): void => {
-    const numValue = parseFloat(value);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(100, numValue));
+  const handlePenetrationChange = (value: number): void => {
+    if (!isNaN(value)) {
+      const clampedValue = Math.max(0, Math.min(100, value));
       setPenetration(clampedValue);
     }
   };
 
-  const handleDefenseDebuffChange = (value: string): void => {
-    const numValue = parseFloat(value);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(300, numValue));
+  const handleDefenseDebuffChange = (value: number): void => {
+    if (!isNaN(value)) {
+      const clampedValue = Math.max(0, Math.min(300, value));
       setDefenseDebuff(clampedValue);
     }
   };
@@ -184,7 +181,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 type="range"
                 className="slider"
                 min="0"
-                max="2000"
+                max="10000"
                 value={defense}
                 onChange={(e) => setDefense(parseInt(e.target.value))}
                 step="1"
@@ -194,15 +191,15 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <input
-                type="number"
+              <NumericFormat
                 className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                min="0"
-                max="2000"
                 value={defense}
-                onChange={(e) => handleDefenseChange(e.target.value)}
-                step="1"
-                placeholder="0-2000"
+                onValueChange={(values) =>
+                  handleDefenseChange(values.floatValue || 0)
+                }
+                allowNegative={false}
+                decimalScale={0}
+                placeholder="0-10000"
               />
             </div>
           </div>
@@ -228,16 +225,14 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <input
-                type="number"
+              <NumericFormat
                 className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                min="0"
-                max="200"
                 value={additionalDefenseCoeff}
-                onChange={(e) =>
-                  handleAdditionalDefenseCoeffChange(e.target.value)
+                onValueChange={(values) =>
+                  handleAdditionalDefenseCoeffChange(values.floatValue || 0)
                 }
-                step="0.1"
+                allowNegative={false}
+                decimalScale={1}
                 placeholder="0-200"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
@@ -266,14 +261,14 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <input
-                type="number"
+              <NumericFormat
                 className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                min="0"
-                max="100"
                 value={penetration}
-                onChange={(e) => handlePenetrationChange(e.target.value)}
-                step="0.1"
+                onValueChange={(values) =>
+                  handlePenetrationChange(values.floatValue || 0)
+                }
+                allowNegative={false}
+                decimalScale={1}
                 placeholder="0-100"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
@@ -299,14 +294,14 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <input
-                type="number"
+              <NumericFormat
                 className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                min="0"
-                max="300"
                 value={defenseDebuff}
-                onChange={(e) => handleDefenseDebuffChange(e.target.value)}
-                step="0.1"
+                onValueChange={(values) =>
+                  handleDefenseDebuffChange(values.floatValue || 0)
+                }
+                allowNegative={false}
+                decimalScale={1}
                 placeholder="0-300"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
