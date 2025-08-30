@@ -15,6 +15,21 @@ const CRTControls: React.FC<CRTControlsProps> = ({
   setCrtMultiplier,
   currentExpectation,
 }) => {
+  const handleCrtRateChange = (value: string): void => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.max(0, Math.min(100, numValue));
+      setCrtRate(clampedValue);
+    }
+  };
+
+  const handleCrtMultiplierChange = (value: string): void => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.max(150, Math.min(300, numValue));
+      setCrtMultiplier(clampedValue);
+    }
+  };
   return (
     <div className="mb-8 p-6 bg-purple-50 rounded-xl border border-purple-200">
       <h3 className="text-xl font-semibold text-purple-800 mb-4">
@@ -34,7 +49,7 @@ const CRTControls: React.FC<CRTControlsProps> = ({
               min="0"
               max="100"
               value={crtRate}
-              onChange={(e) => setCrtRate(Number(e.target.value))}
+              onChange={(e) => handleCrtRateChange(e.target.value)}
               step="1"
             />
             <div className="min-w-[60px] px-3 py-2 bg-purple-500 text-white rounded-lg text-center font-semibold text-sm">
@@ -48,7 +63,7 @@ const CRTControls: React.FC<CRTControlsProps> = ({
               min="0"
               max="100"
               value={crtRate}
-              onChange={(e) => setCrtRate(Number(e.target.value))}
+              onChange={(e) => handleCrtRateChange(e.target.value)}
               step="1"
               placeholder="0-100"
             />
@@ -68,7 +83,7 @@ const CRTControls: React.FC<CRTControlsProps> = ({
               min="150"
               max="300"
               value={crtMultiplier}
-              onChange={(e) => setCrtMultiplier(Number(e.target.value))}
+              onChange={(e) => handleCrtMultiplierChange(e.target.value)}
               step="1"
             />
             <div className="min-w-[60px] px-3 py-2 bg-purple-500 text-white rounded-lg text-center font-semibold text-sm">
@@ -82,7 +97,7 @@ const CRTControls: React.FC<CRTControlsProps> = ({
               min="150"
               max="300"
               value={crtMultiplier}
-              onChange={(e) => setCrtMultiplier(Number(e.target.value))}
+              onChange={(e) => handleCrtMultiplierChange(e.target.value)}
               step="1"
               placeholder="150-300"
             />

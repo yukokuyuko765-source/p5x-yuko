@@ -9,6 +9,13 @@ const AttackPowerControls: React.FC<AttackPowerControlsProps> = ({
   attackPower,
   setAttackPower,
 }) => {
+  const handleInputChange = (value: string): void => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.max(100, Math.min(10000, numValue));
+      setAttackPower(clampedValue);
+    }
+  };
   return (
     <div className="mb-8 p-6 bg-red-50 rounded-xl border border-red-200">
       <h3 className="text-xl font-semibold text-red-800 mb-4">攻撃力設定</h3>
@@ -24,7 +31,7 @@ const AttackPowerControls: React.FC<AttackPowerControlsProps> = ({
             min="100"
             max="10000"
             value={attackPower}
-            onChange={(e) => setAttackPower(Number(e.target.value))}
+            onChange={(e) => handleInputChange(e.target.value)}
             step="1"
           />
           <div className="min-w-[80px] px-3 py-2 bg-red-500 text-white rounded-lg text-center font-semibold text-sm">
@@ -38,7 +45,7 @@ const AttackPowerControls: React.FC<AttackPowerControlsProps> = ({
             min="100"
             max="10000"
             value={attackPower}
-            onChange={(e) => setAttackPower(Number(e.target.value))}
+            onChange={(e) => handleInputChange(e.target.value)}
             step="1"
             placeholder="100-10000"
           />

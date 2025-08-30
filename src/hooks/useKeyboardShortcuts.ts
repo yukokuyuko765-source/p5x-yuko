@@ -45,17 +45,4 @@ export const useKeyboardShortcuts = (
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [setAttackPower, setAttackMultiplierStat, setCrtRate, setCrtMultiplier]);
-
-  // ダブルクリックでリセット
-  useEffect(() => {
-    const handleDoubleClick = (): void => {
-      setAttackPower(1000);
-      setAttackMultiplierStat(0);
-      setCrtRate(50);
-      setCrtMultiplier(150);
-    };
-
-    document.addEventListener("dblclick", handleDoubleClick);
-    return () => document.removeEventListener("dblclick", handleDoubleClick);
-  }, [setAttackPower, setAttackMultiplierStat, setCrtRate, setCrtMultiplier]);
 };
