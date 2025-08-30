@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRT期待値</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 300;
+      }
+
+      .header p {
+        margin: 10px 0 0 0;
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .control-group label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #495057;
+        font-size: 1.1em;
+      }
+
+      .slider-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .slider {
+        flex: 1;
+        height: 8px;
+        border-radius: 5px;
+        background: #ddd;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .value-display {
+        min-width: 60px;
+        padding: 8px 12px;
+        background: #667eea;
+        color: white;
+        border-radius: 6px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.9em;
+      }
+
+      .input-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .number-input {
+        width: 80px;
+        padding: 8px 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .number-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .number-input::-webkit-inner-spin-button,
+      .number-input::-webkit-outer-spin-button {
+        opacity: 1;
+        height: 20px;
+      }
+
+      .unit {
+        font-weight: 600;
+        color: #495057;
+        font-size: 14px;
+      }
+
+      .formula-display {
+        text-align: center;
+        margin: 20px 0;
+        padding: 20px;
+        background: #e3f2fd;
+        border-radius: 10px;
+        border-left: 5px solid #2196f3;
+      }
+
+      .formula-display h3 {
+        margin: 0 0 10px 0;
+        color: #1976d2;
+      }
+
+      .formula {
+        font-size: 1.5em;
+        font-weight: 600;
+        color: #333;
+        font-family: "Courier New", monospace;
+      }
+
+      .chart-container {
+        position: relative;
+        height: 500px;
+        margin-top: 20px;
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #e9ecef;
+      }
+
+      .info-panel {
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff3cd;
+        border-radius: 10px;
+        border-left: 5px solid #ffc107;
+      }
+
+      .info-panel h4 {
+        margin: 0 0 10px 0;
+        color: #856404;
+      }
+
+      .info-panel p {
+        margin: 5px 0;
+        color: #856404;
+      }
+
+      @media (max-width: 768px) {
+        .controls {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>CRT期待値 = CRT発生率% × CRT倍率% + (100% - CRT発生率%) × 100%</h1>
+        <p>CRT発生率とCRT倍率を調整してグラフの変化を確認してください</p>
+      </div>
+
+      <div class="content">
+        <div class="controls">
+          <div class="control-group">
+            <label for="paramA">CRT発生率 (%)</label>
+            <div class="slider-container">
+              <input
+                type="range"
+                id="paramA"
+                class="slider"
+                min="0"
+                max="100"
+                value="50"
+                step="1"
+              />
+              <div class="value-display" id="valueA">50%</div>
+            </div>
+            <div class="input-container">
+              <input
+                type="number"
+                id="paramAInput"
+                class="number-input"
+                min="0"
+                max="100"
+                value="50"
+                step="1"
+                placeholder="0-100"
+              />
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="paramB">CRT倍率 (%)</label>
+            <div class="slider-container">
+              <input
+                type="range"
+                id="paramB"
+                class="slider"
+                min="0"
+                max="500"
+                value="150"
+                step="1"
+              />
+              <div class="value-display" id="valueB">150%</div>
+            </div>
+            <div class="input-container">
+              <input
+                type="number"
+                id="paramBInput"
+                class="number-input"
+                min="0"
+                max="500"
+                value="150"
+                step="1"
+                placeholder="0-500"
+              />
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="formula-display">
+          <h3>現在のCRT期待値計算</h3>
+          <div class="formula" id="currentFormula">
+            CRT期待値 = 50% × 150% + 50% × 100% = 125%
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="info-panel">
+          <h4>グラフの説明</h4>
+          <p>• 横軸: CRT倍率の値 (0% ～ 500%)</p>
+          <p>• 縦軸: CRT期待値 (%)</p>
+          <p>• 青い線: 現在のCRT発生率での期待値</p>
+          <p>• 赤い点: 現在選択されているCRT倍率での期待値</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
