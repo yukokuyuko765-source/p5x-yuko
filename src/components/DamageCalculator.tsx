@@ -16,11 +16,6 @@ import {
   enemyDamageDebuffs as enemyDebuffsData,
   attributeMultipliers as attributeMultsData,
 } from "../data/attackMultiplierData";
-import {
-  defensePresets,
-  penetrationOptions as penetrationOptionsData,
-  defenseDebuffOptions as defenseDebuffOptionsData,
-} from "../data/enemyDefenseData";
 
 const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [attackPower, setAttackPower] = useState<number>(1000);
@@ -34,9 +29,9 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [additionalDefenseCoeff, setAdditionalDefenseCoeff] =
     useState<number>(10);
   const [penetration, setPenetration] = useState<number>(0);
-  const [penetrationBuffs, setPenetrationBuffs] = useState<string[]>([]);
+
   const [defenseDebuff, setDefenseDebuff] = useState<number>(0);
-  const [defenseDebuffs, setDefenseDebuffs] = useState<string[]>([]);
+
   const [windStrike, setWindStrike] = useState<boolean>(false);
   const [selectedEnemy, setSelectedEnemy] = useState<string>("");
   const [skillCoeff, setSkillCoeff] = useState<number>(1.0);
@@ -80,26 +75,23 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
 
   // 敵防御力の計算
   const calculateEnemyDefense = (): number => {
-    const penetrationTotal = penetrationBuffs.reduce((total, id) => {
-      const option = penetrationOptionsData.find((opt) => opt.id === id);
-      return total + (option?.value || 0);
-    }, 0);
+    const totalDefenseDebuff = defenseDebuff;
+    let defenseCoeff = 100 + additionalDefenseCoeff;
 
-    const defenseDebuffTotal = defenseDebuffs.reduce((total, id) => {
-      const option = defenseDebuffOptionsData.find((opt) => opt.id === id);
-      return total + (option?.value || 0);
-    }, 0);
+    // 貫通による防御係数の減算
+    defenseCoeff = (defenseCoeff * (100 - penetration)) / 100;
 
-    const totalPenetration = penetration + penetrationTotal;
-    const totalDefenseDebuff = defenseDebuff + defenseDebuffTotal;
-    let defenseCoeff =
-      ((100 + additionalDefenseCoeff) * (100 - totalPenetration)) / 100 -
-      totalDefenseDebuff;
+    // 防御率デバフによる減算
+    defenseCoeff = defenseCoeff - totalDefenseDebuff;
 
     // 風襲状態異常の場合は防御係数に0.88をかける
     if (windStrike) {
       defenseCoeff *= 0.88;
     }
+
+    // 防御係数が負の数の場合は0として扱う
+    defenseCoeff = Math.max(0, defenseCoeff);
+
     const numerator = (defense * defenseCoeff) / 100;
     const denominator = numerator + 1400;
     return 100 - (numerator / denominator) * 100;
@@ -160,12 +152,8 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
           setAdditionalDefenseCoeff={setAdditionalDefenseCoeff}
           penetration={penetration}
           setPenetration={setPenetration}
-          penetrationBuffs={penetrationBuffs}
-          setPenetrationBuffs={setPenetrationBuffs}
           defenseDebuff={defenseDebuff}
           setDefenseDebuff={setDefenseDebuff}
-          defenseDebuffs={defenseDebuffs}
-          setDefenseDebuffs={setDefenseDebuffs}
           windStrike={windStrike}
           setWindStrike={setWindStrike}
           selectedEnemy={selectedEnemy}

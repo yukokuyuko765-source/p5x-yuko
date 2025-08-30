@@ -1,9 +1,4 @@
 import React from "react";
-import {
-  penetrationOptions,
-  defenseDebuffOptions,
-  DefenseOption,
-} from "../data/enemyDefenseData";
 import enemyData from "../data/enemyData.json";
 import { Enemy } from "../types";
 
@@ -14,12 +9,8 @@ interface EnemyDefenseControlsProps {
   setAdditionalDefenseCoeff: (value: number) => void;
   penetration: number;
   setPenetration: (value: number) => void;
-  penetrationBuffs: string[];
-  setPenetrationBuffs: (value: string[]) => void;
   defenseDebuff: number;
   setDefenseDebuff: (value: number) => void;
-  defenseDebuffs: string[];
-  setDefenseDebuffs: (value: string[]) => void;
   windStrike: boolean;
   setWindStrike: (value: boolean) => void;
   selectedEnemy: string;
@@ -33,12 +24,8 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   setAdditionalDefenseCoeff,
   penetration,
   setPenetration,
-  penetrationBuffs,
-  setPenetrationBuffs,
   defenseDebuff,
   setDefenseDebuff,
-  defenseDebuffs,
-  setDefenseDebuffs,
   windStrike,
   setWindStrike,
   selectedEnemy,
@@ -53,7 +40,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   };
 
   const handleAdditionalDefenseCoeffChange = (value: string): void => {
-    const numValue = parseInt(value);
+    const numValue = parseFloat(value);
     if (!isNaN(numValue)) {
       const clampedValue = Math.max(0, Math.min(200, numValue));
       setAdditionalDefenseCoeff(clampedValue);
@@ -61,7 +48,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   };
 
   const handlePenetrationChange = (value: string): void => {
-    const numValue = parseInt(value);
+    const numValue = parseFloat(value);
     if (!isNaN(numValue)) {
       const clampedValue = Math.max(0, Math.min(100, numValue));
       setPenetration(clampedValue);
@@ -69,9 +56,9 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   };
 
   const handleDefenseDebuffChange = (value: string): void => {
-    const numValue = parseInt(value);
+    const numValue = parseFloat(value);
     if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(100, numValue));
+      const clampedValue = Math.max(0, Math.min(300, numValue));
       setDefenseDebuff(clampedValue);
     }
   };
@@ -85,51 +72,25 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
     }
   };
 
-  const handleBuffToggle = (
-    buffId: string,
-    currentBuffs: string[],
-    setBuffs: (value: string[]) => void
-  ): void => {
-    if (currentBuffs.includes(buffId)) {
-      setBuffs(currentBuffs.filter((id) => id !== buffId));
-    } else {
-      setBuffs([...currentBuffs, buffId]);
-    }
-  };
-
-  const calculateTotalValue = (
-    selectedIds: string[],
-    options: DefenseOption[]
-  ): number => {
-    return selectedIds.reduce((total, id) => {
-      const option = options.find((opt) => opt.id === id);
-      return total + (option?.value || 0);
-    }, 0);
-  };
-
-  const penetrationTotal = calculateTotalValue(
-    penetrationBuffs,
-    penetrationOptions
-  );
-  const defenseDebuffTotal = calculateTotalValue(
-    defenseDebuffs,
-    defenseDebuffOptions
-  );
-  const totalDefenseDebuff = defenseDebuff + defenseDebuffTotal;
+  const totalDefenseDebuff = defenseDebuff;
 
   // 防御係数の計算
   const calculateDefenseCoeff = (): number => {
-    const totalPenetration = penetration + penetrationTotal;
-    let defenseCoeff =
-      ((100 + additionalDefenseCoeff) * (100 - totalPenetration)) / 100 -
-      totalDefenseDebuff;
+    let defenseCoeff = 100 + additionalDefenseCoeff;
+
+    // 貫通による防御係数の減算
+    defenseCoeff = (defenseCoeff * (100 - penetration)) / 100;
+
+    // 防御率デバフによる減算
+    defenseCoeff = defenseCoeff - totalDefenseDebuff;
 
     // 風襲状態異常の場合は防御係数に0.88をかける
     if (windStrike) {
       defenseCoeff *= 0.88;
     }
 
-    return defenseCoeff;
+    // 防御係数が負の数の場合は0として扱う
+    return Math.max(0, defenseCoeff);
   };
 
   // 敵防御力の計算
@@ -217,7 +178,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 max="2000"
                 value={defense}
                 onChange={(e) => setDefense(parseInt(e.target.value))}
-                step="10"
+                step="1"
               />
               <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
                 {defense}
@@ -231,7 +192,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 max="2000"
                 value={defense}
                 onChange={(e) => handleDefenseChange(e.target.value)}
-                step="10"
+                step="1"
                 placeholder="0-2000"
               />
             </div>
@@ -249,12 +210,12 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 max="200"
                 value={additionalDefenseCoeff}
                 onChange={(e) =>
-                  setAdditionalDefenseCoeff(parseInt(e.target.value))
+                  setAdditionalDefenseCoeff(parseFloat(e.target.value))
                 }
-                step="5"
+                step="0.1"
               />
               <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {additionalDefenseCoeff}%
+                {additionalDefenseCoeff.toFixed(1)}%
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -267,7 +228,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 onChange={(e) =>
                   handleAdditionalDefenseCoeffChange(e.target.value)
                 }
-                step="5"
+                step="0.1"
                 placeholder="0-200"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
@@ -288,11 +249,11 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 min="0"
                 max="100"
                 value={penetration}
-                onChange={(e) => setPenetration(parseInt(e.target.value))}
-                step="5"
+                onChange={(e) => setPenetration(parseFloat(e.target.value))}
+                step="0.1"
               />
               <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {penetration}%
+                {penetration.toFixed(1)}%
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -303,7 +264,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 max="100"
                 value={penetration}
                 onChange={(e) => handlePenetrationChange(e.target.value)}
-                step="5"
+                step="0.1"
                 placeholder="0-100"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
@@ -311,122 +272,53 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-3 text-green-700">
-              貫通強化 (合計: {penetrationTotal}%)
-            </h4>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
-              {penetrationOptions.map((option) => (
-                <label
-                  key={option.id}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={penetrationBuffs.includes(option.id)}
-                    onChange={() =>
-                      handleBuffToggle(
-                        option.id,
-                        penetrationBuffs,
-                        setPenetrationBuffs
-                      )
-                    }
-                    className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
-                  />
-                  <span className="text-sm text-green-800">
-                    {option.name} (+{option.value}%)
-                  </span>
-                </label>
-              ))}
+            <label className="font-semibold mb-3 text-green-700 text-lg block">
+              防御率デバフ (%)
+            </label>
+            <div className="flex items-center gap-4 mb-3">
+              <input
+                type="range"
+                className="slider"
+                min="0"
+                max="300"
+                value={defenseDebuff}
+                onChange={(e) => setDefenseDebuff(parseFloat(e.target.value))}
+                step="0.1"
+              />
+              <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
+                {defenseDebuff.toFixed(1)}%
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                min="0"
+                max="300"
+                value={defenseDebuff}
+                onChange={(e) => handleDefenseDebuffChange(e.target.value)}
+                step="0.1"
+                placeholder="0-300"
+              />
+              <span className="font-semibold text-green-700 text-sm">%</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 防御率デバフ */}
-      <div className="mt-6">
-        <h4 className="font-semibold mb-3 text-green-700">
-          防御率デバフ (合計: {totalDefenseDebuff}%)
-        </h4>
-
-        {/* 防御率デバフ基本値 */}
-        <div className="mb-4">
-          <label className="font-semibold mb-3 text-green-700 text-lg block">
-            防御率デバフ基本値 (%)
-          </label>
-          <div className="flex items-center gap-4 mb-3">
-            <input
-              type="range"
-              className="slider"
-              min="0"
-              max="100"
-              value={defenseDebuff}
-              onChange={(e) => setDefenseDebuff(parseInt(e.target.value))}
-              step="5"
-            />
-            <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-              {defenseDebuff}%
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-              min="0"
-              max="100"
-              value={defenseDebuff}
-              onChange={(e) => handleDefenseDebuffChange(e.target.value)}
-              step="5"
-              placeholder="0-100"
-            />
-            <span className="font-semibold text-green-700 text-sm">%</span>
-          </div>
-        </div>
-
-        {/* 防御率デバフ強化 */}
-        <div>
-          <h5 className="font-semibold mb-3 text-green-700">
-            防御率デバフ強化 (合計: {defenseDebuffTotal}%)
-          </h5>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {defenseDebuffOptions.map((option) => (
-              <label
-                key={option.id}
-                className="flex items-center gap-2 cursor-pointer p-2 rounded border border-green-200 hover:bg-green-50"
-              >
-                <input
-                  type="checkbox"
-                  checked={defenseDebuffs.includes(option.id)}
-                  onChange={() =>
-                    handleBuffToggle(
-                      option.id,
-                      defenseDebuffs,
-                      setDefenseDebuffs
-                    )
-                  }
-                  className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
-                />
-                <span className="text-sm text-green-800">
-                  {option.name} (+{option.value}%)
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* 状態異常 */}
-        <div className="mt-4">
-          <h4 className="font-semibold mb-3 text-green-700">状態異常</h4>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={windStrike}
-              onChange={(e) => setWindStrike(e.target.checked)}
-              className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
-            />
-            <span className="text-sm text-green-800 font-semibold">
-              風襲 (防御係数 × 0.88)
-            </span>
-          </div>
+      {/* 状態異常 */}
+      <div className="mt-4">
+        <h4 className="font-semibold mb-3 text-green-700">状態異常</h4>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={windStrike}
+            onChange={(e) => setWindStrike(e.target.checked)}
+            className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
+          />
+          <span className="text-sm text-green-800 font-semibold">
+            風襲 (防御係数 × 0.88)
+          </span>
         </div>
       </div>
 
@@ -435,8 +327,8 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
         <div className="text-center space-y-2">
           <div className="text-lg font-bold text-green-800">
             防御係数 = (100% + {additionalDefenseCoeff}%) × (100% -{" "}
-            {penetration + penetrationTotal}%) - {totalDefenseDebuff}%
-            {windStrike && " × 0.88"} = {currentDefenseCoeff.toFixed(1)}%
+            {penetration}%) - {totalDefenseDebuff}%{windStrike && " × 0.88"} ={" "}
+            {currentDefenseCoeff.toFixed(1)}%
           </div>
           <div className="text-lg font-bold text-green-800">
             敵防御力計算 = 100% - (({defense} × {currentDefenseCoeff.toFixed(1)}

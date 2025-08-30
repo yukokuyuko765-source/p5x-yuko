@@ -63,26 +63,3 @@ export const penetrationOptions: DefenseOption[] = [
     description: "弱点時貫通35%増加",
   },
 ];
-
-export const defenseDebuffOptions: DefenseOption[] = [
-  {
-    id: "debuff1",
-    name: "防御力低下（小）",
-    value: 20,
-    description: "防御力20%低下",
-  },
-  {
-    id: "debuff2",
-    name: "防御力低下（中）",
-    value: 35,
-    description: "防御力35%低下",
-  },
-  {
-    id: "debuff3",
-    name: "防御力低下（大）",
-    value: 50,
-    description: "防御力50%低下",
-  },
-  { id: "debuff4", name: "脆弱化", value: 30, description: "防御力30%低下" },
-  { id: "debuff5", name: "完全破壊", value: 70, description: "防御力70%低下" },
-];
