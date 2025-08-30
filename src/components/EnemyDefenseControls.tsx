@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  defensePresets,
   penetrationOptions,
   defenseDebuffOptions,
   DefenseOption,
-  DefensePreset,
 } from "../data/enemyDefenseData";
+import enemyData from "../data/enemyData.json";
+import { Enemy } from "../types";
 
 interface EnemyDefenseControlsProps {
   defense: number;
@@ -22,8 +22,8 @@ interface EnemyDefenseControlsProps {
   setDefenseDebuffs: (value: string[]) => void;
   windStrike: boolean;
   setWindStrike: (value: boolean) => void;
-  selectedPreset: string;
-  setSelectedPreset: (value: string) => void;
+  selectedEnemy: string;
+  setSelectedEnemy: (value: string) => void;
 }
 
 const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
@@ -41,8 +41,8 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   setDefenseDebuffs,
   windStrike,
   setWindStrike,
-  selectedPreset,
-  setSelectedPreset,
+  selectedEnemy,
+  setSelectedEnemy,
 }) => {
   const handleDefenseChange = (value: string): void => {
     const numValue = parseInt(value);
@@ -76,12 +76,12 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
     }
   };
 
-  const handlePresetChange = (presetId: string): void => {
-    const preset = defensePresets.find((p) => p.id === presetId);
-    if (preset) {
-      setDefense(preset.defense);
-      setAdditionalDefenseCoeff(preset.additionalDefenseCoeff);
-      setSelectedPreset(presetId);
+  const handleEnemyChange = (enemyId: string): void => {
+    const enemy = enemyData.enemies.find((e: Enemy) => e.id === enemyId);
+    if (enemy) {
+      setDefense(enemy.def);
+      setAdditionalDefenseCoeff(enemy.additional_def_coeff);
+      setSelectedEnemy(enemyId);
     }
   };
 
@@ -149,38 +149,57 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
         敵防御力計算設定
       </h3>
 
-      {/* プリセット選択 */}
+      {/* 敵選択 */}
       <div className="mb-6">
         <label className="font-semibold mb-3 text-green-700 text-lg block">
-          敵タイプ選択
+          敵選択
         </label>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-          {defensePresets.map((preset) => (
-            <label
-              key={preset.id}
-              className={`flex flex-col items-center p-3 rounded-lg border-2 cursor-pointer transition-colors ${
-                selectedPreset === preset.id
-                  ? "border-green-500 bg-green-100"
-                  : "border-green-300 bg-white hover:bg-green-50"
-              }`}
-            >
-              <input
-                type="radio"
-                name="defensePreset"
-                value={preset.id}
-                checked={selectedPreset === preset.id}
-                onChange={(e) => handlePresetChange(e.target.value)}
-                className="sr-only"
-              />
-              <div className="font-semibold text-green-800 text-sm">
-                {preset.name}
-              </div>
-              <div className="text-xs text-green-600 mt-1">
-                {preset.description}
-              </div>
-            </label>
+        <select
+          value={selectedEnemy}
+          onChange={(e) => handleEnemyChange(e.target.value)}
+          className="w-full px-4 py-3 border-2 border-green-300 rounded-lg text-lg font-semibold text-green-800 bg-white outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+        >
+          <option value="">敵を選択してください</option>
+          {enemyData.enemies.map((enemy: Enemy) => (
+            <option key={enemy.id} value={enemy.id}>
+              {enemy.name} - {enemy.stage} v{enemy.version} (HP:{" "}
+              {enemy.hp.toLocaleString()})
+            </option>
           ))}
-        </div>
+        </select>
+        {selectedEnemy && (
+          <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+            <div className="text-sm text-green-700">
+              <div>
+                <strong>期間:</strong>{" "}
+                {new Date(
+                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
+                    ?.start_at || ""
+                ).toLocaleDateString("ja-JP")}{" "}
+                ～{" "}
+                {new Date(
+                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
+                    ?.end_at || ""
+                ).toLocaleDateString("ja-JP")}
+              </div>
+              <div>
+                <strong>防御力:</strong>{" "}
+                {
+                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
+                    ?.def
+                }
+              </div>
+              <div>
+                <strong>追加防御係数:</strong>{" "}
+                {
+                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
+                    ?.additional_def_coeff
+                }
+                %
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

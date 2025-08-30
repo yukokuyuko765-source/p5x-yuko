@@ -1,0 +1,15 @@
+{
+  "enemies": [
+    {
+      "id": "seiryu",
+      "version": "1.4",
+      "stage": "心の海",
+      "start_at": "2025-08-21",
+      "end_at": "2025-09-04",
+      "name": "セイリュウ",
+      "hp": 700000,
+      "def": 508,
+      "additional_def_coeff": 174.7
+    }
+  ]
+}

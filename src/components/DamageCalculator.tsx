@@ -38,7 +38,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [defenseDebuff, setDefenseDebuff] = useState<number>(0);
   const [defenseDebuffs, setDefenseDebuffs] = useState<string[]>([]);
   const [windStrike, setWindStrike] = useState<boolean>(false);
-  const [selectedPreset, setSelectedPreset] = useState<string>("normal");
+  const [selectedEnemy, setSelectedEnemy] = useState<string>("");
   const [skillCoeff, setSkillCoeff] = useState<number>(1.0);
   const [weaknessCoeff, setWeaknessCoeff] = useState<number>(1.0);
   const [finalAttackMultiplier, setFinalAttackMultiplier] =
@@ -168,8 +168,8 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
           setDefenseDebuffs={setDefenseDebuffs}
           windStrike={windStrike}
           setWindStrike={setWindStrike}
-          selectedPreset={selectedPreset}
-          setSelectedPreset={setSelectedPreset}
+          selectedEnemy={selectedEnemy}
+          setSelectedEnemy={setSelectedEnemy}
         />
 
         {/* CRT期待値コントロール */}

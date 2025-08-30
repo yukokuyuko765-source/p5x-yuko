@@ -5,36 +5,18 @@ export interface ChartData {
 
 export interface DamageCalculatorProps {}
 
-export interface ParameterControlsProps {
-  attackPower: number;
-  setAttackPower: (value: number) => void;
-  crtRate: number;
-  setCrtRate: (value: number) => void;
-  crtMultiplier: number;
-  setCrtMultiplier: (value: number) => void;
+export interface Enemy {
+  id: string;
+  version: string;
+  stage: string;
+  start_at: string;
+  end_at: string;
+  name: string;
+  hp: number;
+  def: number;
+  additional_def_coeff: number;
 }
 
-export interface FormulaDisplayProps {
-  attackPower: number;
-  attackMultiplier: number;
-  enemyDefense: number;
-  skillCoeff: number;
-  weaknessCoeff: number;
-  finalAttackMultiplier: number;
-  otherCoeff: number;
-  randomCoeffEnabled: boolean;
-  randomCoeffMin: number;
-  randomCoeffMax: number;
-  crtRate: number;
-  crtMultiplier: number;
-  currentExpectation: number;
+export interface EnemyData {
+  enemies: Enemy[];
 }
-
-export interface CRTChartProps {
-  chartData: ChartData;
-  crtRate: number;
-  crtMultiplier: number;
-  currentExpectation: number;
-}
-
-export interface InfoPanelProps {}
