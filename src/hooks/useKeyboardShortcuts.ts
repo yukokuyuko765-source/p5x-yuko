@@ -15,14 +15,14 @@ export const useKeyboardShortcuts = (
           if (e.ctrlKey) {
             setCrtRate((prev) => Math.max(0, prev - step));
           } else {
-            setCrtMultiplier((prev) => Math.max(0, prev - step));
+            setCrtMultiplier((prev) => Math.max(150, prev - step));
           }
           break;
         case "ArrowRight":
           if (e.ctrlKey) {
             setCrtRate((prev) => Math.min(100, prev + step));
           } else {
-            setCrtMultiplier((prev) => Math.min(500, prev + step));
+            setCrtMultiplier((prev) => Math.min(300, prev + step));
           }
           break;
         default:

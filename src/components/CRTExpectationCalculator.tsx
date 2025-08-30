@@ -20,8 +20,8 @@ const CRTExpectationCalculator: React.FC<CRTExpectationCalculatorProps> = () => 
     const data: number[] = [];
     const labels: string[] = [];
 
-    // CRT倍率の値を0%から500%まで生成
-    for (let b = 0; b <= 500; b += 5) {
+    // CRT倍率の値を150%から300%まで生成
+    for (let b = 150; b <= 300; b += 2) {
       labels.push(b + "%");
       data.push(calculateCRTExpectation(crtRate, b));
     }

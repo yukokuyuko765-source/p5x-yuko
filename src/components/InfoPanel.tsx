@@ -8,7 +8,7 @@ const InfoPanel: React.FC<InfoPanelProps> = () => {
         グラフの説明
       </h4>
       <div className="space-y-2 text-yellow-800">
-        <p>• 横軸: CRT倍率の値 (0% ～ 500%)</p>
+        <p>• 横軸: CRT倍率の値 (150% ～ 300%)</p>
         <p>• 縦軸: CRT期待値 (%)</p>
         <p>• 青い線: 現在のCRT発生率での期待値</p>
         <p>• 赤い点: 現在選択されているCRT倍率での期待値</p>

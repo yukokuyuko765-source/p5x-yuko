@@ -18,7 +18,7 @@ const ParameterControls: React.FC<ParameterControlsProps> = ({
   const handleMultiplierChange = (value: string): void => {
     const numValue = parseInt(value);
     if (!isNaN(numValue)) {
-      const clampedValue = Math.max(0, Math.min(500, numValue));
+      const clampedValue = Math.max(150, Math.min(300, numValue));
       setCrtMultiplier(clampedValue);
     }
   };
@@ -68,8 +68,8 @@ const ParameterControls: React.FC<ParameterControlsProps> = ({
           <input
             type="range"
             className="slider"
-            min="0"
-            max="500"
+            min="150"
+            max="300"
             value={crtMultiplier}
             onChange={(e) => setCrtMultiplier(parseInt(e.target.value))}
             step="1"
@@ -82,12 +82,12 @@ const ParameterControls: React.FC<ParameterControlsProps> = ({
           <input
             type="number"
             className="w-20 px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            min="0"
-            max="500"
+            min="150"
+            max="300"
             value={crtMultiplier}
             onChange={(e) => handleMultiplierChange(e.target.value)}
             step="1"
-            placeholder="0-500"
+            placeholder="150-300"
           />
           <span className="font-semibold text-gray-700 text-sm">%</span>
         </div>

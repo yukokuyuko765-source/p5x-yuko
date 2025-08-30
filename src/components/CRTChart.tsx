@@ -30,8 +30,8 @@ const CRTChart: React.FC<CRTChartProps> = ({
 }) => {
   // 現在の点のデータを生成
   const generateCurrentPointData = (): (number | null)[] => {
-    const data = new Array(101).fill(null); // 0%から500%まで5%刻みなので101個
-    const bIndex = Math.round(crtMultiplier / 5); // CRT倍率の値をインデックスに変換
+    const data = new Array(76).fill(null); // 150%から300%まで2%刻みなので76個
+    const bIndex = Math.round((crtMultiplier - 150) / 2); // CRT倍率の値をインデックスに変換
     if (bIndex >= 0 && bIndex < data.length) {
       data[bIndex] = currentExpectation;
     }
