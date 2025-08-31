@@ -39,7 +39,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
     useState<number>(100);
   const [otherCoeff, setOtherCoeff] = useState<number>(100);
 
-  const [crtRate, setCrtRate] = useState<number>(50);
+  const [crtRate, setCrtRate] = useState<number>(5);
   const [crtMultiplier, setCrtMultiplier] = useState<number>(150);
 
   // CRT期待値の計算関数
