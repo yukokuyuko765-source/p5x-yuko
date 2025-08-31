@@ -1,6 +1,28 @@
 {
   "enemies": [
     {
+      "id": "lilith",
+      "version": "1.4",
+      "stage": "心の海",
+      "start_at": "2025-08-21",
+      "end_at": "2025-09-04",
+      "name": "リリス",
+      "hp": 9999999,
+      "def": 1365,
+      "additional_def_coeff": 155
+    },
+    {
+      "id": "nue",
+      "version": "1.4",
+      "stage": "心の海",
+      "start_at": "2025-08-21",
+      "end_at": "2025-09-04",
+      "name": "ヌエ",
+      "hp": 9999999,
+      "def": 1365,
+      "additional_def_coeff": 155
+    },
+    {
       "id": "seiryu",
       "version": "1.4",
       "stage": "心の海",
@@ -10,6 +32,39 @@
       "hp": 892187,
       "def": 508,
       "additional_def_coeff": 174.7
+    },
+    {
+      "id": "surtr",
+      "version": "1.4",
+      "stage": "悪夢の扉",
+      "start_at": "2025-08-28",
+      "end_at": "2025-09-04",
+      "name": "スルト",
+      "hp": 9999999,
+      "def": 2120,
+      "additional_def_coeff": 161.1
+    },
+    {
+      "id": "jacklantern",
+      "version": "1.4",
+      "stage": "悪夢の扉",
+      "start_at": "2025-08-28",
+      "end_at": "2025-09-04",
+      "name": "ジャックランタン",
+      "hp": 9999999,
+      "def": 940,
+      "additional_def_coeff": 154.7
+    },
+    {
+      "id": "yatsufusa",
+      "version": "1.4",
+      "stage": "悪夢の扉",
+      "start_at": "2025-08-28",
+      "end_at": "2025-09-04",
+      "name": "ヤツフサ",
+      "hp": 9999999,
+      "def": 3915,
+      "additional_def_coeff": 207.5
     }
   ]
 }
