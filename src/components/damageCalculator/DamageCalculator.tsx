@@ -3,20 +3,13 @@ import AttackPowerControls from "./AttackPowerControls";
 import CRTControls from "./CRTControls";
 import AttackMultiplierControls from "./AttackMultiplierControls";
 import EnemyDefenseControls from "./EnemyDefenseControls";
-import EnemyDefenseChart from "./EnemyDefenseChart";
 import SkillCoeffControls from "./SkillCoeffControls";
 import WeaknessCoeffControls from "./WeaknessCoeffControls";
 import FinalAttackMultiplierControls from "./FinalAttackMultiplierControls";
 import OtherCoeffControls from "./OtherCoeffControls";
-import RandomCoeffControls from "./RandomCoeffControls";
 import CalculationResult from "./CalculationResult";
 import { useKeyboardShortcuts } from "../../hooks/useKeyboardShortcuts";
 import { DamageCalculatorProps } from "../../types";
-import {
-  allyDamageBuffs as allyBuffsData,
-  enemyDamageDebuffs as enemyDebuffsData,
-  attributeMultipliers as attributeMultsData,
-} from "../../data/attackMultiplierData";
 
 const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [attackPower, setAttackPower] = useState<number>(1000);
