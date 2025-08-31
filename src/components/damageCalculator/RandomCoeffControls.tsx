@@ -34,8 +34,8 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
   };
 
   return (
-    <div className="mb-8 p-6 bg-indigo-50 rounded-xl border border-indigo-200">
-      <h3 className="text-xl font-semibold text-indigo-800 mb-4">
+    <div className="mb-6 p-6 bg-amber-50 rounded-xl border border-amber-200">
+      <h3 className="text-xl font-semibold text-amber-800 mb-4">
         ランダム範囲係数設定
       </h3>
 
@@ -46,9 +46,9 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
             type="checkbox"
             checked={randomCoeffEnabled}
             onChange={(e) => setRandomCoeffEnabled(e.target.checked)}
-            className="w-4 h-4 text-indigo-600 border-indigo-300 rounded focus:ring-indigo-500"
+            className="w-4 h-4 text-amber-600 border-amber-300 rounded focus:ring-amber-500"
           />
-          <span className="font-semibold text-indigo-700 text-lg">
+          <span className="font-semibold text-amber-700 text-lg">
             ランダム範囲係数を有効にする
           </span>
         </label>
@@ -59,13 +59,13 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* 下限値 */}
             <div>
-              <label className="font-semibold mb-3 text-indigo-700 text-lg block">
+              <label className="font-semibold mb-3 text-amber-700 text-lg block">
                 下限値 (%)
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  className="w-24 px-3 py-2 border-2 border-indigo-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-24 px-3 py-2 border-2 border-amber-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
                   min="0"
                   max="100"
                   value={randomCoeffMin}
@@ -73,19 +73,19 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
                   step="0.1"
                   placeholder="0-100"
                 />
-                <span className="font-semibold text-indigo-700 text-sm">%</span>
+                <span className="font-semibold text-amber-700 text-sm">%</span>
               </div>
             </div>
 
             {/* 上限値 */}
             <div>
-              <label className="font-semibold mb-3 text-indigo-700 text-lg block">
+              <label className="font-semibold mb-3 text-amber-700 text-lg block">
                 上限値 (%)
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  className="w-24 px-3 py-2 border-2 border-indigo-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-24 px-3 py-2 border-2 border-amber-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
                   min="0"
                   max="200"
                   value={randomCoeffMax}
@@ -93,7 +93,7 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
                   step="0.1"
                   placeholder="0-200"
                 />
-                <span className="font-semibold text-indigo-700 text-sm">%</span>
+                <span className="font-semibold text-amber-700 text-sm">%</span>
               </div>
             </div>
           </div>

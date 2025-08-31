@@ -21,11 +21,9 @@ import {
 const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
   const [attackPower, setAttackPower] = useState<number>(1000);
   const [attackMultiplierStat, setAttackMultiplierStat] = useState<number>(0);
-  const [allyDamageBuffs, setAllyDamageBuffs] = useState<string[]>([]);
-  const [enemyDamageDebuffs, setEnemyDamageDebuffs] = useState<string[]>([]);
-  const [attributeMultipliers, setAttributeMultipliers] = useState<string[]>(
-    []
-  );
+  const [allyDamageBuffs, setAllyDamageBuffs] = useState<number>(0);
+  const [enemyDamageDebuffs, setEnemyDamageDebuffs] = useState<number>(0);
+  const [attributeMultipliers, setAttributeMultipliers] = useState<number>(0);
   const [defense, setDefense] = useState<number>(300);
   const [additionalDefenseCoeff, setAdditionalDefenseCoeff] =
     useState<number>(10);
@@ -54,22 +52,13 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
 
   // 攻撃倍率の計算
   const calculateAttackMultiplier = (): number => {
-    const allyTotal = allyDamageBuffs.reduce((total, id) => {
-      const buff = allyBuffsData.find((b) => b.id === id);
-      return total + (buff?.value || 0);
-    }, 0);
-
-    const enemyTotal = enemyDamageDebuffs.reduce((total, id) => {
-      const debuff = enemyDebuffsData.find((d) => d.id === id);
-      return total + (debuff?.value || 0);
-    }, 0);
-
-    const attributeTotal = attributeMultipliers.reduce((total, id) => {
-      const attr = attributeMultsData.find((a) => a.id === id);
-      return total + (attr?.value || 0);
-    }, 0);
-
-    return 100 + attackMultiplierStat + allyTotal + enemyTotal + attributeTotal;
+    return (
+      100 +
+      attackMultiplierStat +
+      allyDamageBuffs +
+      enemyDamageDebuffs +
+      attributeMultipliers
+    );
   };
 
   // 敵防御力の計算
@@ -120,7 +109,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
         {/* 左半分: 小さなコントロール群 */}
         <div className="lg:w-1/3 p-6">
           {/* 計算結果ブロック */}
-          <div className="mb-8">
+          <div className="mb-6">
             <CalculationResult
               attackPower={attackPower}
               attackMultiplier={currentAttackMultiplier}
@@ -214,7 +203,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
               <div>
                 結果 ={" "}
                 <span className="bg-red-100 text-red-800 px-2 py-1 rounded">
-                  攻撃力計算
+                  攻撃力
                 </span>{" "}
                 ×{" "}
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
@@ -245,7 +234,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
                   その他係数
                 </span>{" "}
                 ×
-                <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded">
+                <span className="bg-lime-100 text-lime-800 px-2 py-1 rounded">
                   {"ランダム範囲係数(95~105%)"}
                 </span>
               </div>

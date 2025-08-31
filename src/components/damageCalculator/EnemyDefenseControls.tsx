@@ -103,10 +103,13 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   const currentEnemyDefense = calculateEnemyDefense();
 
   return (
-    <div className="mb-8 p-6 bg-green-50 rounded-xl border border-green-200">
-      <h3 className="text-xl font-semibold text-green-800 mb-4">
-        敵防御力計算設定
-      </h3>
+    <div className="mb-6 p-6 bg-green-50 rounded-xl border border-green-200">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-green-800">敵防御力計算</h3>
+        <div className="font-semibold text-green-600">
+          = {currentEnemyDefense.toFixed(1)}%
+        </div>
+      </div>
 
       {/* 敵選択 */}
       <div className="mb-6">
@@ -126,13 +129,15 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
       </div>
 
       {/* 敵防御力計算グラフ */}
-      <EnemyDefenseChart
-        defense={defense}
-        additionalDefenseCoeff={additionalDefenseCoeff}
-        penetration={penetration}
-        windStrike={windStrike}
-        defenseDebuff={defenseDebuff}
-      />
+      <div className="mb-6">
+        <EnemyDefenseChart
+          defense={defense}
+          additionalDefenseCoeff={additionalDefenseCoeff}
+          penetration={penetration}
+          windStrike={windStrike}
+          defenseDebuff={defenseDebuff}
+        />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 防御力設定 */}
@@ -151,27 +156,24 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 onChange={(e) => handleDefenseChange(parseInt(e.target.value))}
                 step="1"
               />
-              <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {defense}
+              <div className="flex items-center gap-2">
+                <NumericFormat
+                  className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                  value={defense}
+                  onValueChange={(values) =>
+                    handleDefenseChange(values.floatValue || 0)
+                  }
+                  allowNegative={false}
+                  decimalScale={0}
+                  placeholder="0-10000"
+                />
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <NumericFormat
-                className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                value={defense}
-                onValueChange={(values) =>
-                  handleDefenseChange(values.floatValue || 0)
-                }
-                allowNegative={false}
-                decimalScale={0}
-                placeholder="0-10000"
-              />
             </div>
           </div>
 
           <div>
             <label className="font-semibold mb-3 text-green-700 text-lg block">
-              追加防御係数 (%)
+              追加防御係数
             </label>
             <div className="flex items-center gap-4 mb-3">
               <input
@@ -185,22 +187,19 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 }
                 step="0.1"
               />
-              <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {additionalDefenseCoeff.toFixed(1)}%
+              <div className="flex items-center gap-2">
+                <NumericFormat
+                  className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                  value={additionalDefenseCoeff}
+                  onValueChange={(values) =>
+                    handleAdditionalDefenseCoeffChange(values.floatValue || 0)
+                  }
+                  allowNegative={false}
+                  decimalScale={1}
+                  placeholder="0-300"
+                  suffix="%"
+                />
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <NumericFormat
-                className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                value={additionalDefenseCoeff}
-                onValueChange={(values) =>
-                  handleAdditionalDefenseCoeffChange(values.floatValue || 0)
-                }
-                allowNegative={false}
-                decimalScale={1}
-                placeholder="0-300"
-              />
-              <span className="font-semibold text-green-700 text-sm">%</span>
             </div>
           </div>
         </div>
@@ -209,7 +208,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
         <div className="space-y-4">
           <div>
             <label className="font-semibold mb-3 text-green-700 text-lg block">
-              貫通 (%)
+              貫通
             </label>
             <div className="flex items-center gap-4 mb-3">
               <input
@@ -221,28 +220,25 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 onChange={(e) => setPenetration(parseFloat(e.target.value))}
                 step="0.1"
               />
-              <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {penetration.toFixed(1)}%
+              <div className="flex items-center gap-2">
+                <NumericFormat
+                  className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                  value={penetration}
+                  onValueChange={(values) =>
+                    handlePenetrationChange(values.floatValue || 0)
+                  }
+                  allowNegative={false}
+                  decimalScale={1}
+                  placeholder="0-100"
+                  suffix="%"
+                />
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <NumericFormat
-                className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                value={penetration}
-                onValueChange={(values) =>
-                  handlePenetrationChange(values.floatValue || 0)
-                }
-                allowNegative={false}
-                decimalScale={1}
-                placeholder="0-100"
-              />
-              <span className="font-semibold text-green-700 text-sm">%</span>
             </div>
           </div>
 
           <div>
             <label className="font-semibold mb-3 text-green-700 text-lg block">
-              防御率デバフ (%)
+              防御率デバフ
             </label>
             <div className="flex items-center gap-4 mb-3">
               <input
@@ -254,22 +250,19 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 onChange={(e) => setDefenseDebuff(parseFloat(e.target.value))}
                 step="0.1"
               />
-              <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
-                {defenseDebuff.toFixed(1)}%
+              <div className="flex items-center gap-2">
+                <NumericFormat
+                  className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                  value={defenseDebuff}
+                  onValueChange={(values) =>
+                    handleDefenseDebuffChange(values.floatValue || 0)
+                  }
+                  allowNegative={false}
+                  decimalScale={1}
+                  placeholder="0-300"
+                  suffix="%"
+                />
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <NumericFormat
-                className="w-24 px-3 py-2 border-2 border-green-300 rounded-lg text-sm font-semibold text-center outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                value={defenseDebuff}
-                onValueChange={(values) =>
-                  handleDefenseDebuffChange(values.floatValue || 0)
-                }
-                allowNegative={false}
-                decimalScale={1}
-                placeholder="0-300"
-              />
-              <span className="font-semibold text-green-700 text-sm">%</span>
             </div>
           </div>
         </div>

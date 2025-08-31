@@ -44,7 +44,7 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
   const avgDamage = calculateDamage(100);
 
   return (
-    <div className="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl border-2 border-yellow-200 shadow-lg">
+    <div className="mb-6 p-6 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border-2 border-yellow-300">
       <h3 className="text-xl font-semibold text-yellow-800 mb-4">
         ダメージ計算結果
       </h3>

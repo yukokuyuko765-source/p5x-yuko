@@ -16,23 +16,23 @@ const WeaknessCoeffControls: React.FC<WeaknessCoeffControlsProps> = ({
   ];
 
   return (
-    <div className="mb-8 p-6 bg-orange-50 rounded-xl border border-orange-200">
-      <h3 className="text-xl font-semibold text-orange-800 mb-4">
-        弱点係数設定
-      </h3>
+    <div className="mb-6 p-6 bg-pink-50 rounded-xl border border-pink-200">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-pink-800">弱点係数</h3>
+        <div className="font-semibold text-pink-600">
+          = {(weaknessCoeff * 100).toFixed(0)}%
+        </div>
+      </div>
 
-      <div className="mb-6">
-        <label className="font-semibold mb-3 text-orange-700 text-lg block">
-          弱点係数
-        </label>
+      <div>
         <div className="grid grid-cols-3 gap-4">
           {weaknessOptions.map((option) => (
             <label
               key={option.value}
               className={`flex flex-col items-center p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                 weaknessCoeff === option.value
-                  ? "border-orange-500 bg-orange-100"
-                  : "border-orange-300 bg-white hover:bg-orange-50"
+                  ? "border-pink-500 bg-pink-100"
+                  : "border-pink-300 bg-white hover:bg-pink-50"
               }`}
             >
               <input
@@ -43,23 +43,14 @@ const WeaknessCoeffControls: React.FC<WeaknessCoeffControlsProps> = ({
                 onChange={(e) => setWeaknessCoeff(parseFloat(e.target.value))}
                 className="sr-only"
               />
-              <div className="font-semibold text-orange-800 text-lg">
+              <div className="font-semibold text-pink-800 text-lg">
                 {option.label}
               </div>
-              <div className="text-sm text-orange-600 mt-1">
+              <div className="text-sm text-pink-600 mt-1">
                 {option.description}
               </div>
             </label>
           ))}
-        </div>
-      </div>
-
-      {/* 計算結果表示 */}
-      <div className="mt-4 p-3 bg-orange-100 rounded-lg">
-        <div className="text-center">
-          <div className="text-lg font-bold text-orange-800">
-            弱点係数 = {(weaknessCoeff * 100).toFixed(0)}%
-          </div>
         </div>
       </div>
     </div>

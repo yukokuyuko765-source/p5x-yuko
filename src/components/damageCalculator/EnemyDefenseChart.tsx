@@ -239,13 +239,8 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
   };
 
   return (
-    <div className="mb-8 p-6 bg-green-50 rounded-xl border border-green-200">
-      <h3 className="text-xl font-semibold text-green-800 mb-4">
-        敵防御力計算グラフ
-      </h3>
-      <div className="bg-white p-6 rounded-lg" style={{ height: "400px" }}>
-        <Line data={chartData} options={options} />
-      </div>
+    <div className="bg-white p-6 rounded-lg" style={{ height: "400px" }}>
+      <Line data={chartData} options={options} />
     </div>
   );
 };
