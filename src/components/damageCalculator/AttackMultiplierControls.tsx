@@ -61,10 +61,10 @@ const AttackMultiplierControls: React.FC<AttackMultiplierControlsProps> = ({
         </div>
       </div>
 
-      {/* 味方予ダメージ増バフ */}
+      {/* 予ダメージ増バフ */}
       <div className="flex items-center justify-between mb-3">
         <label className="font-semibold text-blue-700 text-lg whitespace-nowrap">
-          味方予ダメージ増バフ
+          予ダメージ増バフ
         </label>
         <div className="flex items-center gap-2">
           <NumericFormat
@@ -79,10 +79,10 @@ const AttackMultiplierControls: React.FC<AttackMultiplierControlsProps> = ({
         </div>
       </div>
 
-      {/* 敵被ダメージ増デバフ */}
+      {/* 被ダメージ増デバフ */}
       <div className="flex items-center justify-between mb-3">
         <label className="font-semibold text-blue-700 text-lg whitespace-nowrap">
-          敵被ダメージ増デバフ
+          被ダメージ増デバフ
         </label>
         <div className="flex items-center gap-2">
           <NumericFormat
