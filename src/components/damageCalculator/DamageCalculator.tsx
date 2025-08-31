@@ -274,6 +274,21 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
               </div>
             </div>
           </div>
+
+          {/* 注意書き */}
+          <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+            <div className="text-sm text-amber-800">
+              <p className="font-semibold mb-2">⚠️ 注意事項</p>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>
+                  このツールは非公式のファン制作物です。ゲームの実際の仕様と異なる場合があり、この計算結果の正確性については保証いたしません。
+                </li>
+                <li>
+                  このツールは研究・学習目的で作成されています。商用利用は禁止されています。
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
