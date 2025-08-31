@@ -66,6 +66,8 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       borderColor: "rgb(34, 197, 94)",
       backgroundColor: "rgba(34, 197, 94, 0.1)",
       tension: 0.1,
+      pointRadius: 0, // 点を非表示
+      pointHoverRadius: 0, // ホバー時の点も非表示
     });
 
     // 参考用のデータセット（貫通0%、50%）
@@ -105,31 +107,30 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       }
     });
 
-    // 現在の防御率デバフ値での敵防御力計算値を取得
-    const currentDefenseDebuffIndex = Math.round(defenseDebuff / 5);
-    const currentDefenseDebuffValue = currentDefenseDebuffIndex * 5;
-    const currentEnemyDefense = currentData[currentDefenseDebuffIndex] || 0;
+    // 現在の防御率デバフ値での敵防御力計算値を正確に計算
+    const currentDefenseDebuffValue = defenseDebuff;
+    const currentEnemyDefense = (() => {
+      let defenseCoeff = 100 + additionalDefenseCoeff;
+      defenseCoeff = (defenseCoeff * (100 - penetration)) / 100;
+      defenseCoeff = defenseCoeff - currentDefenseDebuffValue;
 
-    // 現在の貫通値でのみ垂線用のデータセットを追加
-    if (penetration !== 0 && penetration !== 50) {
-      datasets.push({
-        label: "現在の値",
-        data: defenseDebuffValues.map((value, index) =>
-          index === currentDefenseDebuffIndex ? currentEnemyDefense : null
-        ),
-        borderColor: "rgb(0, 0, 0)",
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
-        pointBackgroundColor: "rgb(0, 0, 0)",
-        pointBorderColor: "rgb(0, 0, 0)",
-        pointRadius: 6,
-        pointHoverRadius: 8,
-        showLine: false,
-      });
-    }
+      if (windStrike) {
+        defenseCoeff *= 0.88;
+      }
+
+      defenseCoeff = Math.max(0, defenseCoeff);
+
+      const numerator = (defense * defenseCoeff) / 100;
+      const denominator = numerator + 1400;
+      return 100 - (numerator / denominator) * 100;
+    })();
+
+    // 現在の貫通値でのみ垂線を表示
+    // 黒い点は表示しない
 
     return {
       chartData: {
-        labels: defenseDebuffValues.map((value) => `${value}%`),
+        labels: defenseDebuffValues,
         datasets,
       },
       currentDefenseDebuffValue,
@@ -170,53 +171,54 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       annotation: {
         annotations: {
           // 現在の貫通値が0%または50%でない場合のみ垂線を表示
-          ...(penetration !== 0 && penetration !== 50
-            ? {
-                // 縦線（横軸への垂線）
-                verticalLine: {
-                  type: "line" as const,
-                  xMin: `${currentDefenseDebuffValue}%`,
-                  xMax: `${currentDefenseDebuffValue}%`,
-                  yMin: 0,
-                  yMax: currentEnemyDefense,
-                  borderColor: "rgba(0, 0, 0, 0.5)",
-                  borderWidth: 2,
-                  borderDash: [5, 5],
-                },
-                // 横線（縦軸への垂線）
-                horizontalLine: {
-                  type: "line" as const,
-                  xMin: "0%",
-                  xMax: `${currentDefenseDebuffValue}%`,
-                  yMin: currentEnemyDefense,
-                  yMax: currentEnemyDefense,
-                  borderColor: "rgba(0, 0, 0, 0.5)",
-                  borderWidth: 2,
-                  borderDash: [5, 5],
-                },
-              }
-            : {}),
+          // 縦線（横軸への垂線）
+          verticalLine: {
+            type: "line" as const,
+            xMin: currentDefenseDebuffValue,
+            xMax: currentDefenseDebuffValue,
+            yMin: 0,
+            yMax: currentEnemyDefense,
+            borderColor: "rgba(0, 0, 0, 0.5)",
+            borderWidth: 2,
+            borderDash: [5, 5],
+          },
+          // 横線（縦軸への垂線）
+          horizontalLine: {
+            type: "line" as const,
+            xMin: 0,
+            xMax: currentDefenseDebuffValue,
+            yMin: currentEnemyDefense,
+            yMax: currentEnemyDefense,
+            borderColor: "rgba(0, 0, 0, 0.5)",
+            borderWidth: 2,
+            borderDash: [5, 5],
+          },
         },
       },
     },
     scales: {
       x: {
+        type: "linear" as const,
         title: {
           display: true,
-          text: "防御率デバフ (%)",
+          text: `防御率デバフ (%) = ${defenseDebuff.toFixed(1)}`,
           font: {
             size: 14,
             weight: "bold" as const,
           },
         },
+        min: 0,
+        max: 300,
         ticks: {
           maxTicksLimit: 10,
+          callback: (value: any) => `${value}%`,
         },
       },
       y: {
+        type: "linear" as const,
         title: {
           display: true,
-          text: "敵防御力計算 (%)",
+          text: `敵防御力計算 (%) = ${currentEnemyDefense.toFixed(1)}`,
           font: {
             size: 14,
             weight: "bold" as const,

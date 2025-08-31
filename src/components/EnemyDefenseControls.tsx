@@ -42,7 +42,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
 
   const handleAdditionalDefenseCoeffChange = (value: number): void => {
     if (!isNaN(value)) {
-      const clampedValue = Math.max(0, Math.min(200, value));
+      const clampedValue = Math.max(0, Math.min(300, value));
       setAdditionalDefenseCoeff(clampedValue);
     }
   };
@@ -223,7 +223,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 type="range"
                 className="slider"
                 min="0"
-                max="200"
+                max="300"
                 value={additionalDefenseCoeff}
                 onChange={(e) =>
                   setAdditionalDefenseCoeff(parseFloat(e.target.value))
@@ -243,7 +243,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 }
                 allowNegative={false}
                 decimalScale={1}
-                placeholder="0-200"
+                placeholder="0-300"
               />
               <span className="font-semibold text-green-700 text-sm">%</span>
             </div>
