@@ -43,7 +43,7 @@ npm run dev
 
 このアプリケーションは GitHub Pages でホスティングされています：
 
-**🌐 ライブデモ**: https://[your-username].github.io/p5x/
+**🌐 ライブデモ**: https://yukokuyuko765-source.github.io/p5x-yuko/
 
 ### デプロイ方法
 
