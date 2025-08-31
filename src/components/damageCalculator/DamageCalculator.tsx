@@ -146,6 +146,24 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
             />
           </div>
 
+          {/* モバイル用: 敵防御力計算ブロック */}
+          <div className="lg:hidden mb-6">
+            <EnemyDefenseControls
+              defense={defense}
+              setDefense={setDefense}
+              additionalDefenseCoeff={additionalDefenseCoeff}
+              setAdditionalDefenseCoeff={setAdditionalDefenseCoeff}
+              penetration={penetration}
+              setPenetration={setPenetration}
+              defenseDebuff={defenseDebuff}
+              setDefenseDebuff={setDefenseDebuff}
+              windStrike={windStrike}
+              setWindStrike={setWindStrike}
+              selectedEnemy={selectedEnemy}
+              setSelectedEnemy={setSelectedEnemy}
+            />
+          </div>
+
           {/* CRT期待値コントロール */}
           <div className="mb-6">
             <CRTControls
@@ -182,7 +200,7 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
           </div>
 
           {/* その他係数コントロール */}
-          <div className="mb-6">
+          <div>
             <OtherCoeffControls
               otherCoeff={otherCoeff}
               setOtherCoeff={setOtherCoeff}
@@ -190,26 +208,28 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
           </div>
         </div>
 
-        {/* 右半分: 敵防御力計算ブロック */}
-        <div className="lg:w-2/3 p-6">
-          {/* 敵防御力計算コントロール */}
-          <EnemyDefenseControls
-            defense={defense}
-            setDefense={setDefense}
-            additionalDefenseCoeff={additionalDefenseCoeff}
-            setAdditionalDefenseCoeff={setAdditionalDefenseCoeff}
-            penetration={penetration}
-            setPenetration={setPenetration}
-            defenseDebuff={defenseDebuff}
-            setDefenseDebuff={setDefenseDebuff}
-            windStrike={windStrike}
-            setWindStrike={setWindStrike}
-            selectedEnemy={selectedEnemy}
-            setSelectedEnemy={setSelectedEnemy}
-          />
+        {/* 右半分: 計算式ブロック */}
+        <div className="lg:w-2/3 p-6 lg:pt-6 pt-0">
+          {/* 敵防御力計算コントロール（デスクトップ用） */}
+          <div className="hidden lg:block mb-6">
+            <EnemyDefenseControls
+              defense={defense}
+              setDefense={setDefense}
+              additionalDefenseCoeff={additionalDefenseCoeff}
+              setAdditionalDefenseCoeff={setAdditionalDefenseCoeff}
+              penetration={penetration}
+              setPenetration={setPenetration}
+              defenseDebuff={defenseDebuff}
+              setDefenseDebuff={setDefenseDebuff}
+              windStrike={windStrike}
+              setWindStrike={setWindStrike}
+              selectedEnemy={selectedEnemy}
+              setSelectedEnemy={setSelectedEnemy}
+            />
+          </div>
 
           {/* 計算式 */}
-          <div className="mt-6 p-6 bg-gradient-to-br from-slate-50 to-gray-100 rounded-xl border border-slate-200">
+          <div className="p-6 bg-gradient-to-br from-slate-50 to-gray-100 rounded-xl border border-slate-200">
             <h3 className="text-xl font-semibold text-slate-800 mb-4">
               計算式
             </h3>
