@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -24,15 +25,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
       >
         {/* ヘッダー */}
         <div className="p-6 border-b border-white/20">
-          <h1 className="text-2xl font-bold">P5X Tools</h1>
+          <Link
+            to="/"
+            className="block hover:opacity-80 transition-opacity duration-200"
+          >
+            <h1 className="text-2xl font-bold cursor-pointer">P5X Tools</h1>
+          </Link>
         </div>
 
         {/* ナビゲーション */}
         <nav className="p-4">
           <ul className="space-y-2">
             <li>
-              <a
-                href="/"
+              <Link
+                to="/damageCalculator"
                 className="flex items-center px-4 py-3 text-white rounded-lg hover:bg-white/10 transition-colors duration-200"
               >
                 <svg
@@ -49,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                   />
                 </svg>
                 ダメージ計算ツール
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
