@@ -1,7 +1,7 @@
 import React from "react";
 import { NumericFormat } from "react-number-format";
-import enemyData from "../data/enemyData.json";
-import { Enemy } from "../types";
+import enemyData from "../../data/enemyData.json";
+import { Enemy } from "../../types";
 import EnemyDefenseChart from "./EnemyDefenseChart";
 
 interface EnemyDefenseControlsProps {
@@ -110,9 +110,6 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
 
       {/* 敵選択 */}
       <div className="mb-6">
-        <label className="font-semibold mb-3 text-green-700 text-lg block">
-          敵選択
-        </label>
         <select
           value={selectedEnemy}
           onChange={(e) => handleEnemyChange(e.target.value)}
@@ -126,48 +123,6 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
             </option>
           ))}
         </select>
-        {selectedEnemy && (
-          <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
-            <div className="text-sm text-green-700">
-              <div>
-                <strong>期間:</strong>{" "}
-                {new Date(
-                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
-                    ?.start_at || ""
-                ).toLocaleDateString("ja-JP")}{" "}
-                ～{" "}
-                {new Date(
-                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
-                    ?.end_at || ""
-                ).toLocaleDateString("ja-JP")}
-              </div>
-              <div>
-                <strong>HP:</strong>{" "}
-                {(() => {
-                  const hp = enemyData.enemies.find(
-                    (e: Enemy) => e.id === selectedEnemy
-                  )?.hp;
-                  return hp && hp >= 9999999 ? "∞" : hp?.toLocaleString();
-                })()}
-              </div>
-              <div>
-                <strong>防御力:</strong>{" "}
-                {
-                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
-                    ?.def
-                }
-              </div>
-              <div>
-                <strong>追加防御係数:</strong>{" "}
-                {
-                  enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
-                    ?.additional_def_coeff
-                }
-                %
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* 敵防御力計算グラフ */}

@@ -36,7 +36,7 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
   return (
     <div className="mb-8 p-6 bg-indigo-50 rounded-xl border border-indigo-200">
       <h3 className="text-xl font-semibold text-indigo-800 mb-4">
-        ランダム係数設定
+        ランダム範囲係数設定
       </h3>
 
       {/* 有効/無効トグル */}
@@ -49,7 +49,7 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
             className="w-4 h-4 text-indigo-600 border-indigo-300 rounded focus:ring-indigo-500"
           />
           <span className="font-semibold text-indigo-700 text-lg">
-            ランダム係数を有効にする
+            ランダム範囲係数を有効にする
           </span>
         </label>
       </div>
@@ -104,7 +104,7 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
       <div className="mt-4 p-3 bg-indigo-100 rounded-lg">
         <div className="text-center">
           <div className="text-lg font-bold text-indigo-800">
-            ランダム係数 ={" "}
+            ランダム範囲係数 ={" "}
             {randomCoeffEnabled
               ? `${randomCoeffMin.toFixed(1)}% ～ ${randomCoeffMax.toFixed(1)}%`
               : "100% (無効)"}

@@ -19,12 +19,12 @@ const FinalAttackMultiplierControls: React.FC<
   return (
     <div className="mb-8 p-6 bg-red-50 rounded-xl border border-red-200">
       <h3 className="text-xl font-semibold text-red-800 mb-4">
-        最終攻撃倍率設定
+        最終攻撃倍率+設定
       </h3>
 
       <div className="mb-6">
         <label className="font-semibold mb-3 text-red-700 text-lg block">
-          最終攻撃倍率 (%)
+          最終攻撃倍率+ (%)
         </label>
         <div className="flex items-center gap-2">
           <input
@@ -45,7 +45,7 @@ const FinalAttackMultiplierControls: React.FC<
       <div className="mt-4 p-3 bg-red-100 rounded-lg">
         <div className="text-center">
           <div className="text-lg font-bold text-red-800">
-            最終攻撃倍率 = {finalAttackMultiplier.toFixed(1)}%
+            最終攻撃倍率+ = {finalAttackMultiplier.toFixed(1)}%
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import {
   enemyDamageDebuffs as enemyDebuffsData,
   attributeMultipliers as attributeMultsData,
   BuffOption,
-} from "../data/attackMultiplierData";
+} from "../../data/attackMultiplierData";
 
 interface AttackMultiplierControlsProps {
   attackMultiplierStat: number;
@@ -66,12 +66,14 @@ const AttackMultiplierControls: React.FC<AttackMultiplierControlsProps> = ({
 
   return (
     <div className="mb-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
-      <h3 className="text-xl font-semibold text-blue-800 mb-4">攻撃倍率設定</h3>
+      <h3 className="text-xl font-semibold text-blue-800 mb-4">
+        攻撃倍率+設定
+      </h3>
 
-      {/* 攻撃倍率ステータス */}
+      {/* 攻撃倍率+ステータス */}
       <div className="mb-6">
         <label className="font-semibold mb-3 text-blue-700 text-lg block">
-          攻撃倍率ステータス (%)
+          攻撃倍率+ステータス (%)
         </label>
         <div className="flex items-center gap-4 mb-3">
           <input

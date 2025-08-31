@@ -143,6 +143,7 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     animation: {
       duration: 0,
     },
@@ -242,7 +243,7 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       <h3 className="text-xl font-semibold text-green-800 mb-4">
         敵防御力計算グラフ
       </h3>
-      <div className="bg-white p-4 rounded-lg">
+      <div className="bg-white p-6 rounded-lg" style={{ height: "400px" }}>
         <Line data={chartData} options={options} />
       </div>
     </div>
