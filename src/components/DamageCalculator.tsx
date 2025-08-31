@@ -221,6 +221,31 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
         crtMultiplier={crtMultiplier}
         currentExpectation={currentExpectation}
       />
+
+      {/* 権利表記・利用規約 */}
+      <div className="bg-gray-50 border-t border-gray-200 p-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm text-gray-600 mb-2">
+            本ツールは非営利のファン制作物であり、ゲームの公式コンテンツではありません。
+          </p>
+          <p className="text-xs text-gray-500 mb-2">
+            ゲームのコンテンツと素材の商標と著作権は SEGA・ATLUS・Perfect World
+            Games に帰属します。
+          </p>
+          <div className="text-xs text-gray-400 space-y-1">
+            <p>
+              <strong>利用条件:</strong> 個人の学習・研究目的でのみ使用可能
+            </p>
+            <p>
+              <strong>制限事項:</strong> 商用利用・営利目的での使用は禁止
+            </p>
+            <p>
+              <strong>免責事項:</strong>{" "}
+              計算結果の正確性については保証いたしません
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
