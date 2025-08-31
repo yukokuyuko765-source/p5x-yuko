@@ -32,7 +32,7 @@ const CRTControls: React.FC<CRTControlsProps> = ({
     }
   };
   return (
-    <div className="mb-6 p-6 bg-purple-50 rounded-xl border border-purple-200">
+    <div className="p-6 bg-purple-50 rounded-xl border border-purple-200">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-purple-800">CRT期待値</h3>
         <div className="font-semibold text-purple-600">

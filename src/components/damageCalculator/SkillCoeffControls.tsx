@@ -19,7 +19,7 @@ const SkillCoeffControls: React.FC<SkillCoeffControlsProps> = ({
   };
 
   return (
-    <div className="mb-6 p-6 bg-orange-50 rounded-xl border border-orange-200">
+    <div className="p-6 bg-orange-50 rounded-xl border border-orange-200">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-orange-800">スキル係数</h3>
         <div className="flex items-center gap-2">

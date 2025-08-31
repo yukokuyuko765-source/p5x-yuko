@@ -34,7 +34,7 @@ const RandomCoeffControls: React.FC<RandomCoeffControlsProps> = ({
   };
 
   return (
-    <div className="mb-6 p-6 bg-amber-50 rounded-xl border border-amber-200">
+    <div className="p-6 bg-amber-50 rounded-xl border border-amber-200">
       <h3 className="text-xl font-semibold text-amber-800 mb-4">
         ランダム範囲係数設定
       </h3>

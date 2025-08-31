@@ -35,7 +35,7 @@ const AttackMultiplierControls: React.FC<AttackMultiplierControlsProps> = ({
   const attributeTotal = attributeMultipliers;
 
   return (
-    <div className="mb-6 p-6 bg-blue-50 rounded-xl border border-blue-200">
+    <div className="p-6 bg-blue-50 rounded-xl border border-blue-200">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-blue-800">攻撃倍率+計算</h3>
         <div className="font-semibold text-blue-600">

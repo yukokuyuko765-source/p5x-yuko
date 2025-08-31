@@ -16,7 +16,7 @@ const WeaknessCoeffControls: React.FC<WeaknessCoeffControlsProps> = ({
   ];
 
   return (
-    <div className="mb-6 p-6 bg-pink-50 rounded-xl border border-pink-200">
+    <div className="p-6 bg-pink-50 rounded-xl border border-pink-200">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-pink-800">弱点係数</h3>
         <div className="font-semibold text-pink-600">

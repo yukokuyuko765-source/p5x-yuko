@@ -18,7 +18,7 @@ const AttackPowerControls: React.FC<AttackPowerControlsProps> = ({
     }
   };
   return (
-    <div className="mb-6 p-6 bg-red-50 rounded-xl border border-red-200">
+    <div className="p-6 bg-red-50 rounded-xl border border-red-200">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-red-800">攻撃力</h3>
         <div className="flex items-center gap-2">

@@ -103,7 +103,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
   const currentEnemyDefense = calculateEnemyDefense();
 
   return (
-    <div className="mb-6 p-6 bg-green-50 rounded-xl border border-green-200">
+    <div className="p-6 bg-green-50 rounded-xl border border-green-200">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-green-800">敵防御力計算</h3>
         <div className="font-semibold text-green-600">

@@ -125,55 +125,69 @@ const DamageCalculator: React.FC<DamageCalculatorProps> = () => {
           </div>
 
           {/* 攻撃力コントロール */}
-          <AttackPowerControls
-            attackPower={attackPower}
-            setAttackPower={setAttackPower}
-          />
+          <div className="mb-6">
+            <AttackPowerControls
+              attackPower={attackPower}
+              setAttackPower={setAttackPower}
+            />
+          </div>
 
           {/* 攻撃倍率コントロール */}
-          <AttackMultiplierControls
-            attackMultiplierStat={attackMultiplierStat}
-            setAttackMultiplierStat={setAttackMultiplierStat}
-            allyDamageBuffs={allyDamageBuffs}
-            setAllyDamageBuffs={setAllyDamageBuffs}
-            enemyDamageDebuffs={enemyDamageDebuffs}
-            setEnemyDamageDebuffs={setEnemyDamageDebuffs}
-            attributeMultipliers={attributeMultipliers}
-            setAttributeMultipliers={setAttributeMultipliers}
-          />
+          <div className="mb-6">
+            <AttackMultiplierControls
+              attackMultiplierStat={attackMultiplierStat}
+              setAttackMultiplierStat={setAttackMultiplierStat}
+              allyDamageBuffs={allyDamageBuffs}
+              setAllyDamageBuffs={setAllyDamageBuffs}
+              enemyDamageDebuffs={enemyDamageDebuffs}
+              setEnemyDamageDebuffs={setEnemyDamageDebuffs}
+              attributeMultipliers={attributeMultipliers}
+              setAttributeMultipliers={setAttributeMultipliers}
+            />
+          </div>
 
           {/* CRT期待値コントロール */}
-          <CRTControls
-            crtRate={crtRate}
-            setCrtRate={setCrtRate}
-            crtMultiplier={crtMultiplier}
-            setCrtMultiplier={setCrtMultiplier}
-            currentExpectation={currentExpectation}
-          />
+          <div className="mb-6">
+            <CRTControls
+              crtRate={crtRate}
+              setCrtRate={setCrtRate}
+              crtMultiplier={crtMultiplier}
+              setCrtMultiplier={setCrtMultiplier}
+              currentExpectation={currentExpectation}
+            />
+          </div>
 
           {/* スキル係数コントロール */}
-          <SkillCoeffControls
-            skillCoeff={skillCoeff}
-            setSkillCoeff={setSkillCoeff}
-          />
+          <div className="mb-6">
+            <SkillCoeffControls
+              skillCoeff={skillCoeff}
+              setSkillCoeff={setSkillCoeff}
+            />
+          </div>
 
           {/* 弱点係数コントロール */}
-          <WeaknessCoeffControls
-            weaknessCoeff={weaknessCoeff}
-            setWeaknessCoeff={setWeaknessCoeff}
-          />
+          <div className="mb-6">
+            <WeaknessCoeffControls
+              weaknessCoeff={weaknessCoeff}
+              setWeaknessCoeff={setWeaknessCoeff}
+            />
+          </div>
 
           {/* 最終攻撃倍率コントロール */}
-          <FinalAttackMultiplierControls
-            finalAttackMultiplier={finalAttackMultiplier}
-            setFinalAttackMultiplier={setFinalAttackMultiplier}
-          />
+          <div className="mb-6">
+            <FinalAttackMultiplierControls
+              finalAttackMultiplier={finalAttackMultiplier}
+              setFinalAttackMultiplier={setFinalAttackMultiplier}
+            />
+          </div>
 
           {/* その他係数コントロール */}
-          <OtherCoeffControls
-            otherCoeff={otherCoeff}
-            setOtherCoeff={setOtherCoeff}
-          />
+          <div className="mb-6">
+            <OtherCoeffControls
+              otherCoeff={otherCoeff}
+              setOtherCoeff={setOtherCoeff}
+            />
+          </div>
         </div>
 
         {/* 右半分: 敵防御力計算ブロック */}

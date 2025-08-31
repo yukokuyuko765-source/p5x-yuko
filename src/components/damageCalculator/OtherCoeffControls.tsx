@@ -19,7 +19,7 @@ const OtherCoeffControls: React.FC<OtherCoeffControlsProps> = ({
   };
 
   return (
-    <div className="mb-6 p-6 bg-teal-50 rounded-xl border border-teal-200">
+    <div className="p-6 bg-teal-50 rounded-xl border border-teal-200">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-teal-800">その他係数</h3>
         <div className="flex items-center gap-2">

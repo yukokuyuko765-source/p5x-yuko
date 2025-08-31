@@ -18,7 +18,7 @@ const FinalAttackMultiplierControls: React.FC<
   };
 
   return (
-    <div className="mb-6 p-6 bg-indigo-50 rounded-xl border border-indigo-200">
+    <div className="p-6 bg-indigo-50 rounded-xl border border-indigo-200">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-indigo-800">最終攻撃倍率+</h3>
         <div className="flex items-center gap-2">
