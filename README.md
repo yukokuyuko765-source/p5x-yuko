@@ -47,19 +47,28 @@ npm run dev
 
 ### デプロイ方法
 
+このプロジェクトは GitHub Actions を使用して自動的に GitHub Pages にデプロイされます。
+
+#### 自動デプロイ（推奨）
+
+1. main ブランチにプッシュすると自動的にデプロイされます
+2. GitHub リポジトリの Settings > Pages で GitHub Pages が有効になっていることを確認してください
+
+#### 手動デプロイ
+
 1. ローカルでビルド:
 
 ```bash
 npm run build
 ```
 
-2. GitHub Pages にデプロイ:
+2. `dist` フォルダの内容を GitHub Pages ブランチに手動でアップロード
 
-```bash
-npm run deploy
-```
+#### GitHub Pages の設定
 
-または、main ブランチにプッシュすると自動的にデプロイされます。
+1. リポジトリの Settings に移動
+2. Pages セクションを開く
+3. Source を "GitHub Actions" に設定
 
 ### Vanilla 版の起動
 
