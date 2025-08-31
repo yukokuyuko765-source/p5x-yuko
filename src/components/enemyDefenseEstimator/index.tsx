@@ -68,7 +68,8 @@ const EnemyDefenseEstimator: React.FC = () => {
               {/* 1. 武器凸数 */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Q1. YUKIの武器、罪業還土の改造回数はいくつですか？
+                  Q1. <br />
+                  YUKIの武器、罪業還土の改造回数はいくつですか？
                 </label>
                 <select
                   value={weaponLimitBreak}
@@ -89,6 +90,7 @@ const EnemyDefenseEstimator: React.FC = () => {
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Q2.
+                  <br />
                   防御デバフのかかってない敵に対して絶対判決を撃った時、どれだけの防御力が減算されましたか？
                 </label>
                 <NumericFormat
@@ -105,6 +107,7 @@ const EnemyDefenseEstimator: React.FC = () => {
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Q3.
+                  <br />
                   防御デバフがかかった敵に対して絶対判決を撃った時、どれだけの防御力が減算されましたか？
                 </label>
                 <NumericFormat
@@ -120,7 +123,9 @@ const EnemyDefenseEstimator: React.FC = () => {
               {/* 4. 防御デバフ割合の合計 */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Q4. Q3時点での防御デバフ割合の合計は何%でしたか？
+                  Q4.
+                  <br />
+                  Q3時点での防御デバフ割合の合計は何%でしたか？
                 </label>
                 <NumericFormat
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
