@@ -64,13 +64,9 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       tension: 0.1,
     });
 
-    // 参考用のデータセット（貫通0%、50%、100%）
-    const referencePenetrations = [0, 50, 100];
-    const colors = [
-      "rgb(239, 68, 68)",
-      "rgb(245, 158, 11)",
-      "rgb(59, 130, 246)",
-    ];
+    // 参考用のデータセット（貫通0%、50%）
+    const referencePenetrations = [0, 50];
+    const colors = ["rgb(239, 68, 68)", "rgb(245, 158, 11)"];
 
     referencePenetrations.forEach((refPen, index) => {
       if (refPen !== penetration) {
@@ -180,6 +176,12 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       </h3>
       <div className="bg-white p-4 rounded-lg">
         <Line data={chartData} options={options} />
+      </div>
+      <div className="mt-4 text-sm text-green-700">
+        <p>• 実線: 現在の貫通値 ({penetration.toFixed(1)}%)</p>
+        <p>• 破線: 参考用の貫通値 (0%, 50%)</p>
+        <p>• 横軸: 防御率デバフ (0% ～ 300%)</p>
+        <p>• 縦軸: 敵防御力計算結果 (0% ～ 100%)</p>
       </div>
     </div>
   );

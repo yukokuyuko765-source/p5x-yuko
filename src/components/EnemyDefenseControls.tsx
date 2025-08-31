@@ -122,7 +122,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
           {enemyData.enemies.map((enemy: Enemy) => (
             <option key={enemy.id} value={enemy.id}>
               {enemy.name} - {enemy.stage} v{enemy.version} (HP:{" "}
-              {enemy.hp.toLocaleString()})
+              {enemy.hp >= 9999999 ? "∞" : enemy.hp.toLocaleString()})
             </option>
           ))}
         </select>
@@ -140,6 +140,15 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                   enemyData.enemies.find((e: Enemy) => e.id === selectedEnemy)
                     ?.end_at || ""
                 ).toLocaleDateString("ja-JP")}
+              </div>
+              <div>
+                <strong>HP:</strong>{" "}
+                {(() => {
+                  const hp = enemyData.enemies.find(
+                    (e: Enemy) => e.id === selectedEnemy
+                  )?.hp;
+                  return hp && hp >= 9999999 ? "∞" : hp?.toLocaleString();
+                })()}
               </div>
               <div>
                 <strong>防御力:</strong>{" "}
@@ -183,7 +192,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
                 min="0"
                 max="10000"
                 value={defense}
-                onChange={(e) => setDefense(parseInt(e.target.value))}
+                onChange={(e) => handleDefenseChange(parseInt(e.target.value))}
                 step="1"
               />
               <div className="min-w-[80px] px-3 py-2 bg-green-500 text-white rounded-lg text-center font-semibold text-sm">
