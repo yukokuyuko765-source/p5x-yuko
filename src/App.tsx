@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "./components";
 import TopPage from "./components/TopPage";
 import DamageCalculator from "./components/damageCalculator";
+import EnemyDefenseEstimator from "./components/enemyDefenseEstimator";
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<TopPage />} />
           <Route path="/damageCalculator" element={<DamageCalculator />} />
+          <Route
+            path="/enemyDefenseEstimator"
+            element={<EnemyDefenseEstimator />}
+          />
         </Routes>
       </Layout>
     </Router>

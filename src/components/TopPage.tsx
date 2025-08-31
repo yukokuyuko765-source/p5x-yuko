@@ -38,6 +38,36 @@ const TopPage: React.FC = () => {
         </div>
       </Link>
 
+      {/* 敵防御力推定支援ツール */}
+      <Link
+        to="/enemyDefenseEstimator"
+        className="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 cursor-pointer mb-6"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold mb-2">
+              敵防御力推定支援ツール
+            </h2>
+            <p className="text-sm">敵の防御力を推定するための支援ツール</p>
+          </div>
+          <div className="text-gray-400 ml-4">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+        </div>
+      </Link>
+
       {/* 注意事項 */}
       <div className="mt-12 p-6 bg-amber-50 rounded-xl border border-amber-200">
         <h3 className="text-lg font-semibold text-amber-800 mb-3">
