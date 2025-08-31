@@ -176,6 +176,7 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
         additionalDefenseCoeff={additionalDefenseCoeff}
         penetration={penetration}
         windStrike={windStrike}
+        defenseDebuff={defenseDebuff}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

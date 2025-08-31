@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import annotationPlugin from "chartjs-plugin-annotation";
 
 ChartJS.register(
   CategoryScale,
@@ -18,7 +19,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  annotationPlugin
 );
 
 interface EnemyDefenseChartProps {
@@ -26,6 +28,7 @@ interface EnemyDefenseChartProps {
   additionalDefenseCoeff: number;
   penetration: number;
   windStrike: boolean;
+  defenseDebuff: number;
 }
 
 const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
@@ -33,6 +36,7 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
   additionalDefenseCoeff,
   penetration,
   windStrike,
+  defenseDebuff,
 }) => {
   // グラフデータの生成
   const generateChartData = () => {
@@ -90,20 +94,51 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
           label: `貫通 ${refPen}%${windStrike ? " + 風襲" : ""}`,
           data: refData,
           borderColor: colors[index],
-          backgroundColor: `${colors[index]}20`,
+          backgroundColor: colors[index]
+            .replace("rgb", "rgba")
+            .replace(")", ", 0.1)"),
           borderDash: [5, 5],
           tension: 0.1,
+          pointRadius: 0,
+          pointHoverRadius: 0,
         });
       }
     });
 
+    // 現在の防御率デバフ値での敵防御力計算値を取得
+    const currentDefenseDebuffIndex = Math.round(defenseDebuff / 5);
+    const currentDefenseDebuffValue = currentDefenseDebuffIndex * 5;
+    const currentEnemyDefense = currentData[currentDefenseDebuffIndex] || 0;
+
+    // 現在の貫通値でのみ垂線用のデータセットを追加
+    if (penetration !== 0 && penetration !== 50) {
+      datasets.push({
+        label: "現在の値",
+        data: defenseDebuffValues.map((value, index) =>
+          index === currentDefenseDebuffIndex ? currentEnemyDefense : null
+        ),
+        borderColor: "rgb(0, 0, 0)",
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        pointBackgroundColor: "rgb(0, 0, 0)",
+        pointBorderColor: "rgb(0, 0, 0)",
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        showLine: false,
+      });
+    }
+
     return {
-      labels: defenseDebuffValues.map((value) => `${value}%`),
-      datasets,
+      chartData: {
+        labels: defenseDebuffValues.map((value) => `${value}%`),
+        datasets,
+      },
+      currentDefenseDebuffValue,
+      currentEnemyDefense,
     };
   };
 
-  const chartData = generateChartData();
+  const { chartData, currentDefenseDebuffValue, currentEnemyDefense } =
+    generateChartData();
 
   const options = {
     responsive: true,
@@ -130,6 +165,37 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
             const value = context.parsed.y;
             return `${label}: ${value.toFixed(1)}%`;
           },
+        },
+      },
+      annotation: {
+        annotations: {
+          // 現在の貫通値が0%または50%でない場合のみ垂線を表示
+          ...(penetration !== 0 && penetration !== 50
+            ? {
+                // 縦線（横軸への垂線）
+                verticalLine: {
+                  type: "line" as const,
+                  xMin: `${currentDefenseDebuffValue}%`,
+                  xMax: `${currentDefenseDebuffValue}%`,
+                  yMin: 0,
+                  yMax: currentEnemyDefense,
+                  borderColor: "rgba(0, 0, 0, 0.5)",
+                  borderWidth: 2,
+                  borderDash: [5, 5],
+                },
+                // 横線（縦軸への垂線）
+                horizontalLine: {
+                  type: "line" as const,
+                  xMin: "0%",
+                  xMax: `${currentDefenseDebuffValue}%`,
+                  yMin: currentEnemyDefense,
+                  yMax: currentEnemyDefense,
+                  borderColor: "rgba(0, 0, 0, 0.5)",
+                  borderWidth: 2,
+                  borderDash: [5, 5],
+                },
+              }
+            : {}),
         },
       },
     },
@@ -176,12 +242,6 @@ const EnemyDefenseChart: React.FC<EnemyDefenseChartProps> = ({
       </h3>
       <div className="bg-white p-4 rounded-lg">
         <Line data={chartData} options={options} />
-      </div>
-      <div className="mt-4 text-sm text-green-700">
-        <p>• 実線: 現在の貫通値 ({penetration.toFixed(1)}%)</p>
-        <p>• 破線: 参考用の貫通値 (0%, 50%)</p>
-        <p>• 横軸: 防御率デバフ (0% ～ 300%)</p>
-        <p>• 縦軸: 敵防御力計算結果 (0% ～ 100%)</p>
       </div>
     </div>
   );
