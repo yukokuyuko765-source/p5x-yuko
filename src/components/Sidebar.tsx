@@ -52,6 +52,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                 敵防御力推定支援ツール
               </Link>
             </li>
+            <li>
+              <Link
+                to="/battleChartMaker"
+                className="block px-4 py-3 text-white rounded-lg hover:bg-white/10 transition-colors duration-200"
+              >
+                戦闘チャートメーカー
+              </Link>
+            </li>
           </ul>
         </nav>
 

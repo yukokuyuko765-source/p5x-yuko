@@ -4,6 +4,7 @@ import { Layout } from "./components";
 import TopPage from "./components/TopPage";
 import DamageCalculator from "./components/damageCalculator";
 import EnemyDefenseEstimator from "./components/enemyDefenseEstimator";
+import BattleChartMaker from "./components/battleChartMaker";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
             path="/enemyDefenseEstimator"
             element={<EnemyDefenseEstimator />}
           />
+          <Route path="/battleChartMaker" element={<BattleChartMaker />} />
         </Routes>
       </Layout>
     </Router>
