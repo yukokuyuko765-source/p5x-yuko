@@ -23,6 +23,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const [innerCards, setInnerCards] = useState<InnerCardData[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [draggedCardId, setDraggedCardId] = useState<string | null>(null);
   const [title, setTitle] = useState<string>(`ターン ${id}`);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -44,13 +45,23 @@ const ChartCard: React.FC<ChartCardProps> = ({
     setDragOverIndex(null);
   };
 
+  const handleDragEnd = (e: React.DragEvent) => {
+    // ドラッグが終了したら状態をリセット
+    setIsDragOver(false);
+    setDragOverIndex(null);
+    setDraggedCardId(null);
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
     setDragOverIndex(null);
 
     const characterId = e.dataTransfer.getData("characterId");
+    const innerCardId = e.dataTransfer.getData("innerCardId");
+
     if (characterId) {
+      // 新しいキャラクターをドロップ
       const newInnerCard: InnerCardData = {
         id: `card-${Date.now()}`,
         characterId,
@@ -68,17 +79,52 @@ const ChartCard: React.FC<ChartCardProps> = ({
         // フォールバック: 末尾に追加
         setInnerCards([...innerCards, newInnerCard]);
       }
+    } else if (innerCardId && draggedCardId) {
+      // innerCardの位置を入れ替え
+      const draggedIndex = innerCards.findIndex(
+        (card) => card.id === draggedCardId
+      );
+      if (draggedIndex !== -1 && dragOverIndex !== null) {
+        try {
+          const newCards = [...innerCards];
+          const draggedCard = { ...newCards[draggedIndex] }; // オブジェクトをコピー
+
+          // ドラッグされたカードを削除した後のインデックスを調整
+          const adjustedDropIndex =
+            draggedIndex < dragOverIndex ? dragOverIndex - 1 : dragOverIndex;
+
+          // 元の位置から削除
+          newCards.splice(draggedIndex, 1);
+          // 新しい位置に挿入
+          newCards.splice(adjustedDropIndex, 0, draggedCard);
+
+          setInnerCards(newCards);
+        } catch (error) {
+          console.error(
+            "InnerCardの位置入れ替えでエラーが発生しました:",
+            error
+          );
+        }
+      }
     }
+
+    // ドロップ処理が完了したら状態をリセット
+    setDraggedCardId(null);
   };
 
   const updateInnerCard = (index: number, data: InnerCardData) => {
     const updatedCards = [...innerCards];
-    updatedCards[index] = data;
+    updatedCards[index] = { ...data }; // オブジェクトをコピー
     setInnerCards(updatedCards);
   };
 
   const removeInnerCard = (index: number) => {
     setInnerCards(innerCards.filter((_, i) => i !== index));
+  };
+
+  const handleInnerCardDragStart = (e: React.DragEvent, cardId: string) => {
+    setDraggedCardId(cardId);
+    e.dataTransfer.setData("innerCardId", cardId);
   };
 
   return (
@@ -89,6 +135,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      onDragEnd={handleDragEnd}
     >
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center space-x-2">
@@ -161,6 +208,8 @@ const ChartCard: React.FC<ChartCardProps> = ({
                     personas={personas}
                     onUpdate={(data) => updateInnerCard(index, data)}
                     onDelete={() => removeInnerCard(index)}
+                    onDragStart={handleInnerCardDragStart}
+                    isDragging={draggedCardId === innerCard.id}
                   />
                 </React.Fragment>
               ))}

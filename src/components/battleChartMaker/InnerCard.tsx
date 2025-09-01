@@ -21,6 +21,8 @@ interface InnerCardProps {
   personas: string[];
   onUpdate: (data: InnerCardData) => void;
   onDelete: () => void;
+  onDragStart: (e: React.DragEvent, cardId: string) => void;
+  isDragging: boolean;
 }
 
 const InnerCard: React.FC<InnerCardProps> = ({
@@ -28,6 +30,8 @@ const InnerCard: React.FC<InnerCardProps> = ({
   personas,
   onUpdate,
   onDelete,
+  onDragStart,
+  isDragging,
 }) => {
   const getCharacterImage = (characterId: string): string => {
     const character = characterData.find(
@@ -58,7 +62,13 @@ const InnerCard: React.FC<InnerCardProps> = ({
   };
 
   return (
-    <div className="bg-gray-50 rounded-lg p-3 border">
+    <div
+      className={`bg-gray-50 rounded-lg p-3 border cursor-move ${
+        isDragging ? "opacity-50" : ""
+      }`}
+      draggable
+      onDragStart={(e) => onDragStart(e, data.id)}
+    >
       <div className="flex items-center space-x-3">
         {/* アバター */}
         <div className="w-8 h-8 rounded-full border overflow-hidden flex-shrink-0">
