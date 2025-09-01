@@ -59,9 +59,35 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
     setDraggedInnerCard(null);
   };
 
+  const handleNoteCardDrop = (targetCardId: string, dropIndex: number) => {
+    // noteカードをChartCardに追加するためのカスタムイベントを発火
+    const noteEvent = new CustomEvent("noteCardAdd", {
+      detail: {
+        toCardId: targetCardId,
+        dropIndex: dropIndex,
+      },
+    });
+    window.dispatchEvent(noteEvent);
+  };
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">戦闘チャート</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-gray-800">戦闘チャート</h3>
+
+        {/* Noteカードのドラッグ開始エリア */}
+        <div
+          className="bg-blue-50 border-2 border-blue-300 rounded-lg px-4 py-2 cursor-move hover:bg-blue-100 transition-colors duration-200"
+          draggable
+          onDragStart={(e) => {
+            e.dataTransfer.setData("noteCard", "true");
+          }}
+        >
+          <span className="text-sm text-blue-700 font-medium">
+            このブロックをドロップしてnoteを追加
+          </span>
+        </div>
+      </div>
 
       <div className="space-y-4">
         {cards.map((cardId) => (
@@ -73,6 +99,7 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
             onInnerCardDragStart={handleInnerCardDragStart}
             onInnerCardDrop={handleInnerCardDrop}
             draggedInnerCard={draggedInnerCard}
+            onNoteCardDrop={handleNoteCardDrop}
           />
         ))}
       </div>

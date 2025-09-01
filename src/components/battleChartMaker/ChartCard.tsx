@@ -19,6 +19,7 @@ interface ChartCardProps {
     cardId: string;
     innerCard: InnerCardData;
   } | null;
+  onNoteCardDrop?: (targetCardId: string, dropIndex: number) => void;
 }
 
 const ChartCard: React.FC<ChartCardProps> = ({
@@ -28,6 +29,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
   onInnerCardDragStart,
   onInnerCardDrop,
   draggedInnerCard,
+  onNoteCardDrop,
 }) => {
   const [innerCards, setInnerCards] = useState<InnerCardData[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -59,15 +61,43 @@ const ChartCard: React.FC<ChartCardProps> = ({
       }
     };
 
+    // noteカードの追加をリッスン
+    const handleNoteCardAdd = (event: CustomEvent) => {
+      const { toCardId, dropIndex } = event.detail;
+
+      // このChartCardが対象の場合、noteカードを追加
+      if (toCardId === id) {
+        const newNoteCard: InnerCardData = {
+          id: `note-${Date.now()}`,
+          characterId: "note",
+          option: "",
+          persona: undefined,
+          note: "",
+        };
+
+        setInnerCards((prev) => {
+          const newCards = [...prev];
+          newCards.splice(dropIndex, 0, newNoteCard);
+          return newCards;
+        });
+      }
+    };
+
     window.addEventListener(
       "innerCardMove",
       handleInnerCardMove as EventListener
     );
 
+    window.addEventListener("noteCardAdd", handleNoteCardAdd as EventListener);
+
     return () => {
       window.removeEventListener(
         "innerCardMove",
         handleInnerCardMove as EventListener
+      );
+      window.removeEventListener(
+        "noteCardAdd",
+        handleNoteCardAdd as EventListener
       );
     };
   }, [id]);
@@ -155,6 +185,11 @@ const ChartCard: React.FC<ChartCardProps> = ({
       // 他のChartCardからinnerCardを移動
       if (dragOverIndex !== null && onInnerCardDrop) {
         onInnerCardDrop(id, dragOverIndex);
+      }
+    } else if (e.dataTransfer.getData("noteCard") === "true") {
+      // noteカードをドロップ
+      if (dragOverIndex !== null && onNoteCardDrop) {
+        onNoteCardDrop(id, dragOverIndex);
       }
     }
 
