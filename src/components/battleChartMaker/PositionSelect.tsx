@@ -2,13 +2,18 @@ import React from "react";
 
 interface PositionSelectProps {
   initialValue: string;
+  onPositionChange?: (position: string) => void;
 }
 
-const PositionSelect: React.FC<PositionSelectProps> = ({ initialValue }) => {
+const PositionSelect: React.FC<PositionSelectProps> = ({
+  initialValue,
+  onPositionChange,
+}) => {
   return (
     <select
       className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-      defaultValue={initialValue}
+      value={initialValue}
+      onChange={(e) => onPositionChange?.(e.target.value)}
     >
       <option value="" disabled>
         行動順

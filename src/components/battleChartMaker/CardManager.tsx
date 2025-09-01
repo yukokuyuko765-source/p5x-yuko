@@ -3,6 +3,8 @@ import ChartCard from "./ChartCard";
 
 interface CardManagerProps {
   personas?: string[];
+  chartTitle?: string;
+  onChartTitleChange?: (title: string) => void;
 }
 
 interface InnerCardData {
@@ -13,8 +15,13 @@ interface InnerCardData {
   note: string;
 }
 
-const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
+const CardManager: React.FC<CardManagerProps> = ({
+  personas = [],
+  chartTitle: externalChartTitle,
+  onChartTitleChange,
+}) => {
   const [cards, setCards] = useState<string[]>(["1"]);
+  const [chartTitle, setChartTitle] = useState<string>("");
   const [draggedInnerCard, setDraggedInnerCard] = useState<{
     cardId: string;
     innerCard: InnerCardData;
@@ -78,6 +85,12 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
           <input
             type="text"
             placeholder="チャートのタイトル"
+            value={externalChartTitle || chartTitle}
+            onChange={(e) => {
+              const newTitle = e.target.value;
+              setChartTitle(newTitle);
+              onChartTitleChange?.(newTitle);
+            }}
             className="px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>

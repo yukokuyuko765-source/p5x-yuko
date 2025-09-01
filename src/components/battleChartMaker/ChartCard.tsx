@@ -102,6 +102,23 @@ const ChartCard: React.FC<ChartCardProps> = ({
     };
   }, [id]);
 
+  // データ更新時にカスタムイベントを発火
+  React.useEffect(() => {
+    const chartCardData = {
+      id,
+      title,
+      innerCards,
+    };
+
+    const updateEvent = new CustomEvent("chartCardUpdate", {
+      detail: {
+        cardId: id,
+        cardData: chartCardData,
+      },
+    });
+    window.dispatchEvent(updateEvent);
+  }, [id, title, innerCards]);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(true);

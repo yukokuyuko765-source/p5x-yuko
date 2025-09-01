@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DraggableAvatar from "./DraggableAvatar";
 import PositionSelect from "./PositionSelect";
 
 interface WonderSlotProps {
   onPersonaChange: (personas: string[]) => void;
+  onCharacterSelect?: (characterId: string, position: string) => void;
 }
 
-const WonderSlot: React.FC<WonderSlotProps> = ({ onPersonaChange }) => {
+const WonderSlot: React.FC<WonderSlotProps> = ({
+  onPersonaChange,
+  onCharacterSelect,
+}) => {
   const [persona1, setPersona1] = useState<string>("");
   const [persona2, setPersona2] = useState<string>("");
   const [persona3, setPersona3] = useState<string>("");
+  const [selectedPosition, setSelectedPosition] = useState<string>("1st");
+
+  // 初期化時にデフォルト値を設定
+  React.useEffect(() => {
+    onPersonaChange([
+      persona1 || "ペルソナ1",
+      persona2 || "ペルソナ2",
+      persona3 || "ペルソナ3",
+    ]);
+    // 初期化時にキャラクター選択を通知
+    onCharacterSelect?.("wonder", selectedPosition);
+  }, []);
 
   const handlePersona1Change = (value: string) => {
     setPersona1(value);
@@ -65,7 +81,13 @@ const WonderSlot: React.FC<WonderSlotProps> = ({ onPersonaChange }) => {
       </div>
 
       {/* ポジション選択セレクトボックス */}
-      <PositionSelect initialValue="1st" />
+      <PositionSelect
+        initialValue={selectedPosition}
+        onPositionChange={(position) => {
+          setSelectedPosition(position);
+          onCharacterSelect?.("wonder", position);
+        }}
+      />
     </div>
   );
 };

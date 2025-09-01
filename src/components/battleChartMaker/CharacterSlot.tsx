@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DraggableAvatar from "./DraggableAvatar";
 import PositionSelect from "./PositionSelect";
 import characterData from "../../data/characterData.json";
@@ -14,7 +14,7 @@ interface CharacterSlotProps {
   selectedCharacterId: string;
   isInvestigationSlot?: boolean;
   initialPosition?: string;
-  onCharacterSelect: (characterId: string) => void;
+  onCharacterSelect: (characterId: string, position: string) => void;
 }
 
 const CharacterSlot: React.FC<CharacterSlotProps> = ({
@@ -23,12 +23,26 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
   initialPosition = "",
   onCharacterSelect,
 }) => {
+  const [selectedPosition, setSelectedPosition] =
+    useState<string>(initialPosition);
+
+  const handleCharacterSelect = (characterId: string) => {
+    onCharacterSelect(characterId, selectedPosition);
+  };
+
+  const handlePositionSelect = (position: string) => {
+    setSelectedPosition(position);
+    if (selectedCharacterId) {
+      onCharacterSelect(selectedCharacterId, position);
+    }
+  };
+
   return (
     <div className="space-y-2">
       {/* セレクトボックス */}
       <select
         value={selectedCharacterId}
-        onChange={(e) => onCharacterSelect(e.target.value)}
+        onChange={(e) => handleCharacterSelect(e.target.value)}
         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
       >
         <option value="">選択してください</option>
@@ -53,7 +67,10 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
 
       {/* ポジション選択セレクトボックス（解明ロール以外の場合のみ表示） */}
       {!isInvestigationSlot && (
-        <PositionSelect initialValue={initialPosition} />
+        <PositionSelect
+          initialValue={selectedPosition}
+          onPositionChange={handlePositionSelect}
+        />
       )}
     </div>
   );
