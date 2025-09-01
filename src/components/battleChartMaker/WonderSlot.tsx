@@ -39,7 +39,7 @@ const WonderSlot: React.FC<WonderSlotProps> = ({ onPersonaChange }) => {
         <DraggableAvatar characterId="wonder" />
 
         {/* ペルソナ入力フィールド */}
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 space-y-0.5">
           <input
             type="text"
             placeholder="ペルソナ1"
