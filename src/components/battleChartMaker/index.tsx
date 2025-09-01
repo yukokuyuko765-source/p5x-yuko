@@ -32,15 +32,36 @@ const BattleChartMaker: React.FC = () => {
       setChartCards(cardsArray);
     };
 
+    const handleChartCardDelete = (event: CustomEvent) => {
+      const { cardId } = event.detail;
+
+      // chartCards状態から該当のカードを削除
+      setChartCards((prevCards) =>
+        prevCards.filter((card) => card.id !== cardId)
+      );
+
+      // chartCardsMapからも削除
+      chartCardsMap.delete(cardId);
+    };
+
     window.addEventListener(
       "chartCardUpdate",
       handleChartCardUpdate as EventListener
+    );
+
+    window.addEventListener(
+      "chartCardDelete",
+      handleChartCardDelete as EventListener
     );
 
     return () => {
       window.removeEventListener(
         "chartCardUpdate",
         handleChartCardUpdate as EventListener
+      );
+      window.removeEventListener(
+        "chartCardDelete",
+        handleChartCardDelete as EventListener
       );
     };
   }, []);

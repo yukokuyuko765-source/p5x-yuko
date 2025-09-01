@@ -20,7 +20,9 @@ const CardManager: React.FC<CardManagerProps> = ({
   chartTitle: externalChartTitle,
   onChartTitleChange,
 }) => {
-  const [cards, setCards] = useState<string[]>(["1"]);
+  const [cards, setCards] = useState<Array<{ id: string; title: string }>>([
+    { id: "1", title: "1" },
+  ]);
   const [chartTitle, setChartTitle] = useState<string>("");
   const [draggedInnerCard, setDraggedInnerCard] = useState<{
     cardId: string;
@@ -28,13 +30,15 @@ const CardManager: React.FC<CardManagerProps> = ({
   } | null>(null);
 
   const addCard = () => {
-    const newCardId = (cards.length + 1).toString();
-    setCards([...cards, newCardId]);
+    // ユニークなIDを生成（現在の最大ID + 1ではなく、タイムスタンプベース）
+    const newCardId = `card-${Date.now()}`;
+    const newCardTitle = (cards.length + 1).toString();
+    setCards([...cards, { id: newCardId, title: newCardTitle }]);
   };
 
   const deleteCard = (cardId: string) => {
     if (cards.length > 1) {
-      setCards(cards.filter((id) => id !== cardId));
+      setCards(cards.filter((card) => card.id !== cardId));
     }
   };
 
@@ -110,10 +114,11 @@ const CardManager: React.FC<CardManagerProps> = ({
       </div>
 
       <div className="space-y-4">
-        {cards.map((cardId) => (
+        {cards.map((card) => (
           <ChartCard
-            key={cardId}
-            id={cardId}
+            key={card.id}
+            id={card.id}
+            cardTitle={card.title}
             personas={personas}
             onDelete={cards.length > 1 ? deleteCard : undefined}
             onInnerCardDragStart={handleInnerCardDragStart}

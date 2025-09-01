@@ -11,6 +11,7 @@ interface InnerCardData {
 
 interface ChartCardProps {
   id: string;
+  cardTitle: string;
   onDelete?: (id: string) => void;
   personas?: string[];
   onInnerCardDragStart?: (cardId: string, innerCard: InnerCardData) => void;
@@ -24,6 +25,7 @@ interface ChartCardProps {
 
 const ChartCard: React.FC<ChartCardProps> = ({
   id,
+  cardTitle,
   onDelete,
   personas = [],
   onInnerCardDragStart,
@@ -35,7 +37,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const [isDragOver, setIsDragOver] = useState(false);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggedCardId, setDraggedCardId] = useState<string | null>(null);
-  const [title, setTitle] = useState<string>(`ターン ${id}`);
+  const [title, setTitle] = useState<string>(`ターン ${cardTitle}`);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // ChartCard間でのinnerCard移動をリッスン
@@ -288,14 +290,39 @@ const ChartCard: React.FC<ChartCardProps> = ({
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              const newTitle = e.target.value;
+              setTitle(newTitle);
+
+              // chartCardUpdateイベントを発火
+              const updateEvent = new CustomEvent("chartCardUpdate", {
+                detail: {
+                  cardId: id,
+                  cardData: {
+                    id: id,
+                    title: newTitle,
+                    innerCards: innerCards,
+                  },
+                },
+              });
+              window.dispatchEvent(updateEvent);
+            }}
             className="text-sm font-medium text-gray-800 bg-transparent border border-gray-200 outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 px-2 py-1 min-w-0 hover:bg-gray-50 focus:bg-gray-50 rounded transition-colors duration-200 cursor-text"
             placeholder="タイトルを入力..."
           />
         </div>
         {onDelete && (
           <button
-            onClick={() => onDelete(id)}
+            onClick={() => {
+              // chartCardDeleteイベントを発火
+              const deleteEvent = new CustomEvent("chartCardDelete", {
+                detail: { cardId: id },
+              });
+              window.dispatchEvent(deleteEvent);
+
+              // 親コンポーネントの削除処理を実行
+              onDelete(id);
+            }}
             className="text-gray-400 hover:text-red-500 transition-colors duration-200"
           >
             <svg
