@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import DraggableAvatar from "./DraggableAvatar";
 import characterData from "../../data/characterData.json";
 
 interface Character {
@@ -19,38 +20,6 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
   isInvestigationSlot = false,
   onCharacterSelect,
 }) => {
-  const getCharacterImage = (characterId: string): string => {
-    const character = characterData.find(
-      (char: Character) => char.id === characterId
-    );
-    if (character) {
-      try {
-        // 画像のインポートを試行
-        return new URL(
-          `../../assets/images/${character.image}`,
-          import.meta.url
-        ).href;
-      } catch {
-        return "";
-      }
-    }
-    return "";
-  };
-
-  const getCharacterName = (characterId: string): string => {
-    const character = characterData.find(
-      (char: Character) => char.id === characterId
-    );
-    return character ? character.name : "";
-  };
-
-  const getCharacterRole = (characterId: string): string => {
-    const character = characterData.find(
-      (char: Character) => char.id === characterId
-    );
-    return character ? character.role : "";
-  };
-
   return (
     <div className="space-y-2">
       {/* セレクトボックス */}
@@ -76,36 +45,8 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
           ))}
       </select>
 
-      {/* アバター表示 */}
-      <div className="text-center">
-        {selectedCharacterId ? (
-          <div className="space-y-2">
-            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full border-2 border-gray-300 overflow-hidden">
-              <img
-                src={getCharacterImage(selectedCharacterId)}
-                alt={getCharacterName(selectedCharacterId)}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = "none";
-                }}
-              />
-            </div>
-            <p className="text-sm font-medium text-gray-800">
-              {getCharacterRole(selectedCharacterId)}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
-              <span className="text-gray-400 text-xs">未選択</span>
-            </div>
-            <p className="text-sm font-medium text-gray-800">
-              {isInvestigationSlot ? "解明" : ""}
-            </p>
-          </div>
-        )}
-      </div>
+      {/* ドラッグ可能なアバター表示 */}
+      <DraggableAvatar characterId={selectedCharacterId} />
     </div>
   );
 };

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import ChartCard from "./ChartCard";
 
-const CardManager: React.FC = () => {
+interface CardManagerProps {
+  personas?: string[];
+}
+
+const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
   const [cards, setCards] = useState<string[]>(["1"]);
 
   const addCard = () => {
@@ -24,6 +28,7 @@ const CardManager: React.FC = () => {
           <ChartCard
             key={cardId}
             id={cardId}
+            personas={personas}
             onDelete={cards.length > 1 ? deleteCard : undefined}
           />
         ))}

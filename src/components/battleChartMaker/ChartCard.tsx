@@ -1,15 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
+import InnerCard from "./InnerCard";
+
+interface InnerCardData {
+  id: string;
+  characterId: string;
+  option: string;
+  persona?: string;
+  note: string;
+}
 
 interface ChartCardProps {
   id: string;
   onDelete?: (id: string) => void;
+  personas?: string[];
 }
 
-const ChartCard: React.FC<ChartCardProps> = ({ id, onDelete }) => {
+const ChartCard: React.FC<ChartCardProps> = ({
+  id,
+  onDelete,
+  personas = [],
+}) => {
+  const [innerCards, setInnerCards] = useState<InnerCardData[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [title, setTitle] = useState<string>(`ターン ${id}`);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const characterId = e.dataTransfer.getData("characterId");
+    if (characterId) {
+      const newInnerCard: InnerCardData = {
+        id: `card-${Date.now()}`,
+        characterId,
+        option: "S1",
+        persona: characterId === "wonder" ? "1" : undefined,
+        note: "",
+      };
+      setInnerCards([...innerCards, newInnerCard]);
+    }
+  };
+
+  const updateInnerCard = (index: number, data: InnerCardData) => {
+    const updatedCards = [...innerCards];
+    updatedCards[index] = data;
+    setInnerCards(updatedCards);
+  };
+
+  const removeInnerCard = (index: number) => {
+    setInnerCards(innerCards.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div
+      className={`bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200 ${
+        isDragOver ? "border-blue-400 bg-blue-50" : ""
+      }`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <div className="flex justify-between items-start mb-3">
-        <h4 className="text-sm font-medium text-gray-800">ターン #{id}</h4>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
+            <svg
+              className={`w-4 h-4 transition-transform duration-200 ${
+                isCollapsed ? "rotate-90" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="text-sm font-medium text-gray-800 bg-transparent border border-gray-200 outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 px-2 py-1 min-w-0 hover:bg-gray-50 focus:bg-gray-50 rounded transition-colors duration-200 cursor-text"
+            placeholder="タイトルを入力..."
+          />
+        </div>
         {onDelete && (
           <button
             onClick={() => onDelete(id)}
@@ -32,16 +123,27 @@ const ChartCard: React.FC<ChartCardProps> = ({ id, onDelete }) => {
         )}
       </div>
 
-      <div className="space-y-3">
-        <div className="text-xs text-gray-500">
-          カードの内容をここに記述します
+      {!isCollapsed && (
+        <div className="space-y-3">
+          {innerCards.length === 0 ? (
+            <div className="text-xs text-gray-500 text-center py-4 border-2 border-dashed border-gray-200 rounded">
+              アバターをドラッグ&ドロップしてください
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {innerCards.map((innerCard, index) => (
+                <InnerCard
+                  key={index}
+                  data={innerCard}
+                  personas={personas}
+                  onUpdate={(data) => updateInnerCard(index, data)}
+                  onDelete={() => removeInnerCard(index)}
+                />
+              ))}
+            </div>
+          )}
         </div>
-
-        <div className="flex items-center space-x-2">
-          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-          <span className="text-xs text-gray-500">準備中</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
