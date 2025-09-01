@@ -1,0 +1,164 @@
+[
+  {
+    "id": "bui",
+    "name": "BUI",
+    "image": "bui.png",
+    "role": "反抗"
+  },
+  {
+    "id": "cattle",
+    "name": "CATTLE",
+    "image": "cattle.png",
+    "role": "救援"
+  },
+  {
+    "id": "closer",
+    "name": "CLOSER",
+    "image": "closer.png",
+    "role": "支配"
+  },
+  {
+    "id": "code",
+    "name": "CODE",
+    "image": "code.jpeg",
+    "role": "優越"
+  },
+  {
+    "id": "fleuret",
+    "name": "FLEURET",
+    "image": "fleuret.png",
+    "role": "反抗"
+  },
+  {
+    "id": "fox",
+    "name": "FOX",
+    "image": "fox.png",
+    "role": "支配"
+  },
+  {
+    "id": "joker",
+    "name": "JOKER",
+    "image": "joker.png",
+    "role": "支配"
+  },
+  {
+    "id": "key",
+    "name": "KEY",
+    "image": "key.png",
+    "role": "屈従"
+  },
+  {
+    "id": "leon",
+    "name": "LEON",
+    "image": "leon.png",
+    "role": "優越"
+  },
+  {
+    "id": "marian",
+    "name": "MARIAN",
+    "image": "marian.png",
+    "role": "救援"
+  },
+  {
+    "id": "moko",
+    "name": "MOKO",
+    "image": "moko.png",
+    "role": "優越"
+  },
+  {
+    "id": "mona",
+    "name": "MONA",
+    "image": "mona.png",
+    "role": "救援"
+  },
+  {
+    "id": "mont",
+    "name": "MONT",
+    "image": "mont.png",
+    "role": "反抗"
+  },
+  {
+    "id": "okyann",
+    "name": "OKYANN",
+    "image": "okyann.png",
+    "role": "解明"
+  },
+  {
+    "id": "panther",
+    "name": "PANTHER",
+    "image": "panther.png",
+    "role": "支配"
+  },
+  {
+    "id": "phoebe",
+    "name": "PHOEBE",
+    "image": "phoebe.jpeg",
+    "role": "解明"
+  },
+  {
+    "id": "puppet",
+    "name": "PUPPET",
+    "image": "puppet.png",
+    "role": "解明"
+  },
+  {
+    "id": "queen",
+    "name": "QUEEN",
+    "image": "queen.png",
+    "role": "反抗"
+  },
+  {
+    "id": "riddle",
+    "name": "RIDDLE",
+    "image": "riddle.png",
+    "role": "優越"
+  },
+  {
+    "id": "rin",
+    "name": "RIN",
+    "image": "rin.png",
+    "role": "屈従"
+  },
+  {
+    "id": "sepia",
+    "name": "SEPIA",
+    "image": "sepia.png",
+    "role": "反抗"
+  },
+  {
+    "id": "skull",
+    "name": "SKULL",
+    "image": "skull.png",
+    "role": "反抗"
+  },
+  {
+    "id": "soy",
+    "name": "SOY",
+    "image": "soy.png",
+    "role": "防衛"
+  },
+  {
+    "id": "vino",
+    "name": "VINO",
+    "image": "vino.jpeg",
+    "role": "屈従"
+  },
+  {
+    "id": "wind",
+    "name": "WIND",
+    "image": "wind.png",
+    "role": "解明"
+  },
+  {
+    "id": "wonder",
+    "name": "WONDER",
+    "image": "wonder.png",
+    "role": "ワイルド"
+  },
+  {
+    "id": "yuki",
+    "name": "YUKI",
+    "image": "yuki.png",
+    "role": "防衛"
+  }
+]
