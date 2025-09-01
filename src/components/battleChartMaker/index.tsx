@@ -44,7 +44,17 @@ const BattleChartMaker: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto p-6">
+      {/* モバイル表示時の注意書き */}
+      <div className="lg:hidden mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+        <div className="text-sm text-amber-800">
+          <p className="font-semibold mb-2">⚠️ モバイル表示時の注意</p>
+          <p>
+            このツールは現在モバイル表示やタッチ操作に対応していません。PCで操作してください。
+          </p>
+        </div>
+      </div>
+
       {/* キャラクター選択セクション */}
       <CharacterSelectBoxes
         onPersonaChange={setPersonas}
