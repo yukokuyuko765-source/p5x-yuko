@@ -73,7 +73,14 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-gray-800">戦闘チャート</h3>
+        <div className="flex items-center space-x-3">
+          <h3 className="text-xl font-semibold text-gray-800">戦闘チャート</h3>
+          <input
+            type="text"
+            placeholder="チャートのタイトル"
+            className="px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
         {/* Noteカードのドラッグ開始エリア */}
         <div

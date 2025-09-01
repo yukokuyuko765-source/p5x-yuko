@@ -132,11 +132,6 @@ const InnerCard: React.FC<InnerCardProps> = ({
                       </label>
                     );
                   })}
-                  <span className="text-xs text-blue-600 font-medium ml-1">
-                    {data.persona && personas[parseInt(data.persona) - 1]
-                      ? personas[parseInt(data.persona) - 1]
-                      : `ペルソナ${data.persona}`}
-                  </span>
                 </div>
                 {/* 行動選択 */}
                 <div className="flex items-center space-x-2">
@@ -200,7 +195,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
           </div>
         )}
 
-        {/* 複製ボタン */}
+        {/* コピーボタン */}
         <button
           onClick={() => onCopy(data)}
           className="text-gray-400 hover:text-blue-500 flex-shrink-0"
@@ -216,7 +211,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M12 4v16m8-8H4"
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
             />
           </svg>
         </button>
