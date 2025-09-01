@@ -13,12 +13,21 @@ interface ChartCardProps {
   id: string;
   onDelete?: (id: string) => void;
   personas?: string[];
+  onInnerCardDragStart?: (cardId: string, innerCard: InnerCardData) => void;
+  onInnerCardDrop?: (targetCardId: string, dropIndex: number) => void;
+  draggedInnerCard?: {
+    cardId: string;
+    innerCard: InnerCardData;
+  } | null;
 }
 
 const ChartCard: React.FC<ChartCardProps> = ({
   id,
   onDelete,
   personas = [],
+  onInnerCardDragStart,
+  onInnerCardDrop,
+  draggedInnerCard,
 }) => {
   const [innerCards, setInnerCards] = useState<InnerCardData[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -26,6 +35,42 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const [draggedCardId, setDraggedCardId] = useState<string | null>(null);
   const [title, setTitle] = useState<string>(`ターン ${id}`);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // ChartCard間でのinnerCard移動をリッスン
+  React.useEffect(() => {
+    const handleInnerCardMove = (event: CustomEvent) => {
+      const { fromCardId, toCardId, dropIndex, innerCard } = event.detail;
+
+      // このChartCardが移動元の場合、innerCardを削除
+      if (fromCardId === id) {
+        setInnerCards((prev) =>
+          prev.filter((card) => card.id !== innerCard.id)
+        );
+      }
+
+      // このChartCardが移動先の場合、innerCardを追加
+      if (toCardId === id) {
+        const newInnerCard = { ...innerCard, id: `card-${Date.now()}` };
+        setInnerCards((prev) => {
+          const newCards = [...prev];
+          newCards.splice(dropIndex, 0, newInnerCard);
+          return newCards;
+        });
+      }
+    };
+
+    window.addEventListener(
+      "innerCardMove",
+      handleInnerCardMove as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "innerCardMove",
+        handleInnerCardMove as EventListener
+      );
+    };
+  }, [id]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -80,7 +125,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
         setInnerCards([...innerCards, newInnerCard]);
       }
     } else if (innerCardId && draggedCardId) {
-      // innerCardの位置を入れ替え
+      // 同じChartCard内でのinnerCardの位置を入れ替え
       const draggedIndex = innerCards.findIndex(
         (card) => card.id === draggedCardId
       );
@@ -106,6 +151,11 @@ const ChartCard: React.FC<ChartCardProps> = ({
           );
         }
       }
+    } else if (draggedInnerCard && draggedInnerCard.cardId !== id) {
+      // 他のChartCardからinnerCardを移動
+      if (dragOverIndex !== null && onInnerCardDrop) {
+        onInnerCardDrop(id, dragOverIndex);
+      }
     }
 
     // ドロップ処理が完了したら状態をリセット
@@ -125,6 +175,14 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const handleInnerCardDragStart = (e: React.DragEvent, cardId: string) => {
     setDraggedCardId(cardId);
     e.dataTransfer.setData("innerCardId", cardId);
+
+    // ChartCard間移動のための処理
+    if (onInnerCardDragStart) {
+      const innerCard = innerCards.find((card) => card.id === cardId);
+      if (innerCard) {
+        onInnerCardDragStart(id, innerCard);
+      }
+    }
   };
 
   return (

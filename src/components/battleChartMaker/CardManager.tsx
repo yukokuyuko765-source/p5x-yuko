@@ -5,8 +5,20 @@ interface CardManagerProps {
   personas?: string[];
 }
 
+interface InnerCardData {
+  id: string;
+  characterId: string;
+  option: string;
+  persona?: string;
+  note: string;
+}
+
 const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
   const [cards, setCards] = useState<string[]>(["1"]);
+  const [draggedInnerCard, setDraggedInnerCard] = useState<{
+    cardId: string;
+    innerCard: InnerCardData;
+  } | null>(null);
 
   const addCard = () => {
     const newCardId = (cards.length + 1).toString();
@@ -17,6 +29,34 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
     if (cards.length > 1) {
       setCards(cards.filter((id) => id !== cardId));
     }
+  };
+
+  const handleInnerCardDragStart = (
+    cardId: string,
+    innerCard: InnerCardData
+  ) => {
+    setDraggedInnerCard({ cardId, innerCard });
+  };
+
+  const handleInnerCardDrop = (targetCardId: string, dropIndex: number) => {
+    if (!draggedInnerCard) return;
+
+    // 同じカード内での移動の場合は何もしない
+    if (draggedInnerCard.cardId === targetCardId) return;
+
+    // ChartCard間でのinnerCard移動を処理
+    // 各ChartCardの状態を更新するために、カスタムイベントを発火
+    const moveEvent = new CustomEvent("innerCardMove", {
+      detail: {
+        fromCardId: draggedInnerCard.cardId,
+        toCardId: targetCardId,
+        dropIndex: dropIndex,
+        innerCard: draggedInnerCard.innerCard,
+      },
+    });
+    window.dispatchEvent(moveEvent);
+
+    setDraggedInnerCard(null);
   };
 
   return (
@@ -30,6 +70,9 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
             id={cardId}
             personas={personas}
             onDelete={cards.length > 1 ? deleteCard : undefined}
+            onInnerCardDragStart={handleInnerCardDragStart}
+            onInnerCardDrop={handleInnerCardDrop}
+            draggedInnerCard={draggedInnerCard}
           />
         ))}
       </div>

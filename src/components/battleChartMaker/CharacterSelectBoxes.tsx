@@ -16,12 +16,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        キャラクター選択
-      </h3>
-      <p className="text-gray-600 mb-6">
-        戦闘に参加するキャラクターを選択してください
-      </p>
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">怪盗選択</h3>
 
       {/* キャラクタースロット */}
       <div className="grid grid-cols-5 gap-4">
