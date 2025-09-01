@@ -32,32 +32,35 @@ const WonderSlot: React.FC<WonderSlotProps> = ({ onPersonaChange }) => {
         WONDER
       </div>
 
-      {/* ドラッグ可能なアバター表示 */}
-      <DraggableAvatar characterId="wonder" />
+      {/* アバターとペルソナ入力フィールドを横並び */}
+      <div className="flex items-center space-x-3">
+        {/* ドラッグ可能なアバター表示 */}
+        <DraggableAvatar characterId="wonder" />
 
-      {/* ペルソナ入力フィールド */}
-      <div className="space-y-2 mt-3">
-        <input
-          type="text"
-          placeholder="ペルソナ1"
-          value={persona1}
-          onChange={(e) => handlePersona1Change(e.target.value)}
-          className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-        />
-        <input
-          type="text"
-          placeholder="ペルソナ2"
-          value={persona2}
-          onChange={(e) => handlePersona2Change(e.target.value)}
-          className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-        />
-        <input
-          type="text"
-          placeholder="ペルソナ3"
-          value={persona3}
-          onChange={(e) => handlePersona3Change(e.target.value)}
-          className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-        />
+        {/* ペルソナ入力フィールド */}
+        <div className="flex-1 space-y-2">
+          <input
+            type="text"
+            placeholder="ペルソナ1"
+            value={persona1}
+            onChange={(e) => handlePersona1Change(e.target.value)}
+            className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <input
+            type="text"
+            placeholder="ペルソナ2"
+            value={persona2}
+            onChange={(e) => handlePersona2Change(e.target.value)}
+            className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <input
+            type="text"
+            placeholder="ペルソナ3"
+            value={persona3}
+            onChange={(e) => handlePersona3Change(e.target.value)}
+            className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
       </div>
     </div>
   );
