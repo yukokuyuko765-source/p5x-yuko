@@ -24,14 +24,17 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
         <CharacterSlot
           selectedCharacterId={selectedCharacter2}
           onCharacterSelect={setSelectedCharacter2}
+          initialPosition="2nd"
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter3}
           onCharacterSelect={setSelectedCharacter3}
+          initialPosition="3rd"
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter4}
           onCharacterSelect={setSelectedCharacter4}
+          initialPosition="4th"
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter5}

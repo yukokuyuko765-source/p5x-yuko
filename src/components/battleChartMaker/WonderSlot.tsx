@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DraggableAvatar from "./DraggableAvatar";
+import PositionSelect from "./PositionSelect";
 
 interface WonderSlotProps {
   onPersonaChange: (personas: string[]) => void;
@@ -62,6 +63,9 @@ const WonderSlot: React.FC<WonderSlotProps> = ({ onPersonaChange }) => {
           />
         </div>
       </div>
+
+      {/* ポジション選択セレクトボックス */}
+      <PositionSelect initialValue="1st" />
     </div>
   );
 };

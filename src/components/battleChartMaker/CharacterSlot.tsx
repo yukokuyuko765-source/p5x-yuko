@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import DraggableAvatar from "./DraggableAvatar";
+import PositionSelect from "./PositionSelect";
 import characterData from "../../data/characterData.json";
 
 interface Character {
@@ -12,12 +13,14 @@ interface Character {
 interface CharacterSlotProps {
   selectedCharacterId: string;
   isInvestigationSlot?: boolean;
+  initialPosition?: string;
   onCharacterSelect: (characterId: string) => void;
 }
 
 const CharacterSlot: React.FC<CharacterSlotProps> = ({
   selectedCharacterId,
   isInvestigationSlot = false,
+  initialPosition = "",
   onCharacterSelect,
 }) => {
   return (
@@ -47,6 +50,11 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
 
       {/* ドラッグ可能なアバター表示 */}
       <DraggableAvatar characterId={selectedCharacterId} />
+
+      {/* ポジション選択セレクトボックス（解明ロール以外の場合のみ表示） */}
+      {!isInvestigationSlot && (
+        <PositionSelect initialValue={initialPosition} />
+      )}
     </div>
   );
 };
