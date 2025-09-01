@@ -21,6 +21,7 @@ interface InnerCardProps {
   personas: string[];
   onUpdate: (data: InnerCardData) => void;
   onDelete: () => void;
+  onCopy: (data: InnerCardData) => void;
   onDragStart: (e: React.DragEvent, cardId: string) => void;
   isDragging: boolean;
 }
@@ -30,6 +31,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
   personas,
   onUpdate,
   onDelete,
+  onCopy,
   onDragStart,
   isDragging,
 }) => {
@@ -198,10 +200,32 @@ const InnerCard: React.FC<InnerCardProps> = ({
           </div>
         )}
 
+        {/* 複製ボタン */}
+        <button
+          onClick={() => onCopy(data)}
+          className="text-gray-400 hover:text-blue-500 flex-shrink-0"
+          title="複製"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+        </button>
+
         {/* 削除ボタン */}
         <button
           onClick={onDelete}
           className="text-gray-400 hover:text-red-500 flex-shrink-0"
+          title="削除"
         >
           <svg
             className="w-4 h-4"

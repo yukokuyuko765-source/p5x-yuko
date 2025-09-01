@@ -84,7 +84,7 @@ const CardManager: React.FC<CardManagerProps> = ({ personas = [] }) => {
           }}
         >
           <span className="text-sm text-blue-700 font-medium">
-            このブロックをドロップしてnoteを追加
+            このブロックをドロップしてNoteを追加
           </span>
         </div>
       </div>

@@ -207,6 +207,22 @@ const ChartCard: React.FC<ChartCardProps> = ({
     setInnerCards(innerCards.filter((_, i) => i !== index));
   };
 
+  const copyInnerCard = (data: InnerCardData) => {
+    const newInnerCard: InnerCardData = {
+      ...data,
+      id: `card-${Date.now()}`,
+      // noteや備考欄の内容もコピー
+    };
+
+    // コピー元のカードの直後に挿入
+    const currentIndex = innerCards.findIndex((card) => card.id === data.id);
+    if (currentIndex !== -1) {
+      const newCards = [...innerCards];
+      newCards.splice(currentIndex + 1, 0, newInnerCard);
+      setInnerCards(newCards);
+    }
+  };
+
   const handleInnerCardDragStart = (e: React.DragEvent, cardId: string) => {
     setDraggedCardId(cardId);
     e.dataTransfer.setData("innerCardId", cardId);
@@ -301,6 +317,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
                     personas={personas}
                     onUpdate={(data) => updateInnerCard(index, data)}
                     onDelete={() => removeInnerCard(index)}
+                    onCopy={copyInnerCard}
                     onDragStart={handleInnerCardDragStart}
                     isDragging={draggedCardId === innerCard.id}
                   />
