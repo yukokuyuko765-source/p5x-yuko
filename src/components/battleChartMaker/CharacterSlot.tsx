@@ -80,7 +80,7 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
       <div className="text-center">
         {selectedCharacterId ? (
           <div className="space-y-2">
-            <div className="w-16 h-16 mx-auto rounded-full border-2 border-gray-300 overflow-hidden">
+            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full border-2 border-gray-300 overflow-hidden">
               <img
                 src={getCharacterImage(selectedCharacterId)}
                 alt={getCharacterName(selectedCharacterId)}
@@ -97,7 +97,7 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
           </div>
         ) : (
           <div className="space-y-2">
-            <div className="w-16 h-16 mx-auto rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
               <span className="text-gray-400 text-xs">未選択</span>
             </div>
             <p className="text-sm font-medium text-gray-800">
