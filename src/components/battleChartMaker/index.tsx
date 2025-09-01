@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import CharacterSelectBoxes from "./CharacterSelectBoxes";
 import CardManager from "./CardManager";
 import BattleChartTextCard from "./BattleChartTextCard";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 const BattleChartMaker: React.FC = () => {
+  const { width } = useWindowSize();
   const [personas, setPersonas] = useState<string[]>(["", "", ""]);
   const [chartCards, setChartCards] = useState<any[]>([]);
   const [chartTitle, setChartTitle] = useState<string>("");
@@ -44,16 +46,18 @@ const BattleChartMaker: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       {/* モバイル表示時の注意書き */}
-      <div className="lg:hidden mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-        <div className="text-sm text-amber-800">
-          <p className="font-semibold mb-2">⚠️ モバイル表示時の注意</p>
-          <p>
-            このツールは現在モバイル表示やタッチ操作に対応していません。PCで操作してください。
-          </p>
+      {width < 1024 && (
+        <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="text-sm text-amber-800">
+            <p className="font-semibold mb-2">⚠️ モバイル表示時の注意</p>
+            <p>
+              このツールは現在モバイル表示やタッチ操作に対応していません。PCで操作してください。
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* キャラクター選択セクション */}
       <CharacterSelectBoxes
