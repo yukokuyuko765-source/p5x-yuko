@@ -22,22 +22,32 @@ const ChartCard: React.FC<ChartCardProps> = ({
 }) => {
   const [innerCards, setInnerCards] = useState<InnerCardData[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [title, setTitle] = useState<string>(`ターン ${id}`);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(true);
+
+    // ドロップ位置を検出
+    const rect = e.currentTarget.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const cardHeight = rect.height / (innerCards.length + 1);
+    const index = Math.floor(y / cardHeight);
+    setDragOverIndex(Math.min(index, innerCards.length));
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
+    setDragOverIndex(null);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
+    setDragOverIndex(null);
 
     const characterId = e.dataTransfer.getData("characterId");
     if (characterId) {
@@ -48,7 +58,16 @@ const ChartCard: React.FC<ChartCardProps> = ({
         persona: characterId === "wonder" ? "1" : undefined,
         note: "",
       };
-      setInnerCards([...innerCards, newInnerCard]);
+
+      // 検出された位置に挿入
+      if (dragOverIndex !== null) {
+        const newCards = [...innerCards];
+        newCards.splice(dragOverIndex, 0, newInnerCard);
+        setInnerCards(newCards);
+      } else {
+        // フォールバック: 末尾に追加
+        setInnerCards([...innerCards, newInnerCard]);
+      }
     }
   };
 
@@ -132,14 +151,23 @@ const ChartCard: React.FC<ChartCardProps> = ({
           ) : (
             <div className="space-y-3">
               {innerCards.map((innerCard, index) => (
-                <InnerCard
-                  key={index}
-                  data={innerCard}
-                  personas={personas}
-                  onUpdate={(data) => updateInnerCard(index, data)}
-                  onDelete={() => removeInnerCard(index)}
-                />
+                <React.Fragment key={index}>
+                  {/* ドラッグオーバー時の挿入位置インジケーター */}
+                  {dragOverIndex === index && (
+                    <div className="h-1 bg-blue-500 rounded-full mx-2"></div>
+                  )}
+                  <InnerCard
+                    data={innerCard}
+                    personas={personas}
+                    onUpdate={(data) => updateInnerCard(index, data)}
+                    onDelete={() => removeInnerCard(index)}
+                  />
+                </React.Fragment>
               ))}
+              {/* 最後の位置への挿入インジケーター */}
+              {dragOverIndex === innerCards.length && (
+                <div className="h-1 bg-blue-500 rounded-full mx-2"></div>
+              )}
             </div>
           )}
         </div>
