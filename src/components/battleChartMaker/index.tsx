@@ -67,10 +67,11 @@ const BattleChartMaker: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* モバイル表示時の注意書き */}
-      {width < 1024 && (
-        <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+    <div className="max-w-6xl mx-auto">
+      {/* 固定ヘッダー: キャラクター選択セクション */}
+      <div className="sticky top-0 border-b border-gray-200">
+        {/* モバイル表示時の注意書き */}
+        <div className="lg:hidden mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
           <div className="text-sm text-amber-800">
             <p className="font-semibold mb-2">⚠️ モバイル表示時の注意</p>
             <p>
@@ -78,28 +79,33 @@ const BattleChartMaker: React.FC = () => {
             </p>
           </div>
         </div>
-      )}
 
-      {/* キャラクター選択セクション */}
-      <CharacterSelectBoxes
-        onPersonaChange={setPersonas}
-        onCharacterSelect={setSelectedCharacters}
-      />
+        {/* キャラクター選択セクション */}
+        <CharacterSelectBoxes
+          onPersonaChange={setPersonas}
+          onCharacterSelect={setSelectedCharacters}
+        />
+      </div>
 
-      {/* カード管理セクション */}
-      <CardManager
-        personas={personas}
-        chartTitle={chartTitle}
-        onChartTitleChange={setChartTitle}
-      />
+      {/* スクロール可能なコンテンツエリア */}
+      <div className="p-6 pt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+        <div className="space-y-6">
+          {/* カード管理セクション */}
+          <CardManager
+            personas={personas}
+            chartTitle={chartTitle}
+            onChartTitleChange={setChartTitle}
+          />
 
-      {/* 戦闘チャートテキストカード */}
-      <BattleChartTextCard
-        chartCards={chartCards}
-        personas={personas}
-        selectedCharacters={selectedCharacters}
-        chartTitle={chartTitle}
-      />
+          {/* 戦闘チャートテキストカード */}
+          <BattleChartTextCard
+            chartCards={chartCards}
+            personas={personas}
+            selectedCharacters={selectedCharacters}
+            chartTitle={chartTitle}
+          />
+        </div>
+      </div>
     </div>
   );
 };
