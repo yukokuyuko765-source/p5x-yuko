@@ -98,19 +98,6 @@ const CardManager: React.FC<CardManagerProps> = ({
             className="px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-
-        {/* Noteカードのドラッグ開始エリア */}
-        <div
-          className="bg-blue-50 border-2 border-blue-300 rounded-lg px-4 py-2 cursor-move hover:bg-blue-100 transition-colors duration-200"
-          draggable
-          onDragStart={(e) => {
-            e.dataTransfer.setData("noteCard", "true");
-          }}
-        >
-          <span className="text-sm text-blue-700 font-medium">
-            このブロックをドロップしてNoteを追加
-          </span>
-        </div>
       </div>
 
       <div className="space-y-4">

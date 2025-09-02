@@ -99,6 +99,21 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
           }
         />
       </div>
+
+      {/* Noteカードのドラッグ開始エリア */}
+      <div className="mt-4 flex justify-end">
+        <div
+          className="bg-blue-50 border-2 border-blue-300 rounded-lg px-4 py-2 cursor-move hover:bg-blue-100 transition-colors duration-200"
+          draggable
+          onDragStart={(e) => {
+            e.dataTransfer.setData("noteCard", "true");
+          }}
+        >
+          <span className="text-sm text-blue-700 font-medium">
+            このブロックをドロップしてNoteを追加
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
