@@ -13,6 +13,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
   onPersonaChange,
   onCharacterSelect,
 }) => {
+  const [wonderPosition, setWonderPosition] = useState<string>("1st");
   const [selectedCharacter2, setSelectedCharacter2] = useState<{
     id: string;
     position: string;
@@ -34,7 +35,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
   React.useEffect(() => {
     if (onCharacterSelect) {
       const characters = [
-        { id: "wonder", position: "1st" },
+        { id: "wonder", position: wonderPosition },
         selectedCharacter2,
         selectedCharacter3,
         selectedCharacter4,
@@ -43,6 +44,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
       onCharacterSelect(characters);
     }
   }, [
+    wonderPosition,
     selectedCharacter2,
     selectedCharacter3,
     selectedCharacter4,
@@ -59,7 +61,9 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
         <WonderSlot
           onPersonaChange={onPersonaChange}
           onCharacterSelect={(id, position) => {
-            // WONDERの場合は常に1番目のスロットとして扱う
+            // WONDERのpositionを更新
+            setWonderPosition(position);
+            // 更新されたキャラクター情報を親に渡す
             const updatedCharacters = [
               { id, position },
               selectedCharacter2,
