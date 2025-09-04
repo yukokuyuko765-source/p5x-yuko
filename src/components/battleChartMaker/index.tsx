@@ -95,6 +95,7 @@ const BattleChartMaker: React.FC = () => {
             personas={personas}
             chartTitle={chartTitle}
             onChartTitleChange={setChartTitle}
+            selectedCharacters={selectedCharacters}
           />
 
           {/* 戦闘チャートテキストカード */}

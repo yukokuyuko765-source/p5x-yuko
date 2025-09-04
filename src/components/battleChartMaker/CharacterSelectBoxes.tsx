@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CharacterSlot from "./CharacterSlot";
 import WonderSlot from "./WonderSlot";
+import PositionSelect from "./PositionSelect";
 
 interface CharacterSelectBoxesProps {
   onPersonaChange: (personas: string[]) => void;
@@ -55,6 +56,65 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
       <h3 className="text-xl font-semibold text-gray-800 mb-4">怪盗選択</h3>
+      <p className="text-sm text-gray-600 mb-4">
+        行動順を選択してから怪盗を選択してください
+      </p>
+
+      {/* 行動順選択エリア */}
+      <div className="mb-1">
+        <div className="grid grid-cols-5 gap-4">
+          <div className="text-center">
+            <PositionSelect
+              initialValue={wonderPosition}
+              onPositionChange={(newPosition) => {
+                setWonderPosition(newPosition);
+                // 更新されたキャラクター情報を親に渡す
+                const updatedCharacters = [
+                  { id: "wonder", position: newPosition },
+                  selectedCharacter2,
+                  selectedCharacter3,
+                  selectedCharacter4,
+                  selectedCharacter5,
+                ];
+                onCharacterSelect?.(updatedCharacters);
+              }}
+            />
+          </div>
+          <div className="text-center">
+            <PositionSelect
+              initialValue={selectedCharacter2.position}
+              onPositionChange={(newPosition) => {
+                setSelectedCharacter2({
+                  ...selectedCharacter2,
+                  position: newPosition,
+                });
+              }}
+            />
+          </div>
+          <div className="text-center">
+            <PositionSelect
+              initialValue={selectedCharacter3.position}
+              onPositionChange={(newPosition) => {
+                setSelectedCharacter3({
+                  ...selectedCharacter3,
+                  position: newPosition,
+                });
+              }}
+            />
+          </div>
+          <div className="text-center">
+            <PositionSelect
+              initialValue={selectedCharacter4.position}
+              onPositionChange={(newPosition) => {
+                setSelectedCharacter4({
+                  ...selectedCharacter4,
+                  position: newPosition,
+                });
+              }}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* キャラクタースロット */}
       <div className="grid grid-cols-5 gap-4">
@@ -73,6 +133,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
             ];
             onCharacterSelect?.(updatedCharacters);
           }}
+          currentPosition={wonderPosition}
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter2.id}
@@ -80,6 +141,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
             setSelectedCharacter2({ id, position })
           }
           initialPosition="2nd"
+          currentPosition={selectedCharacter2.position}
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter3.id}
@@ -87,6 +149,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
             setSelectedCharacter3({ id, position })
           }
           initialPosition="3rd"
+          currentPosition={selectedCharacter3.position}
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter4.id}
@@ -94,6 +157,7 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
             setSelectedCharacter4({ id, position })
           }
           initialPosition="4th"
+          currentPosition={selectedCharacter4.position}
         />
         <CharacterSlot
           selectedCharacterId={selectedCharacter5.id}

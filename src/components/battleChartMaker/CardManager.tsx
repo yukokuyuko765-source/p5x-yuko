@@ -5,6 +5,7 @@ interface CardManagerProps {
   personas?: string[];
   chartTitle?: string;
   onChartTitleChange?: (title: string) => void;
+  selectedCharacters?: Array<{ id: string; position: string }>;
 }
 
 interface InnerCardData {
@@ -19,6 +20,7 @@ const CardManager: React.FC<CardManagerProps> = ({
   personas = [],
   chartTitle: externalChartTitle,
   onChartTitleChange,
+  selectedCharacters = [],
 }) => {
   const [cards, setCards] = useState<Array<{ id: string; title: string }>>([
     { id: "1", title: "1" },
@@ -97,6 +99,9 @@ const CardManager: React.FC<CardManagerProps> = ({
             }}
             className="px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
+          <span className="text-sm text-gray-600">
+            アバターをドロップして行動を追加できます。
+          </span>
         </div>
       </div>
 
@@ -107,6 +112,7 @@ const CardManager: React.FC<CardManagerProps> = ({
             id={card.id}
             cardTitle={card.title}
             personas={personas}
+            selectedCharacters={selectedCharacters}
             onDelete={cards.length > 1 ? deleteCard : undefined}
             onInnerCardDragStart={handleInnerCardDragStart}
             onInnerCardDrop={handleInnerCardDrop}

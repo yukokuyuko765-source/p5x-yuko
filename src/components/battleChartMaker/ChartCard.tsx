@@ -14,6 +14,7 @@ interface ChartCardProps {
   cardTitle: string;
   onDelete?: (id: string) => void;
   personas?: string[];
+  selectedCharacters?: Array<{ id: string; position: string }>;
   onInnerCardDragStart?: (cardId: string, innerCard: InnerCardData) => void;
   onInnerCardDrop?: (targetCardId: string, dropIndex: number) => void;
   draggedInnerCard?: {
@@ -28,6 +29,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
   cardTitle,
   onDelete,
   personas = [],
+  selectedCharacters = [],
   onInnerCardDragStart,
   onInnerCardDrop,
   draggedInnerCard,
@@ -39,6 +41,95 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const [draggedCardId, setDraggedCardId] = useState<string | null>(null);
   const [title, setTitle] = useState<string>(`ターン ${cardTitle}`);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // キャラクター選択時に、選択されたキャラクターのpositionに応じた順番でInnerCardを自動挿入・削除
+  React.useEffect(() => {
+    if (selectedCharacters.length > 0) {
+      // positionの順番でソート（1st, 2nd, 3rd, 4th, 5th）
+      const sortedCharacters = [...selectedCharacters].sort((a, b) => {
+        const positionOrder = {
+          "1st": 1,
+          "2nd": 2,
+          "3rd": 3,
+          "4th": 4,
+          "5th": 5,
+        };
+        return (
+          positionOrder[a.position as keyof typeof positionOrder] -
+          positionOrder[b.position as keyof typeof positionOrder]
+        );
+      });
+
+      // 空のIDでないキャラクターのみをフィルタリング
+      const validCharacters = sortedCharacters.filter((char) => char.id !== "");
+
+      // 新しく作成されたChartCardの場合は、完全に新しいInnerCardセットを作成
+      if (innerCards.length === 0) {
+        const newInnerCards: InnerCardData[] = validCharacters.map((char) => ({
+          id: `card-${Date.now()}-${char.id}`,
+          characterId: char.id,
+          option: "S1",
+          persona: char.id === "wonder" ? "1" : undefined,
+          note: "",
+        }));
+        setInnerCards(newInnerCards);
+      } else {
+        // 既存のChartCardの場合は、差分のみを処理
+        const existingCharacterIds = innerCards.map((card) => card.characterId);
+        const newCharacters = validCharacters.filter(
+          (char) => !existingCharacterIds.includes(char.id)
+        );
+        const removedCharacters = existingCharacterIds.filter(
+          (id) => !validCharacters.some((char) => char.id === id)
+        );
+
+        // 削除されたキャラクターのInnerCardを削除
+        if (removedCharacters.length > 0) {
+          setInnerCards((prev) =>
+            prev.filter((card) => !removedCharacters.includes(card.characterId))
+          );
+        }
+
+        // 新しく追加されたキャラクターのInnerCardを挿入
+        if (newCharacters.length > 0) {
+          // 新しく追加されたキャラクターのInnerCardを作成
+          const newInnerCards: InnerCardData[] = newCharacters.map((char) => ({
+            id: `card-${Date.now()}-${char.id}`,
+            characterId: char.id,
+            option: "S1",
+            persona: char.id === "wonder" ? "1" : undefined,
+            note: "",
+          }));
+
+          // 既存のInnerCardに新しく追加されたキャラクターを挿入
+          setInnerCards((prev) => {
+            const updatedCards = [...prev];
+
+            // 新しく追加されたキャラクターを適切な位置に挿入
+            newCharacters.forEach((char, index) => {
+              const insertIndex = sortedCharacters.findIndex(
+                (c) => c.id === char.id
+              );
+              const newCard = newInnerCards[index];
+
+              // 既存のカードの位置を考慮して挿入位置を決定
+              let actualInsertIndex = 0;
+              for (let i = 0; i < insertIndex; i++) {
+                const prevChar = sortedCharacters[i];
+                if (existingCharacterIds.includes(prevChar.id)) {
+                  actualInsertIndex++;
+                }
+              }
+
+              updatedCards.splice(actualInsertIndex, 0, newCard);
+            });
+
+            return updatedCards;
+          });
+        }
+      }
+    }
+  }, [selectedCharacters, innerCards.length]);
 
   // ChartCard間でのinnerCard移動をリッスン
   React.useEffect(() => {
@@ -79,7 +170,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
 
         setInnerCards((prev) => {
           const newCards = [...prev];
-          newCards.splice(dropIndex, 0, newNoteCard);
+          newCards.splice(dropIndex, 0, newInnerCard);
           return newCards;
         });
       }

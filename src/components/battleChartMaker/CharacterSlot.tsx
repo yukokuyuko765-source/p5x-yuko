@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import DraggableAvatar from "./DraggableAvatar";
-import PositionSelect from "./PositionSelect";
 import characterData from "../../data/characterData.json";
 
 interface Character {
@@ -14,6 +13,7 @@ interface CharacterSlotProps {
   selectedCharacterId: string;
   isInvestigationSlot?: boolean;
   initialPosition?: string;
+  currentPosition?: string;
   onCharacterSelect: (characterId: string, position: string) => void;
 }
 
@@ -21,10 +21,18 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
   selectedCharacterId,
   isInvestigationSlot = false,
   initialPosition = "",
+  currentPosition,
   onCharacterSelect,
 }) => {
   const [selectedPosition, setSelectedPosition] =
     useState<string>(initialPosition);
+
+  // currentPositionが変更された時にselectedPositionを更新
+  React.useEffect(() => {
+    if (currentPosition && currentPosition !== selectedPosition) {
+      setSelectedPosition(currentPosition);
+    }
+  }, [currentPosition, selectedPosition]);
 
   const handleCharacterSelect = (characterId: string) => {
     onCharacterSelect(characterId, selectedPosition);
@@ -64,14 +72,6 @@ const CharacterSlot: React.FC<CharacterSlotProps> = ({
 
       {/* ドラッグ可能なアバター表示 */}
       <DraggableAvatar characterId={selectedCharacterId} />
-
-      {/* ポジション選択セレクトボックス（解明ロール以外の場合のみ表示） */}
-      {!isInvestigationSlot && (
-        <PositionSelect
-          initialValue={selectedPosition}
-          onPositionChange={handlePositionSelect}
-        />
-      )}
     </div>
   );
 };
