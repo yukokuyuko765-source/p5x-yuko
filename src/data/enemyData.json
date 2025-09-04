@@ -65,6 +65,83 @@
       "hp": 9999999,
       "def": 3915,
       "additional_def_coeff": 207.5
+    },
+    {
+      "id": "yatsufusa",
+      "version": "1.4",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-08-28",
+      "end_at": "2025-09-04",
+      "name": "ヤツフサ",
+      "hp": 9999999,
+      "def": 3915,
+      "additional_def_coeff": 207.5
+    },
+    {
+      "id": "dominion",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "ドミニオン",
+      "hp": 220762,
+      "def": 910,
+      "additional_def_coeff": 161.5
+    },
+    {
+      "id": "angel",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "エンジェル",
+      "hp": 63013,
+      "def": 455,
+      "additional_def_coeff": 152.2
+    },
+    {
+      "id": "yatsufusa",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "ヤツフサ",
+      "hp": 270333,
+      "def": 3755,
+      "additional_def_coeff": 200.4
+    },
+    {
+      "id": "seiryu",
+      "version": "2.0",
+      "stage": "心の海",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "セイリュウ",
+      "hp": 9999999,
+      "def": 525,
+      "additional_def_coeff": 154.6
+    },
+    {
+      "id": "sraosha",
+      "version": "2.0",
+      "stage": "心の海",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "スラオシャ",
+      "hp": 9999999,
+      "def": 2100,
+      "additional_def_coeff": 158.7
+    },
+    {
+      "id": "apsaras",
+      "version": "2.0",
+      "stage": "心の海",
+      "start_at": "2025-09-04",
+      "end_at": "2025-09-11",
+      "name": "アプサラス",
+      "hp": 31198,
+      "def": 935,
+      "additional_def_coeff": 159.1
     }
   ]
 }
