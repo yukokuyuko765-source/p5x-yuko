@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InnerCard from "./InnerCard";
+import characterData from "../../data/characterData.json";
 
 interface InnerCardData {
   id: string;
@@ -60,28 +61,44 @@ const ChartCard: React.FC<ChartCardProps> = ({
         );
       });
 
-      // 空のIDでないキャラクターのみをフィルタリング
+      // 空のIDでないキャラクターのみをフィルタリング（解明ロールは除外）
       const validCharacters = sortedCharacters.filter((char) => char.id !== "");
 
       // 新しく作成されたChartCardの場合は、完全に新しいInnerCardセットを作成
       if (innerCards.length === 0) {
-        const newInnerCards: InnerCardData[] = validCharacters.map((char) => ({
-          id: `card-${Date.now()}-${char.id}`,
-          characterId: char.id,
-          option: "S1",
-          persona: char.id === "wonder" ? "1" : undefined,
-          note: "",
-        }));
+        // 解明ロール以外のキャラクターのみをInnerCardとして作成
+        const nonInvestigationCharacters = validCharacters.filter((char) => {
+          const character = characterData.find((c: any) => c.id === char.id);
+          return character && character.role !== "解明";
+        });
+
+        const newInnerCards: InnerCardData[] = nonInvestigationCharacters.map(
+          (char) => ({
+            id: `card-${Date.now()}-${char.id}`,
+            characterId: char.id,
+            option: "S1",
+            persona: char.id === "wonder" ? "1" : undefined,
+            note: "",
+          })
+        );
         setInnerCards(newInnerCards);
       } else {
         // 既存のChartCardの場合は、差分のみを処理
         const existingCharacterIds = innerCards.map((card) => card.characterId);
-        const newCharacters = validCharacters.filter(
+
+        // 解明ロール以外のキャラクターのみを処理対象とする
+        const nonInvestigationCharacters = validCharacters.filter((char) => {
+          const character = characterData.find((c: any) => c.id === char.id);
+          return character && character.role !== "解明";
+        });
+
+        const newCharacters = nonInvestigationCharacters.filter(
           (char) => !existingCharacterIds.includes(char.id)
         );
         const removedCharacters = existingCharacterIds.filter(
           (id) =>
-            !validCharacters.some((char) => char.id === id) && id !== "note"
+            !nonInvestigationCharacters.some((char) => char.id === id) &&
+            id !== "note"
         );
 
         // 削除されたキャラクターのInnerCardを削除
@@ -171,7 +188,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
 
         setInnerCards((prev) => {
           const newCards = [...prev];
-          newCards.splice(dropIndex, 0, newInnerCard);
+          newCards.splice(dropIndex, 0, newNoteCard);
           return newCards;
         });
       }
