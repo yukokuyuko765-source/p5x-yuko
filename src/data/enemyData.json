@@ -67,17 +67,6 @@
       "additional_def_coeff": 207.5
     },
     {
-      "id": "yatsufusa",
-      "version": "1.4",
-      "stage": "閼兇夢の扉",
-      "start_at": "2025-08-28",
-      "end_at": "2025-09-04",
-      "name": "ヤツフサ",
-      "hp": 9999999,
-      "def": 3915,
-      "additional_def_coeff": 207.5
-    },
-    {
       "id": "dominion",
       "version": "2.0",
       "stage": "閼兇夢の扉",

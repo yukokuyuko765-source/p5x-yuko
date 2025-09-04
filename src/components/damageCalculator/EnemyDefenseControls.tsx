@@ -119,12 +119,38 @@ const EnemyDefenseControls: React.FC<EnemyDefenseControlsProps> = ({
           className="w-full px-4 py-3 border-2 border-green-300 rounded-lg text-lg font-semibold text-green-800 bg-white outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
         >
           <option value="">敵を選択してください</option>
-          {enemyData.enemies.map((enemy: Enemy) => (
-            <option key={enemy.id} value={enemy.id}>
-              {enemy.name} - {enemy.stage} v{enemy.version} (HP:{" "}
-              {enemy.hp >= 9999999 ? "∞" : enemy.hp.toLocaleString()})
-            </option>
-          ))}
+          {(() => {
+            // versionでグループ化
+            const groupedEnemies = enemyData.enemies.reduce((acc, enemy) => {
+              if (!acc[enemy.version]) {
+                acc[enemy.version] = [];
+              }
+              acc[enemy.version].push(enemy);
+              return acc;
+            }, {} as Record<string, Enemy[]>);
+
+            // 各versionの敵を表示
+            return Object.entries(groupedEnemies)
+              .map(([version, enemies]) => [
+                // versionヘッダー（無効なオプション）
+                <option
+                  key={`version-${version}`}
+                  value=""
+                  disabled
+                  className="font-bold bg-gray-100"
+                >
+                  ─── Version {version} ───
+                </option>,
+                // そのversionの敵
+                ...enemies.map((enemy) => (
+                  <option key={enemy.id} value={enemy.id} className="pl-4">
+                    {enemy.name} - {enemy.stage} (HP:{" "}
+                    {enemy.hp >= 9999999 ? "∞" : enemy.hp.toLocaleString()})
+                  </option>
+                )),
+              ])
+              .flat();
+          })()}
         </select>
       </div>
 
