@@ -104,9 +104,10 @@ const BattleChartTextCard: React.FC<BattleChartTextCardProps> = ({
       }
     });
     markdown += "\n";
+    markdown += "## チャート\n";
 
     chartCards.forEach((card, index) => {
-      markdown += `## ${card.title || `ターン ${index + 1}`}\n`;
+      markdown += `### ${card.title || `ターン ${index + 1}`}\n`;
 
       card.innerCards.forEach((innerCard) => {
         if (innerCard.characterId === "wonder") {
