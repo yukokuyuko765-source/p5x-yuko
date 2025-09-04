@@ -80,7 +80,8 @@ const ChartCard: React.FC<ChartCardProps> = ({
           (char) => !existingCharacterIds.includes(char.id)
         );
         const removedCharacters = existingCharacterIds.filter(
-          (id) => !validCharacters.some((char) => char.id === id)
+          (id) =>
+            !validCharacters.some((char) => char.id === id) && id !== "note"
         );
 
         // 削除されたキャラクターのInnerCardを削除
@@ -129,7 +130,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
         }
       }
     }
-  }, [selectedCharacters, innerCards.length]);
+  }, [selectedCharacters]);
 
   // ChartCard間でのinnerCard移動をリッスン
   React.useEffect(() => {
@@ -240,10 +241,17 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    setDragOverIndex(null);
 
     const characterId = e.dataTransfer.getData("characterId");
     const innerCardId = e.dataTransfer.getData("innerCardId");
+    const noteCard = e.dataTransfer.getData("noteCard");
+
+    console.log("handleDrop実行:", {
+      characterId,
+      innerCardId,
+      noteCard,
+      dragOverIndex,
+    });
 
     if (characterId) {
       // 新しいキャラクターをドロップ
@@ -298,13 +306,39 @@ const ChartCard: React.FC<ChartCardProps> = ({
       }
     } else if (e.dataTransfer.getData("noteCard") === "true") {
       // noteカードをドロップ
-      if (dragOverIndex !== null && onNoteCardDrop) {
-        onNoteCardDrop(id, dragOverIndex);
+      console.log("Noteカードがドロップされました", {
+        dragOverIndex,
+        innerCardsLength: innerCards.length,
+        dataTransfer: e.dataTransfer.getData("noteCard"),
+      });
+
+      const newNoteCard: InnerCardData = {
+        id: `note-${Date.now()}`,
+        characterId: "note",
+        option: "",
+        persona: undefined,
+        note: "",
+      };
+
+      console.log("新しいNoteカードを作成:", newNoteCard);
+
+      // 検出された位置に挿入、または末尾に追加
+      if (dragOverIndex !== null) {
+        const newCards = [...innerCards];
+        newCards.splice(dragOverIndex, 0, newNoteCard);
+        console.log("指定位置に挿入:", newCards);
+        setInnerCards(newCards);
+      } else {
+        // フォールバック: 末尾に追加
+        const newCards = [...innerCards, newNoteCard];
+        console.log("末尾に追加:", newCards);
+        setInnerCards(newCards);
       }
     }
 
     // ドロップ処理が完了したら状態をリセット
     setDraggedCardId(null);
+    setDragOverIndex(null);
   };
 
   const updateInnerCard = (index: number, data: InnerCardData) => {
