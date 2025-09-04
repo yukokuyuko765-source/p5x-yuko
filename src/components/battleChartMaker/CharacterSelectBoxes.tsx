@@ -18,15 +18,15 @@ const CharacterSelectBoxes: React.FC<CharacterSelectBoxesProps> = ({
   const [selectedCharacter2, setSelectedCharacter2] = useState<{
     id: string;
     position: string;
-  }>({ id: "", position: "" });
+  }>({ id: "", position: "2nd" });
   const [selectedCharacter3, setSelectedCharacter3] = useState<{
     id: string;
     position: string;
-  }>({ id: "", position: "" });
+  }>({ id: "", position: "3rd" });
   const [selectedCharacter4, setSelectedCharacter4] = useState<{
     id: string;
     position: string;
-  }>({ id: "", position: "" });
+  }>({ id: "", position: "4th" });
   const [selectedCharacter5, setSelectedCharacter5] = useState<{
     id: string;
     position: string;
