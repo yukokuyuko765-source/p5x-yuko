@@ -12,6 +12,7 @@ interface InnerCardData {
   id: string;
   characterId: string;
   option: string;
+  customOption?: string; // カスタムオプション用
   persona?: string;
   note: string;
 }

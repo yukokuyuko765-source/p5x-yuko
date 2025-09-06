@@ -5,6 +5,7 @@ interface InnerCardData {
   id: string;
   characterId: string;
   option: string;
+  customOption?: string; // カスタムオプション用
   persona?: string;
   note: string;
 }
@@ -116,7 +117,11 @@ const BattleChartTextCard: React.FC<BattleChartTextCardProps> = ({
             : 0;
           const personaName =
             personas[personaIndex] || `ペルソナ${innerCard.persona || 1}`;
-          markdown += `- **WONDER**: ${personaName} - ${innerCard.option}${
+          const displayOption =
+            innerCard.option === "その他" && innerCard.customOption
+              ? innerCard.customOption
+              : innerCard.option;
+          markdown += `- **WONDER**: ${personaName} - ${displayOption}${
             innerCard.note ? ` - ${innerCard.note}` : ""
           }\n`;
         } else if (innerCard.characterId === "note") {
@@ -124,7 +129,11 @@ const BattleChartTextCard: React.FC<BattleChartTextCardProps> = ({
         } else {
           // キャラクター名を取得
           const characterName = `${innerCard.characterId.toLocaleUpperCase()}`;
-          markdown += `- **${characterName}**: ${innerCard.option}${
+          const displayOption =
+            innerCard.option === "その他" && innerCard.customOption
+              ? innerCard.customOption
+              : innerCard.option;
+          markdown += `- **${characterName}**: ${displayOption}${
             innerCard.note ? ` - ${innerCard.note}` : ""
           }\n`;
         }

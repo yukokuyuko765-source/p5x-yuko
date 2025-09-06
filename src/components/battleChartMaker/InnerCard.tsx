@@ -12,6 +12,7 @@ interface InnerCardData {
   id: string; // ユニークIDを追加
   characterId: string;
   option: string;
+  customOption?: string; // カスタムオプション用
   persona?: string;
   note: string;
 }
@@ -136,7 +137,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
                 {/* 行動選択 */}
                 <div className="flex items-center space-x-2">
                   <span className="text-xs text-gray-600">行動:</span>
-                  {["S1", "S2", "S3", "HL"].map((option) => (
+                  {["S1", "S2", "S3", "HL", "その他"].map((option) => (
                     <label key={option} className="flex items-center space-x-1">
                       <input
                         type="radio"
@@ -149,12 +150,27 @@ const InnerCard: React.FC<InnerCardProps> = ({
                       <span className="text-xs text-gray-700">{option}</span>
                     </label>
                   ))}
+                  {/* その他が選択されている場合のみセレクトボックスを表示 */}
+                  {data.option === "その他" && (
+                    <select
+                      value={data.customOption || ""}
+                      onChange={(e) =>
+                        updateField("customOption", e.target.value)
+                      }
+                      className="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      <option value="防御">防御</option>
+                      <option value="銃撃">銃撃</option>
+                      <option value="アイテム">アイテム</option>
+                      <option value="通常攻撃">通常攻撃</option>
+                    </select>
+                  )}
                 </div>
               </>
             ) : (
               <>
                 <span className="text-xs text-gray-600">行動:</span>
-                {["S1", "S2", "S3", "HL"].map((option) => (
+                {["S1", "S2", "S3", "HL", "その他"].map((option) => (
                   <label key={option} className="flex items-center space-x-1">
                     <input
                       type="radio"
@@ -167,6 +183,22 @@ const InnerCard: React.FC<InnerCardProps> = ({
                     <span className="text-xs text-gray-700">{option}</span>
                   </label>
                 ))}
+                {/* その他が選択されている場合のみセレクトボックスを表示 */}
+                {data.option === "その他" && (
+                  <select
+                    value={data.customOption || ""}
+                    onChange={(e) =>
+                      updateField("customOption", e.target.value)
+                    }
+                    className="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="防御">防御</option>
+                    <option value="特殊行動">特殊行動</option>
+                    <option value="銃撃">銃撃</option>
+                    <option value="アイテム">アイテム</option>
+                    <option value="通常攻撃">通常攻撃</option>
+                  </select>
+                )}
               </>
             )}
           </div>
