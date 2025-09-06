@@ -20,7 +20,7 @@
   {
     "id": "code",
     "name": "CODE",
-    "image": "code.jpeg",
+    "image": "code.png",
     "role": "優越"
   },
   {
@@ -92,7 +92,7 @@
   {
     "id": "phoebe",
     "name": "PHOEBE",
-    "image": "phoebe.jpeg",
+    "image": "phoebe.png",
     "role": "解明"
   },
   {
@@ -140,7 +140,7 @@
   {
     "id": "vino",
     "name": "VINO",
-    "image": "vino.jpeg",
+    "image": "vino.png",
     "role": "屈従"
   },
   {
