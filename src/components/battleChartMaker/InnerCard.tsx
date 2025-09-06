@@ -61,7 +61,14 @@ const InnerCard: React.FC<InnerCardProps> = ({
   };
 
   const updateField = (field: keyof InnerCardData, value: string) => {
-    onUpdate({ ...data, [field]: value });
+    const updatedData = { ...data, [field]: value };
+
+    // 「その他」が選択された場合、customOptionの初期値を「防御」に設定
+    if (field === "option" && value === "その他" && !data.customOption) {
+      updatedData.customOption = "防御";
+    }
+
+    onUpdate(updatedData);
   };
 
   return (
@@ -153,7 +160,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
                   {/* その他が選択されている場合のみセレクトボックスを表示 */}
                   {data.option === "その他" && (
                     <select
-                      value={data.customOption || ""}
+                      value={data.customOption || "防御"}
                       onChange={(e) =>
                         updateField("customOption", e.target.value)
                       }
@@ -186,7 +193,7 @@ const InnerCard: React.FC<InnerCardProps> = ({
                 {/* その他が選択されている場合のみセレクトボックスを表示 */}
                 {data.option === "その他" && (
                   <select
-                    value={data.customOption || ""}
+                    value={data.customOption || "防御"}
                     onChange={(e) =>
                       updateField("customOption", e.target.value)
                     }

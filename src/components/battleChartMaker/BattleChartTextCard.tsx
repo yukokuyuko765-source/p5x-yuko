@@ -118,8 +118,8 @@ const BattleChartTextCard: React.FC<BattleChartTextCardProps> = ({
           const personaName =
             personas[personaIndex] || `ペルソナ${innerCard.persona || 1}`;
           const displayOption =
-            innerCard.option === "その他" && innerCard.customOption
-              ? innerCard.customOption
+            innerCard.option === "その他"
+              ? innerCard.customOption || "防御"
               : innerCard.option;
           markdown += `- **WONDER**: ${personaName} - ${displayOption}${
             innerCard.note ? ` - ${innerCard.note}` : ""
@@ -130,8 +130,8 @@ const BattleChartTextCard: React.FC<BattleChartTextCardProps> = ({
           // キャラクター名を取得
           const characterName = `${innerCard.characterId.toLocaleUpperCase()}`;
           const displayOption =
-            innerCard.option === "その他" && innerCard.customOption
-              ? innerCard.customOption
+            innerCard.option === "その他"
+              ? innerCard.customOption || "防御"
               : innerCard.option;
           markdown += `- **${characterName}**: ${displayOption}${
             innerCard.note ? ` - ${innerCard.note}` : ""
