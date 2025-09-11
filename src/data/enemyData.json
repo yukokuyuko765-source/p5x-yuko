@@ -131,6 +131,50 @@
       "hp": 31198,
       "def": 935,
       "additional_def_coeff": 159.1
+    },
+    {
+      "id": "surtr",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-11",
+      "end_at": "2025-09-22",
+      "name": "スルト",
+      "hp": 9999999,
+      "def": 2120,
+      "additional_def_coeff": 157.0
+    },
+    {
+      "id": "jacklantern",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-11",
+      "end_at": "2025-09-22",
+      "name": "ジャックランタン",
+      "hp": 9999999,
+      "def": 940,
+      "additional_def_coeff": 160.5
+    },
+    {
+      "id": "mara",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-11",
+      "end_at": "2025-09-22",
+      "name": "マーラ",
+      "hp": 9999999,
+      "def": 2120,
+      "additional_def_coeff": 157.0
+    },
+    {
+      "id": "decarabia",
+      "version": "2.0",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-11",
+      "end_at": "2025-09-22",
+      "name": "デカラビア",
+      "hp": 9999999,
+      "def": 940,
+      "additional_def_coeff": 160.5
     }
   ]
 }
