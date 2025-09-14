@@ -394,10 +394,10 @@ const DamageOptimizer: React.FC = () => {
         </div>
 
         {/* パターン追加ボタン */}
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-right">
           <button
             onClick={addPattern}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+            className="font-medium py-2 px-6 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-0 transform active:translate-y-1 active:shadow-inner"
           >
             パターンを追加
           </button>
