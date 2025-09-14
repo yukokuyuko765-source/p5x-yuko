@@ -8,6 +8,7 @@ import {
   EnemyDefenseConfig,
   CriticalConfig,
 } from "../../utils/damageOptimization";
+import { PatternData } from "./types";
 import enemyData from "../../data/enemyData.json";
 import combatBuffData from "../../data/combatBuffData.json";
 import damageIncreaseData from "../../data/damageIncreaseData.json";
@@ -23,6 +24,7 @@ import AttackMultiplierSettings from "./AttackMultiplierSettings";
 import EnemyDefenseSettings from "./EnemyDefenseSettings";
 import CriticalSettings from "./CriticalSettings";
 import CalculationResults from "./CalculationResults";
+import PatternInput from "./PatternInput";
 
 const DamageOptimizer: React.FC = () => {
   // 攻撃力設定
@@ -75,6 +77,10 @@ const DamageOptimizer: React.FC = () => {
 
   // 最適化係数
   const [optimizationFactor, setOptimizationFactor] = useState<number>(0);
+
+  // パターン管理
+  const [patterns, setPatterns] = useState<PatternData[]>([]);
+  const [nextPatternId, setNextPatternId] = useState<number>(1);
 
   // 戦闘時バフのチェックボックス用の状態（JSONから動的に作成）
   const [combatBuffCheckboxes, setCombatBuffCheckboxes] = useState<
@@ -215,6 +221,45 @@ const DamageOptimizer: React.FC = () => {
     nonCombatAttackPower.attackConstant
   );
 
+  // パターン追加機能
+  const addPattern = () => {
+    const newPattern: PatternData = {
+      id: `pattern-${nextPatternId}`,
+      name: `パターン ${nextPatternId}`,
+      nonCombatAttackPower: { ...nonCombatAttackPower },
+      attackPower: { ...attackPower },
+      combatBonus: { ...combatBonus },
+      attackMultiplier: { ...attackMultiplier },
+      selectedEnemyId,
+      enemyDefense: { ...enemyDefense },
+      critical: { ...critical },
+      combatBuffCheckboxes: { ...combatBuffCheckboxes },
+      damageIncreaseCheckboxes: { ...damageIncreaseCheckboxes },
+      enemyDamageIncreaseCheckboxes: { ...enemyDamageIncreaseCheckboxes },
+      defenseDebuffCheckboxes: { ...defenseDebuffCheckboxes },
+      criticalRateCheckboxes: { ...criticalRateCheckboxes },
+      criticalMultiplierCheckboxes: { ...criticalMultiplierCheckboxes },
+      optimizationFactor,
+    };
+
+    setPatterns([...patterns, newPattern]);
+    setNextPatternId(nextPatternId + 1);
+  };
+
+  // パターン削除機能
+  const removePattern = (id: string) => {
+    setPatterns(patterns.filter((pattern) => pattern.id !== id));
+  };
+
+  // パターン更新機能
+  const updatePattern = (updatedPattern: PatternData) => {
+    setPatterns(
+      patterns.map((pattern) =>
+        pattern.id === updatedPattern.id ? updatedPattern : pattern
+      )
+    );
+  };
+
   // 最適化係数の自動計算
   useEffect(() => {
     const config: DamageCalculationConfig = {
@@ -345,6 +390,35 @@ const DamageOptimizer: React.FC = () => {
             totalCriticalMultiplier={totalCriticalMultiplier}
           />
         </div>
+
+        {/* パターン追加ボタン */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={addPattern}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          >
+            パターンを追加
+          </button>
+        </div>
+
+        {/* パターン比較 */}
+        {patterns.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              パターン比較
+            </h2>
+            <div className="space-y-4">
+              {patterns.map((pattern) => (
+                <PatternInput
+                  key={pattern.id}
+                  pattern={pattern}
+                  onUpdatePattern={updatePattern}
+                  onRemovePattern={removePattern}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
