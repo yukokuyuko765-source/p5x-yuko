@@ -26,39 +26,81 @@
     },
     {
       "id": "buff5",
-      "name": "ヤノシーク特性",
+      "name": "汎用特性",
       "value": 29.1,
       "turn": null
     },
     {
       "id": "buff6",
+      "name": "汎用特性",
+      "value": 24.9,
+      "turn": null
+    },
+    {
+      "id": "buff7",
       "name": "ヤノシーク標的",
       "value": 20.0,
       "turn": null
     },
     {
-      "id": "buff7",
+      "id": "buff8",
       "name": "凝結",
       "value": 25.0,
       "turn": 2
     },
     {
-      "id": "buff8",
+      "id": "buff9",
       "name": "号令",
       "value": 6.4,
       "turn": null
     },
     {
-      "id": "buff9",
+      "id": "buff10",
       "name": "セタンタ特性",
       "value": 35.0,
       "turn": null
     },
     {
-      "id": "buff10",
+      "id": "buff11",
       "name": "セタンタ特性",
       "value": 11.5,
       "turn": 1
+    },
+    {
+      "id": "buff12",
+      "name": "キングフロスト特性1",
+      "value": 18.0,
+      "turn": 2
+    },
+    {
+      "id": "buff13",
+      "name": "雪王の加護",
+      "value": 30.0,
+      "turn": 2
+    },
+    {
+      "id": "buff14",
+      "name": "尊王の調伏",
+      "value": 20.0,
+      "turn": 2
+    },
+    {
+      "id": "buff15",
+      "name": "ミトラス特性",
+      "value": 14.5,
+      "turn": 2
+    },
+    {
+      "id": "buff16",
+      "name": "ミトラス特性(条件)",
+      "value": 7.25,
+      "turn": 2
+    },
+    {
+      "id": "buff17",
+      "name": "アプサラス特性",
+      "value": 15.4,
+      "turn": 2
     }
   ]
 }

@@ -17,6 +17,12 @@
       "name": "標的",
       "value": 41.6,
       "turn": 2
+    },
+    {
+      "id": "debuff4",
+      "name": "ノルン特性",
+      "value": 31.5,
+      "turn": 2
     }
   ]
 }

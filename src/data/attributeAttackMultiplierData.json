@@ -1,5 +1,10 @@
 {
   "attributeAttackMultipliers": [
-    { "id": "attr1", "name": "トール特性", "value": 12.0, "turn": 2 }
+    { "id": "attr1", "name": "トール特性", "value": 12.0, "turn": 2 },
+    { "id": "attr2", "name": "バフォメット特性", "value": 29.0, "turn": 1 },
+    { "id": "attr3", "name": "アリス特性", "value": 12.0, "turn": 1 },
+    { "id": "attr4", "name": "死んでくれる？", "value": 27.5, "turn": 2 },
+    { "id": "attr5", "name": "キングフロスト特性1", "value": 10.0, "turn": 2 },
+    { "id": "attr6", "name": "ビシャモンテン特性1", "value": 24.0, "turn": 2 }
   ]
 }

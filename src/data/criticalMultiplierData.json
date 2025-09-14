@@ -13,10 +13,22 @@
       "turn": null
     },
     {
-      "id": "crit6",
+      "id": "mult3",
       "name": "トール特性(電撃)",
       "value": 20.0,
       "turn": 2
+    },
+    {
+      "id": "mult4",
+      "name": "ユルング特性",
+      "value": 18.0,
+      "turn": null
+    },
+    {
+      "id": "mult5",
+      "name": "ユルング特性(感電)",
+      "value": 11.0,
+      "turn": null
     }
   ]
 }
