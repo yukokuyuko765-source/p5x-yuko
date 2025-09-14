@@ -82,6 +82,25 @@ export const calculateAttackPower = (config: AttackPowerConfig): number => {
 };
 
 /**
+ * キャラ基礎攻撃力算出関数
+ * 攻撃力計算結果からキャラ基礎攻撃力を逆算
+ * キャラ基礎攻撃力 = (攻撃力計算結果 - 攻撃定数) ÷ 攻撃バフ - 武器攻撃力
+ */
+export const calculateCharacterBaseAttack = (
+  targetAttackPower: number,
+  weaponAttack: number,
+  attackBuff: number,
+  attackConstant: number
+): number => {
+  // 攻撃バフが0の場合はエラーを避けるため1を返す
+  if (attackBuff === 0) {
+    return 1;
+  }
+
+  return (targetAttackPower - attackConstant) / attackBuff - weaponAttack;
+};
+
+/**
  * 攻撃倍率+計算関数
  * 100% + 攻撃倍率+ + 属性攻撃倍率+ + 与ダメージ上昇率 + 敵被ダメージ上昇率
  */
