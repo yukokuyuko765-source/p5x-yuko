@@ -3,6 +3,7 @@ import { NumericFormat } from "react-number-format";
 import { AttackMultiplierConfig } from "../../utils/damageOptimization";
 import damageIncreaseData from "../../data/damageIncreaseData.json";
 import enemyDamageIncreaseData from "../../data/enemyDamageIncreaseData.json";
+import attributeAttackMultiplierData from "../../data/attributeAttackMultiplierData.json";
 
 interface AttackMultiplierSettingsProps {
   attackMultiplier: AttackMultiplierConfig;
@@ -17,8 +18,13 @@ interface AttackMultiplierSettingsProps {
   setEnemyDamageIncreaseCheckboxes: React.Dispatch<
     React.SetStateAction<Record<string, number>>
   >;
+  attributeAttackMultiplierCheckboxes: Record<string, number>;
+  setAttributeAttackMultiplierCheckboxes: React.Dispatch<
+    React.SetStateAction<Record<string, number>>
+  >;
   totalDamageIncrease: number;
   totalEnemyDamageIncrease: number;
+  totalAttributeAttackMultiplier: number;
 }
 
 const AttackMultiplierSettings: React.FC<AttackMultiplierSettingsProps> = ({
@@ -28,8 +34,11 @@ const AttackMultiplierSettings: React.FC<AttackMultiplierSettingsProps> = ({
   setDamageIncreaseCheckboxes,
   enemyDamageIncreaseCheckboxes,
   setEnemyDamageIncreaseCheckboxes,
+  attributeAttackMultiplierCheckboxes,
+  setAttributeAttackMultiplierCheckboxes,
   totalDamageIncrease,
   totalEnemyDamageIncrease,
+  totalAttributeAttackMultiplier,
 }) => {
   return (
     <div className="bg-gray-50 rounded-lg p-3">
@@ -70,6 +79,35 @@ const AttackMultiplierSettings: React.FC<AttackMultiplierSettingsProps> = ({
             allowNegative={false}
             className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+        <div>
+          <div className="space-y-1">
+            {attributeAttackMultiplierData.attributeAttackMultipliers.map(
+              (attr) => (
+                <div key={attr.id} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={attributeAttackMultiplierCheckboxes[attr.id] > 0}
+                    onChange={(e) =>
+                      setAttributeAttackMultiplierCheckboxes({
+                        ...attributeAttackMultiplierCheckboxes,
+                        [attr.id]: e.target.checked ? attr.value : 0,
+                      })
+                    }
+                    className="mr-1"
+                  />
+                  <span className="text-xs text-gray-600">
+                    {attr.name} ({attr.value}%)
+                  </span>
+                </div>
+              )
+            )}
+          </div>
+          <div className="mt-2 p-2 bg-purple-50 rounded border">
+            <div className="text-xs font-medium text-purple-800">
+              合計: {totalAttributeAttackMultiplier}%
+            </div>
+          </div>
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">

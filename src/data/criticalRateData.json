@@ -3,27 +3,32 @@
     {
       "id": "crit1",
       "name": "感電",
-      "value": 10.0
+      "value": 10.0,
+      "turn": 2
     },
     {
       "id": "crit2",
       "name": "リベリオン",
-      "value": 15.7
+      "value": 15.7,
+      "turn": 3
     },
     {
       "id": "crit3",
       "name": "レボリューション",
-      "value": 10.9
+      "value": 10.9,
+      "turn": 3
     },
     {
       "id": "crit4",
       "name": "サキュバス特性",
-      "value": 11.7
+      "value": 11.7,
+      "turn": 1
     },
     {
       "id": "crit5",
       "name": "アメノウズメ特性",
-      "value": 10.0
+      "value": 10.0,
+      "turn": 2
     }
   ]
 }

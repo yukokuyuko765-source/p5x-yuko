@@ -3,7 +3,20 @@
     {
       "id": "mult1",
       "name": "ディオニュソス特性",
-      "value": 30.0
+      "value": 30.0,
+      "turn": 2
+    },
+    {
+      "id": "mult2",
+      "name": "セタンタ特性",
+      "value": 15.0,
+      "turn": null
+    },
+    {
+      "id": "crit6",
+      "name": "トール特性(電撃)",
+      "value": 20.0,
+      "turn": 2
     }
   ]
 }

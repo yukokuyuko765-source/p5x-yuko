@@ -3,7 +3,8 @@
     {
       "id": "enemy1",
       "name": "屈従HL",
-      "value": 19.6
+      "value": 19.6,
+      "turn": 2
     }
   ]
 }

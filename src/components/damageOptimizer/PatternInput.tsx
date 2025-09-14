@@ -60,6 +60,10 @@ const PatternInput: React.FC<PatternInputProps> = ({
   );
   const [enemyDamageIncreaseCheckboxes, setEnemyDamageIncreaseCheckboxes] =
     useState(pattern.enemyDamageIncreaseCheckboxes);
+  const [
+    attributeAttackMultiplierCheckboxes,
+    setAttributeAttackMultiplierCheckboxes,
+  ] = useState(pattern.attributeAttackMultiplierCheckboxes);
   const [defenseDebuffCheckboxes, setDefenseDebuffCheckboxes] = useState(
     pattern.defenseDebuffCheckboxes
   );
@@ -86,6 +90,11 @@ const PatternInput: React.FC<PatternInputProps> = ({
       (sum, value) => sum + value,
       0
     ) + attackMultiplier.enemyDamageIncreaseRate;
+  const totalAttributeAttackMultiplier =
+    Object.values(attributeAttackMultiplierCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + attackMultiplier.attributeAttackMultiplierPlus;
   const totalDefenseDebuff =
     Object.values(defenseDebuffCheckboxes).reduce(
       (sum, value) => sum + value,
@@ -151,6 +160,7 @@ const PatternInput: React.FC<PatternInputProps> = ({
       },
       attackMultiplier: {
         ...attackMultiplier,
+        attributeAttackMultiplierPlus: totalAttributeAttackMultiplier,
         damageIncreaseRate: totalDamageIncrease,
         enemyDamageIncreaseRate: totalEnemyDamageIncrease,
       },
@@ -177,6 +187,7 @@ const PatternInput: React.FC<PatternInputProps> = ({
     nonCombatAttackPower,
     combatBonus,
     totalCombatBuff,
+    totalAttributeAttackMultiplier,
     totalDamageIncrease,
     totalEnemyDamageIncrease,
     totalDefenseDebuff,
@@ -207,6 +218,7 @@ const PatternInput: React.FC<PatternInputProps> = ({
       combatBuffCheckboxes,
       damageIncreaseCheckboxes,
       enemyDamageIncreaseCheckboxes,
+      attributeAttackMultiplierCheckboxes,
       defenseDebuffCheckboxes,
       criticalRateCheckboxes,
       criticalMultiplierCheckboxes,
@@ -224,6 +236,7 @@ const PatternInput: React.FC<PatternInputProps> = ({
     combatBuffCheckboxes,
     damageIncreaseCheckboxes,
     enemyDamageIncreaseCheckboxes,
+    attributeAttackMultiplierCheckboxes,
     defenseDebuffCheckboxes,
     criticalRateCheckboxes,
     criticalMultiplierCheckboxes,
@@ -268,8 +281,15 @@ const PatternInput: React.FC<PatternInputProps> = ({
           setDamageIncreaseCheckboxes={setDamageIncreaseCheckboxes}
           enemyDamageIncreaseCheckboxes={enemyDamageIncreaseCheckboxes}
           setEnemyDamageIncreaseCheckboxes={setEnemyDamageIncreaseCheckboxes}
+          attributeAttackMultiplierCheckboxes={
+            attributeAttackMultiplierCheckboxes
+          }
+          setAttributeAttackMultiplierCheckboxes={
+            setAttributeAttackMultiplierCheckboxes
+          }
           totalDamageIncrease={totalDamageIncrease}
           totalEnemyDamageIncrease={totalEnemyDamageIncrease}
+          totalAttributeAttackMultiplier={totalAttributeAttackMultiplier}
         />
 
         {/* 敵防御力設定 */}
@@ -303,6 +323,7 @@ const PatternInput: React.FC<PatternInputProps> = ({
           enemyDefense={enemyDefense}
           critical={critical}
           totalCombatBuff={totalCombatBuff}
+          totalAttributeAttackMultiplier={totalAttributeAttackMultiplier}
           totalDamageIncrease={totalDamageIncrease}
           totalEnemyDamageIncrease={totalEnemyDamageIncrease}
           totalDefenseDebuff={totalDefenseDebuff}

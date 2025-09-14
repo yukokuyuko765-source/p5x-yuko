@@ -13,6 +13,7 @@ interface CalculationResultsProps {
   enemyDefense: EnemyDefenseConfig;
   critical: CriticalConfig;
   totalCombatBuff: number;
+  totalAttributeAttackMultiplier: number;
   totalDamageIncrease: number;
   totalEnemyDamageIncrease: number;
   totalDefenseDebuff: number;
@@ -27,6 +28,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
   enemyDefense,
   critical,
   totalCombatBuff,
+  totalAttributeAttackMultiplier,
   totalDamageIncrease,
   totalEnemyDamageIncrease,
   totalDefenseDebuff,
@@ -67,7 +69,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
               {(
                 (100 +
                   attackMultiplier.attackMultiplierPlus +
-                  attackMultiplier.attributeAttackMultiplierPlus +
+                  totalAttributeAttackMultiplier +
                   totalDamageIncrease +
                   totalEnemyDamageIncrease) /
                 100

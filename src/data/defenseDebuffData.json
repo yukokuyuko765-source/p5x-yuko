@@ -3,17 +3,20 @@
     {
       "id": "debuff1",
       "name": "ラクンダ",
-      "value": 38.8
+      "value": 38.8,
+      "turn": 3
     },
     {
       "id": "debuff2",
       "name": "マハラクンダ",
-      "value": 27.1
+      "value": 27.1,
+      "turn": 3
     },
     {
       "id": "debuff3",
       "name": "標的",
-      "value": 41.6
+      "value": 41.6,
+      "turn": 2
     }
   ]
 }

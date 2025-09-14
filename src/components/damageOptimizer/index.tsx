@@ -13,6 +13,7 @@ import enemyData from "../../data/enemyData.json";
 import combatBuffData from "../../data/combatBuffData.json";
 import damageIncreaseData from "../../data/damageIncreaseData.json";
 import enemyDamageIncreaseData from "../../data/enemyDamageIncreaseData.json";
+import attributeAttackMultiplierData from "../../data/attributeAttackMultiplierData.json";
 import defenseDebuffData from "../../data/defenseDebuffData.json";
 import criticalRateData from "../../data/criticalRateData.json";
 import criticalMultiplierData from "../../data/criticalMultiplierData.json";
@@ -111,6 +112,20 @@ const DamageOptimizer: React.FC = () => {
       }, {} as Record<string, number>)
     );
 
+  // 属性攻撃倍率+のチェックボックス用の状態
+  const [
+    attributeAttackMultiplierCheckboxes,
+    setAttributeAttackMultiplierCheckboxes,
+  ] = useState<Record<string, number>>(
+    attributeAttackMultiplierData.attributeAttackMultipliers.reduce(
+      (acc, attr) => {
+        acc[attr.id] = 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    )
+  );
+
   // 防御デバフのチェックボックス用の状態
   const [defenseDebuffCheckboxes, setDefenseDebuffCheckboxes] = useState<
     Record<string, number>
@@ -158,6 +173,13 @@ const DamageOptimizer: React.FC = () => {
       (sum, value) => sum + value,
       0
     ) + attackMultiplier.enemyDamageIncreaseRate;
+
+  // 属性攻撃倍率+の合計値を計算（チェックボックス + 手動入力）
+  const totalAttributeAttackMultiplier =
+    Object.values(attributeAttackMultiplierCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + attackMultiplier.attributeAttackMultiplierPlus;
 
   // 防御デバフの合計値を計算（チェックボックス + 手動入力）
   const totalDefenseDebuff =
@@ -236,6 +258,9 @@ const DamageOptimizer: React.FC = () => {
       combatBuffCheckboxes: { ...combatBuffCheckboxes },
       damageIncreaseCheckboxes: { ...damageIncreaseCheckboxes },
       enemyDamageIncreaseCheckboxes: { ...enemyDamageIncreaseCheckboxes },
+      attributeAttackMultiplierCheckboxes: {
+        ...attributeAttackMultiplierCheckboxes,
+      },
       defenseDebuffCheckboxes: { ...defenseDebuffCheckboxes },
       criticalRateCheckboxes: { ...criticalRateCheckboxes },
       criticalMultiplierCheckboxes: { ...criticalMultiplierCheckboxes },
@@ -281,6 +306,7 @@ const DamageOptimizer: React.FC = () => {
       },
       attackMultiplier: {
         ...attackMultiplier,
+        attributeAttackMultiplierPlus: totalAttributeAttackMultiplier,
         damageIncreaseRate: totalDamageIncrease,
         enemyDamageIncreaseRate: totalEnemyDamageIncrease,
       },
@@ -307,6 +333,7 @@ const DamageOptimizer: React.FC = () => {
     nonCombatAttackPower,
     combatBonus,
     totalCombatBuff,
+    totalAttributeAttackMultiplier,
     totalDamageIncrease,
     totalEnemyDamageIncrease,
     totalDefenseDebuff,
@@ -350,8 +377,15 @@ const DamageOptimizer: React.FC = () => {
             setDamageIncreaseCheckboxes={setDamageIncreaseCheckboxes}
             enemyDamageIncreaseCheckboxes={enemyDamageIncreaseCheckboxes}
             setEnemyDamageIncreaseCheckboxes={setEnemyDamageIncreaseCheckboxes}
+            attributeAttackMultiplierCheckboxes={
+              attributeAttackMultiplierCheckboxes
+            }
+            setAttributeAttackMultiplierCheckboxes={
+              setAttributeAttackMultiplierCheckboxes
+            }
             totalDamageIncrease={totalDamageIncrease}
             totalEnemyDamageIncrease={totalEnemyDamageIncrease}
+            totalAttributeAttackMultiplier={totalAttributeAttackMultiplier}
           />
 
           {/* 敵防御力設定 */}
@@ -385,6 +419,7 @@ const DamageOptimizer: React.FC = () => {
             enemyDefense={enemyDefense}
             critical={critical}
             totalCombatBuff={totalCombatBuff}
+            totalAttributeAttackMultiplier={totalAttributeAttackMultiplier}
             totalDamageIncrease={totalDamageIncrease}
             totalEnemyDamageIncrease={totalEnemyDamageIncrease}
             totalDefenseDebuff={totalDefenseDebuff}

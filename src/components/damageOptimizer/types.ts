@@ -27,6 +27,7 @@ export interface PatternData {
   combatBuffCheckboxes: Record<string, number>;
   damageIncreaseCheckboxes: Record<string, number>;
   enemyDamageIncreaseCheckboxes: Record<string, number>;
+  attributeAttackMultiplierCheckboxes: Record<string, number>;
   defenseDebuffCheckboxes: Record<string, number>;
   criticalRateCheckboxes: Record<string, number>;
   criticalMultiplierCheckboxes: Record<string, number>;

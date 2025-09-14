@@ -3,32 +3,62 @@
     {
       "id": "buff1",
       "name": "タルカジャ",
-      "value": 25.9
+      "value": 25.9,
+      "turn": 3
     },
     {
       "id": "buff2",
       "name": "マハタルカジャ",
-      "value": 18.1
+      "value": 18.1,
+      "turn": 3
     },
     {
       "id": "buff3",
       "name": "ラクカジャ",
-      "value": 38.9
+      "value": 38.9,
+      "turn": 3
     },
     {
       "id": "buff4",
       "name": "マハラクカジャ",
-      "value": 27.1
+      "value": 27.1,
+      "turn": 3
     },
     {
       "id": "buff5",
       "name": "ヤノシーク特性",
-      "value": 29.1
+      "value": 29.1,
+      "turn": null
     },
     {
       "id": "buff6",
       "name": "ヤノシーク標的",
-      "value": 20.0
+      "value": 20.0,
+      "turn": null
+    },
+    {
+      "id": "buff7",
+      "name": "凝結",
+      "value": 25.0,
+      "turn": 2
+    },
+    {
+      "id": "buff8",
+      "name": "号令",
+      "value": 6.4,
+      "turn": null
+    },
+    {
+      "id": "buff9",
+      "name": "セタンタ特性",
+      "value": 35.0,
+      "turn": null
+    },
+    {
+      "id": "buff10",
+      "name": "セタンタ特性",
+      "value": 11.5,
+      "turn": 1
     }
   ]
 }

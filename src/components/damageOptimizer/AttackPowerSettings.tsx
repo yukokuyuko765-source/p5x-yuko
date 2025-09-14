@@ -54,7 +54,7 @@ const AttackPowerSettings: React.FC<AttackPowerSettingsProps> = ({
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">
-            バフ率
+            非戦闘時%補正
           </label>
           <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-600">
             {attackPower.attackBuff}%
@@ -62,7 +62,7 @@ const AttackPowerSettings: React.FC<AttackPowerSettingsProps> = ({
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">
-            定数
+            非戦闘時定数補正
           </label>
           <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-600">
             {attackPower.attackConstant.toLocaleString()}
@@ -70,7 +70,7 @@ const AttackPowerSettings: React.FC<AttackPowerSettingsProps> = ({
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">
-            戦闘時バフ
+            戦闘時%バフ
           </label>
           <NumericFormat
             value={combatBonus.combatBuff}
@@ -114,7 +114,7 @@ const AttackPowerSettings: React.FC<AttackPowerSettingsProps> = ({
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">
-            戦闘時攻撃定数
+            戦闘時定数バフ
           </label>
           <NumericFormat
             value={combatBonus.combatConstant}
