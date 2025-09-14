@@ -60,6 +60,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                 戦闘チャートメーカー
               </Link>
             </li>
+            <li>
+              <Link
+                to="/damageOptimizer"
+                className="block px-4 py-3 text-white rounded-lg hover:bg-white/10 transition-colors duration-200"
+              >
+                ダメージ最適化ツール
+              </Link>
+            </li>
           </ul>
         </nav>
 
