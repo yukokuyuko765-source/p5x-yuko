@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   calculateOptimizationFactor,
   calculateCharacterBaseAttack,
@@ -68,6 +68,9 @@ const PatternInput: React.FC<PatternInputProps> = ({
   );
   const [criticalMultiplierCheckboxes, setCriticalMultiplierCheckboxes] =
     useState(pattern.criticalMultiplierCheckboxes);
+
+  // パターン更新の制御用ref
+  const isInitialMount = useRef(true);
 
   // 合計値の計算
   const totalCombatBuff =
@@ -186,6 +189,12 @@ const PatternInput: React.FC<PatternInputProps> = ({
 
   // パターン更新
   useEffect(() => {
+    // 初回マウント時は更新しない
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const updatedPattern: PatternData = {
       ...pattern,
       nonCombatAttackPower,
@@ -205,7 +214,6 @@ const PatternInput: React.FC<PatternInputProps> = ({
     };
     onUpdatePattern(updatedPattern);
   }, [
-    pattern,
     nonCombatAttackPower,
     attackPower,
     combatBonus,
@@ -220,7 +228,6 @@ const PatternInput: React.FC<PatternInputProps> = ({
     criticalRateCheckboxes,
     criticalMultiplierCheckboxes,
     optimizationFactor,
-    onUpdatePattern,
   ]);
 
   return (

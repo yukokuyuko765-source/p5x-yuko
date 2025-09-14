@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   calculateOptimizationFactor,
   calculateCharacterBaseAttack,
@@ -247,18 +247,20 @@ const DamageOptimizer: React.FC = () => {
   };
 
   // パターン削除機能
-  const removePattern = (id: string) => {
-    setPatterns(patterns.filter((pattern) => pattern.id !== id));
-  };
+  const removePattern = useCallback((id: string) => {
+    setPatterns((prevPatterns) =>
+      prevPatterns.filter((pattern) => pattern.id !== id)
+    );
+  }, []);
 
   // パターン更新機能
-  const updatePattern = (updatedPattern: PatternData) => {
-    setPatterns(
-      patterns.map((pattern) =>
+  const updatePattern = useCallback((updatedPattern: PatternData) => {
+    setPatterns((prevPatterns) =>
+      prevPatterns.map((pattern) =>
         pattern.id === updatedPattern.id ? updatedPattern : pattern
       )
     );
-  };
+  }, []);
 
   // 最適化係数の自動計算
   useEffect(() => {

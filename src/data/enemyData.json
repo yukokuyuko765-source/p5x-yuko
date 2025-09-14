@@ -1,7 +1,7 @@
 {
   "enemies": [
     {
-      "id": "lilith",
+      "id": "lilith1.4",
       "version": "1.4",
       "stage": "心の海",
       "start_at": "2025-08-21",
@@ -12,7 +12,7 @@
       "additional_def_coeff": 155
     },
     {
-      "id": "nue",
+      "id": "nue1.4",
       "version": "1.4",
       "stage": "心の海",
       "start_at": "2025-08-21",
@@ -23,7 +23,7 @@
       "additional_def_coeff": 155
     },
     {
-      "id": "seiryu",
+      "id": "seiryu1.4",
       "version": "1.4",
       "stage": "心の海",
       "start_at": "2025-08-21",
@@ -34,7 +34,7 @@
       "additional_def_coeff": 174.7
     },
     {
-      "id": "surtr",
+      "id": "surtr1.4",
       "version": "1.4",
       "stage": "閼兇夢の扉",
       "start_at": "2025-08-28",
@@ -45,7 +45,7 @@
       "additional_def_coeff": 161.1
     },
     {
-      "id": "jacklantern",
+      "id": "jacklantern1.4",
       "version": "1.4",
       "stage": "閼兇夢の扉",
       "start_at": "2025-08-28",
@@ -56,7 +56,7 @@
       "additional_def_coeff": 154.7
     },
     {
-      "id": "yatsufusa",
+      "id": "yatsufusa1.4",
       "version": "1.4",
       "stage": "閼兇夢の扉",
       "start_at": "2025-08-28",
@@ -67,7 +67,7 @@
       "additional_def_coeff": 207.5
     },
     {
-      "id": "dominion",
+      "id": "dominion2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-04",
@@ -78,7 +78,7 @@
       "additional_def_coeff": 161.5
     },
     {
-      "id": "angel",
+      "id": "angel2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-04",
@@ -89,7 +89,7 @@
       "additional_def_coeff": 152.2
     },
     {
-      "id": "yatsufusa",
+      "id": "yatsufusa2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-04",
@@ -100,7 +100,7 @@
       "additional_def_coeff": 200.4
     },
     {
-      "id": "seiryu",
+      "id": "seiryu2.0",
       "version": "2.0",
       "stage": "心の海",
       "start_at": "2025-09-04",
@@ -111,7 +111,7 @@
       "additional_def_coeff": 154.6
     },
     {
-      "id": "sraosha",
+      "id": "sraosha2.0",
       "version": "2.0",
       "stage": "心の海",
       "start_at": "2025-09-04",
@@ -122,7 +122,7 @@
       "additional_def_coeff": 158.7
     },
     {
-      "id": "apsaras",
+      "id": "apsaras2.0",
       "version": "2.0",
       "stage": "心の海",
       "start_at": "2025-09-04",
@@ -133,7 +133,7 @@
       "additional_def_coeff": 159.1
     },
     {
-      "id": "surtr",
+      "id": "surtr2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-11",
@@ -144,7 +144,7 @@
       "additional_def_coeff": 157.0
     },
     {
-      "id": "jacklantern",
+      "id": "jacklantern2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-11",
@@ -155,7 +155,7 @@
       "additional_def_coeff": 160.5
     },
     {
-      "id": "mara",
+      "id": "mara2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-11",
@@ -166,7 +166,7 @@
       "additional_def_coeff": 157.0
     },
     {
-      "id": "decarabia",
+      "id": "decarabia2.0",
       "version": "2.0",
       "stage": "閼兇夢の扉",
       "start_at": "2025-09-11",

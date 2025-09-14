@@ -39,11 +39,36 @@ const EnemyDefenseSettings: React.FC<EnemyDefenseSettingsProps> = ({
             className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">敵を選択してください</option>
-            {enemyData.enemies.map((enemy) => (
-              <option key={enemy.id} value={enemy.id}>
-                {enemy.name} (防御力: {enemy.def})
-              </option>
-            ))}
+            {(() => {
+              // バージョン毎にグループ化
+              const groupedEnemies = enemyData.enemies.reduce((acc, enemy) => {
+                if (!acc[enemy.version]) {
+                  acc[enemy.version] = [];
+                }
+                acc[enemy.version].push(enemy);
+                return acc;
+              }, {} as Record<string, typeof enemyData.enemies>);
+
+              // バージョン順でソート
+              const sortedVersions = Object.keys(groupedEnemies).sort(
+                (a, b) => {
+                  const [majorA, minorA] = a.split(".").map(Number);
+                  const [majorB, minorB] = b.split(".").map(Number);
+                  if (majorA !== majorB) return majorB - majorA;
+                  return minorB - minorA;
+                }
+              );
+
+              return sortedVersions.map((version) => (
+                <optgroup key={version} label={`バージョン ${version}`}>
+                  {groupedEnemies[version].map((enemy) => (
+                    <option key={enemy.id} value={enemy.id}>
+                      {enemy.name} (防御力: {enemy.def})
+                    </option>
+                  ))}
+                </optgroup>
+              ));
+            })()}
           </select>
         </div>
         <div>
