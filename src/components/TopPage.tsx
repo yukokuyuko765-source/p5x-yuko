@@ -105,7 +105,9 @@ const TopPage: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold mb-2">ダメージ最適化ツール</h2>
+            <h2 className="text-xl font-semibold mb-2">
+              ダメージ係数比較ツール
+            </h2>
             <p className="text-sm">一手の価値を比較して最適なスキルを選択</p>
           </div>
           <div className="text-gray-400 ml-4">

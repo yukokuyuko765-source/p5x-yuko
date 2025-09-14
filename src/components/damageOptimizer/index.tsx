@@ -10,6 +10,7 @@ import {
   CriticalConfig,
 } from "../../utils/damageOptimization";
 import enemyData from "../../data/enemyData.json";
+import combatBuffData from "../../data/combatBuffData.json";
 
 const DamageOptimizer: React.FC = () => {
   // 攻撃力設定
@@ -65,6 +66,21 @@ const DamageOptimizer: React.FC = () => {
   // 最適化係数
   const [optimizationFactor, setOptimizationFactor] = useState<number>(0);
 
+  // 戦闘時バフのチェックボックス用の状態（JSONから動的に作成）
+  const [combatBuffCheckboxes, setCombatBuffCheckboxes] = useState<
+    Record<string, number>
+  >(
+    combatBuffData.combatBuffs.reduce((acc, buff) => {
+      acc[buff.id] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  );
+
+  // 戦闘時バフの合計値を計算（チェックボックス + 手動入力）
+  const totalCombatBuff =
+    Object.values(combatBuffCheckboxes).reduce((sum, value) => sum + value, 0) +
+    combatBonus.combatBuff;
+
   // 非戦闘時攻撃力設定が変更されたときに自動計算
   useEffect(() => {
     const characterBaseAttack = calculateCharacterBaseAttack(
@@ -105,7 +121,7 @@ const DamageOptimizer: React.FC = () => {
             ? Math.round(calculatedCharacterBaseAttack)
             : 0,
         weaponAttack: nonCombatAttackPower.weaponAttack,
-        attackBuff: nonCombatAttackPower.attackBuff + combatBonus.combatBuff,
+        attackBuff: nonCombatAttackPower.attackBuff + totalCombatBuff,
         attackConstant:
           nonCombatAttackPower.attackConstant + combatBonus.combatConstant,
       },
@@ -125,6 +141,7 @@ const DamageOptimizer: React.FC = () => {
     calculatedCharacterBaseAttack,
     nonCombatAttackPower,
     combatBonus,
+    totalCombatBuff,
     attackMultiplier,
     enemyDefense,
     critical,
@@ -134,7 +151,7 @@ const DamageOptimizer: React.FC = () => {
     <div className="bg-white rounded-lg shadow-lg p-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          ダメージ最適化ツール
+          ダメージ係数比較ツール
         </h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-6 gap-3">
@@ -277,6 +294,33 @@ const DamageOptimizer: React.FC = () => {
                   allowNegative={true}
                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+              <div>
+                <div className="space-y-1">
+                  {combatBuffData.combatBuffs.map((buff) => (
+                    <div key={buff.id} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={combatBuffCheckboxes[buff.id] > 0}
+                        onChange={(e) =>
+                          setCombatBuffCheckboxes({
+                            ...combatBuffCheckboxes,
+                            [buff.id]: e.target.checked ? buff.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {buff.name} ({buff.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-blue-50 rounded border">
+                  <div className="text-xs font-medium text-blue-800">
+                    合計: {totalCombatBuff}%
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -558,7 +602,6 @@ const DamageOptimizer: React.FC = () => {
                 <div className="text-lg font-bold text-blue-600 mb-1">
                   {optimizationFactor.toLocaleString()}
                 </div>
-                <div className="text-xs text-gray-600">最適化係数</div>
               </div>
             </div>
 
@@ -578,7 +621,7 @@ const DamageOptimizer: React.FC = () => {
                         nonCombatAttackPower.weaponAttack) *
                         ((100 +
                           nonCombatAttackPower.attackBuff +
-                          combatBonus.combatBuff) /
+                          totalCombatBuff) /
                           100) +
                         (nonCombatAttackPower.attackConstant +
                           combatBonus.combatConstant)

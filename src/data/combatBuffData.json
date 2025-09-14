@@ -1,0 +1,14 @@
+{
+  "combatBuffs": [
+    {
+      "id": "buff1",
+      "name": "タルカジャ",
+      "value": 25.9
+    },
+    {
+      "id": "buff2",
+      "name": "マハタルカジャ",
+      "value": 18.1
+    }
+  ]
+}

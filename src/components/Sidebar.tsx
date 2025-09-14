@@ -65,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                 to="/damageOptimizer"
                 className="block px-4 py-3 text-white rounded-lg hover:bg-white/10 transition-colors duration-200"
               >
-                ダメージ最適化ツール
+                ダメージ係数比較ツール
               </Link>
             </li>
           </ul>
