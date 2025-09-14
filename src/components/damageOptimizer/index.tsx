@@ -131,22 +131,21 @@ const DamageOptimizer: React.FC = () => {
   ]);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        ダメージ最適化ツール
-      </h1>
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+          ダメージ最適化ツール
+        </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* 入力エリア */}
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 xl:grid-cols-6 gap-3">
           {/* 非戦闘時攻撃力設定 */}
-          <div className="bg-green-50 rounded-lg p-6 border border-green-200">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
               非戦闘時攻撃力設定
             </h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   ステータス画面攻撃力
                 </label>
                 <NumericFormat
@@ -159,11 +158,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   thousandSeparator=","
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   武器攻撃力
                 </label>
                 <NumericFormat
@@ -176,11 +175,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   thousandSeparator=","
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   攻撃%(啓示と武器の%合計値)
                 </label>
                 <NumericFormat
@@ -195,11 +194,11 @@ const DamageOptimizer: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale={false}
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   攻撃定数(啓示と武器の定数による補強合計値)
                 </label>
                 <NumericFormat
@@ -212,54 +211,56 @@ const DamageOptimizer: React.FC = () => {
                   }
                   thousandSeparator=","
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
             </div>
           </div>
 
           {/* 攻撃力設定 */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
               攻撃力設定
             </h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   キャラ基礎攻撃力
                 </label>
-                <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700">
+                <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-700">
                   {calculatedCharacterBaseAttack !== 0
                     ? Math.round(calculatedCharacterBaseAttack).toLocaleString()
                     : "非戦闘時攻撃力設定で計算してください"}
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   武器攻撃力
                 </label>
-                <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700">
+                <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-700">
                   {nonCombatAttackPower.weaponAttack.toLocaleString()}
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   非戦闘時攻撃バフ
                 </label>
-                <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700">
+                <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-700">
                   {nonCombatAttackPower.attackBuff.toLocaleString()}%
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   非戦闘時攻撃定数
                 </label>
-                <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700">
+                <div className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-700">
                   {nonCombatAttackPower.attackConstant.toLocaleString()}
                 </div>
               </div>
+            </div>
+            <div className="space-y-2 mt-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   戦闘時バフ
                 </label>
                 <NumericFormat
@@ -274,11 +275,11 @@ const DamageOptimizer: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale={false}
                   allowNegative={true}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   戦闘時攻撃定数
                 </label>
                 <NumericFormat
@@ -291,20 +292,20 @@ const DamageOptimizer: React.FC = () => {
                   }
                   thousandSeparator=","
                   allowNegative={true}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
           </div>
 
           {/* 攻撃倍率+設定 */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
               攻撃倍率+設定
             </h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   攻撃倍率+
                 </label>
                 <NumericFormat
@@ -317,11 +318,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   属性攻撃倍率+
                 </label>
                 <NumericFormat
@@ -334,11 +335,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   与ダメージ上昇率
                 </label>
                 <NumericFormat
@@ -351,11 +352,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   敵被ダメージ上昇率
                 </label>
                 <NumericFormat
@@ -368,48 +369,48 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
           </div>
 
           {/* 敵防御力設定 */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
               敵防御力設定
             </h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                敵を選択
-              </label>
-              <select
-                value={selectedEnemyId}
-                onChange={(e) => setSelectedEnemyId(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">敵を選択してください</option>
-                {Array.from(
-                  new Set(enemyData.enemies.map((enemy) => enemy.version))
-                )
-                  .sort()
-                  .map((version) => (
-                    <optgroup key={version} label={`Version ${version}`}>
-                      {enemyData.enemies
-                        .filter((enemy) => enemy.version === version)
-                        .map((enemy) => (
-                          <option key={enemy.id} value={enemy.id}>
-                            {enemy.name} ({enemy.stage}) - DEF: {enemy.def},
-                            追加防御係数: {enemy.additional_def_coeff}%
-                          </option>
-                        ))}
-                    </optgroup>
-                  ))}
-              </select>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  敵を選択
+                </label>
+                <select
+                  value={selectedEnemyId}
+                  onChange={(e) => setSelectedEnemyId(e.target.value)}
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">敵を選択してください</option>
+                  {Array.from(
+                    new Set(enemyData.enemies.map((enemy) => enemy.version))
+                  )
+                    .sort()
+                    .map((version) => (
+                      <optgroup key={version} label={`Version ${version}`}>
+                        {enemyData.enemies
+                          .filter((enemy) => enemy.version === version)
+                          .map((enemy) => (
+                            <option key={enemy.id} value={enemy.id}>
+                              {enemy.name} ({enemy.stage}) - DEF: {enemy.def},
+                              追加防御係数: {enemy.additional_def_coeff}%
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   敵基礎防御力
                 </label>
                 <NumericFormat
@@ -422,11 +423,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   thousandSeparator=","
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   追加防御係数
                 </label>
                 <NumericFormat
@@ -441,11 +442,11 @@ const DamageOptimizer: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale={false}
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   貫通
                 </label>
                 <NumericFormat
@@ -460,11 +461,11 @@ const DamageOptimizer: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale={false}
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   防御デバフ
                 </label>
                 <NumericFormat
@@ -479,10 +480,10 @@ const DamageOptimizer: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale={false}
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="col-span-2">
+              <div>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -495,7 +496,7 @@ const DamageOptimizer: React.FC = () => {
                     }
                     className="mr-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-xs font-medium text-gray-700">
                     風襲時（88%係数適用）
                   </span>
                 </label>
@@ -504,13 +505,13 @@ const DamageOptimizer: React.FC = () => {
           </div>
 
           {/* クリティカル設定 */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
               クリティカル設定
             </h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   クリティカル発生率 (%)
                 </label>
                 <NumericFormat
@@ -523,11 +524,11 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   クリティカル倍率 (%)
                 </label>
                 <NumericFormat
@@ -540,24 +541,93 @@ const DamageOptimizer: React.FC = () => {
                   }
                   suffix="%"
                   allowNegative={false}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 結果表示エリア */}
-        <div className="space-y-6">
-          <div className="bg-blue-50 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              計算結果
-            </h2>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
-                {optimizationFactor.toLocaleString()}
+          {/* 計算結果と詳細計算結果 */}
+          <div className="space-y-3">
+            {/* 計算結果 */}
+            <div className="bg-blue-50 rounded-lg p-3">
+              <h2 className="text-sm font-semibold text-gray-800 mb-2">
+                計算結果
+              </h2>
+              <div className="text-center">
+                <div className="text-lg font-bold text-blue-600 mb-1">
+                  {optimizationFactor.toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-600">最適化係数</div>
               </div>
-              <div className="text-sm text-gray-600">最適化係数</div>
+            </div>
+
+            {/* 詳細計算結果 */}
+            <div className="bg-gray-50 rounded-lg p-3">
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                詳細計算結果
+              </h3>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">攻撃力:</span>
+                  <span className="font-medium">
+                    {Math.round(
+                      ((calculatedCharacterBaseAttack !== 0
+                        ? Math.round(calculatedCharacterBaseAttack)
+                        : 0) +
+                        nonCombatAttackPower.weaponAttack) *
+                        ((100 +
+                          nonCombatAttackPower.attackBuff +
+                          combatBonus.combatBuff) /
+                          100) +
+                        (nonCombatAttackPower.attackConstant +
+                          combatBonus.combatConstant)
+                    ).toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">攻撃倍率+:</span>
+                  <span className="font-medium">
+                    {(
+                      (100 +
+                        attackMultiplier.attackMultiplierPlus +
+                        attackMultiplier.attributeAttackMultiplierPlus +
+                        attackMultiplier.damageIncreaseRate +
+                        attackMultiplier.enemyDamageIncreaseRate) /
+                      100
+                    ).toFixed(3)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">敵防御力:</span>
+                  <span className="font-medium">
+                    {(() => {
+                      const defenseMultiplier = Math.max(
+                        0,
+                        (1 + enemyDefense.additionalDefenseCoeff / 100) *
+                          (1 - enemyDefense.penetration / 100) -
+                          enemyDefense.defenseDebuff / 100
+                      );
+                      const numerator =
+                        enemyDefense.baseDefense *
+                        defenseMultiplier *
+                        (enemyDefense.isWindAttack ? 0.88 : 1.0);
+                      const denominator = numerator + 1400;
+                      return (1 - numerator / denominator).toFixed(3);
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">クリティカル期待値:</span>
+                  <span className="font-medium">
+                    {(
+                      1 +
+                      (Math.min(critical.criticalRate, 100) / 100) *
+                        ((critical.criticalMultiplier - 100) / 100)
+                    ).toFixed(3)}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
