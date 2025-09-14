@@ -1,0 +1,19 @@
+{
+  "defenseDebuffs": [
+    {
+      "id": "debuff1",
+      "name": "ラクンダ",
+      "value": 38.8
+    },
+    {
+      "id": "debuff2",
+      "name": "マハラクンダ",
+      "value": 27.1
+    },
+    {
+      "id": "debuff3",
+      "name": "標的",
+      "value": 41.6
+    }
+  ]
+}

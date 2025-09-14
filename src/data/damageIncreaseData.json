@@ -1,0 +1,9 @@
+{
+  "damageIncreases": [
+    {
+      "id": "damage1",
+      "name": "優越HL",
+      "value": 29.5
+    }
+  ]
+}

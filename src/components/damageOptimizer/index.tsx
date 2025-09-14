@@ -11,6 +11,11 @@ import {
 } from "../../utils/damageOptimization";
 import enemyData from "../../data/enemyData.json";
 import combatBuffData from "../../data/combatBuffData.json";
+import damageIncreaseData from "../../data/damageIncreaseData.json";
+import enemyDamageIncreaseData from "../../data/enemyDamageIncreaseData.json";
+import defenseDebuffData from "../../data/defenseDebuffData.json";
+import criticalRateData from "../../data/criticalRateData.json";
+import criticalMultiplierData from "../../data/criticalMultiplierData.json";
 
 const DamageOptimizer: React.FC = () => {
   // 攻撃力設定
@@ -76,10 +81,93 @@ const DamageOptimizer: React.FC = () => {
     }, {} as Record<string, number>)
   );
 
+  // 与ダメージ上昇率のチェックボックス用の状態
+  const [damageIncreaseCheckboxes, setDamageIncreaseCheckboxes] = useState<
+    Record<string, number>
+  >(
+    damageIncreaseData.damageIncreases.reduce((acc, damage) => {
+      acc[damage.id] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  );
+
+  // 敵被ダメージ上昇率のチェックボックス用の状態
+  const [enemyDamageIncreaseCheckboxes, setEnemyDamageIncreaseCheckboxes] =
+    useState<Record<string, number>>(
+      enemyDamageIncreaseData.enemyDamageIncreases.reduce((acc, enemy) => {
+        acc[enemy.id] = 0;
+        return acc;
+      }, {} as Record<string, number>)
+    );
+
+  // 防御デバフのチェックボックス用の状態
+  const [defenseDebuffCheckboxes, setDefenseDebuffCheckboxes] = useState<
+    Record<string, number>
+  >(
+    defenseDebuffData.defenseDebuffs.reduce((acc, debuff) => {
+      acc[debuff.id] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  );
+
+  // クリティカル発生率のチェックボックス用の状態
+  const [criticalRateCheckboxes, setCriticalRateCheckboxes] = useState<
+    Record<string, number>
+  >(
+    criticalRateData.criticalRates.reduce((acc, crit) => {
+      acc[crit.id] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  );
+
+  // クリティカル倍率のチェックボックス用の状態
+  const [criticalMultiplierCheckboxes, setCriticalMultiplierCheckboxes] =
+    useState<Record<string, number>>(
+      criticalMultiplierData.criticalMultipliers.reduce((acc, mult) => {
+        acc[mult.id] = 0;
+        return acc;
+      }, {} as Record<string, number>)
+    );
+
   // 戦闘時バフの合計値を計算（チェックボックス + 手動入力）
   const totalCombatBuff =
     Object.values(combatBuffCheckboxes).reduce((sum, value) => sum + value, 0) +
     combatBonus.combatBuff;
+
+  // 与ダメージ上昇率の合計値を計算（チェックボックス + 手動入力）
+  const totalDamageIncrease =
+    Object.values(damageIncreaseCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + attackMultiplier.damageIncreaseRate;
+
+  // 敵被ダメージ上昇率の合計値を計算（チェックボックス + 手動入力）
+  const totalEnemyDamageIncrease =
+    Object.values(enemyDamageIncreaseCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + attackMultiplier.enemyDamageIncreaseRate;
+
+  // 防御デバフの合計値を計算（チェックボックス + 手動入力）
+  const totalDefenseDebuff =
+    Object.values(defenseDebuffCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + enemyDefense.defenseDebuff;
+
+  // クリティカル発生率の合計値を計算（チェックボックス + 手動入力）
+  const totalCriticalRate =
+    Object.values(criticalRateCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + critical.criticalRate;
+
+  // クリティカル倍率の合計値を計算（チェックボックス + 手動入力）
+  const totalCriticalMultiplier =
+    Object.values(criticalMultiplierCheckboxes).reduce(
+      (sum, value) => sum + value,
+      0
+    ) + critical.criticalMultiplier;
 
   // 非戦闘時攻撃力設定が変更されたときに自動計算
   useEffect(() => {
@@ -125,9 +213,20 @@ const DamageOptimizer: React.FC = () => {
         attackConstant:
           nonCombatAttackPower.attackConstant + combatBonus.combatConstant,
       },
-      attackMultiplier,
-      enemyDefense,
-      critical,
+      attackMultiplier: {
+        ...attackMultiplier,
+        damageIncreaseRate: totalDamageIncrease,
+        enemyDamageIncreaseRate: totalEnemyDamageIncrease,
+      },
+      enemyDefense: {
+        ...enemyDefense,
+        defenseDebuff: totalDefenseDebuff,
+      },
+      critical: {
+        ...critical,
+        criticalRate: totalCriticalRate,
+        criticalMultiplier: totalCriticalMultiplier,
+      },
       weakness: { weaknessType: "normal" },
       randomCoeff: { minRandomCoeff: 0.95, maxRandomCoeff: 1.05 },
       skillCoeff: 1.0,
@@ -142,6 +241,11 @@ const DamageOptimizer: React.FC = () => {
     nonCombatAttackPower,
     combatBonus,
     totalCombatBuff,
+    totalDamageIncrease,
+    totalEnemyDamageIncrease,
+    totalDefenseDebuff,
+    totalCriticalRate,
+    totalCriticalMultiplier,
     attackMultiplier,
     enemyDefense,
     critical,
@@ -400,6 +504,36 @@ const DamageOptimizer: React.FC = () => {
                 />
               </div>
               <div>
+                <div className="space-y-1">
+                  {damageIncreaseData.damageIncreases.map((damage) => (
+                    <div
+                      key={damage.id}
+                      className="flex items-center space-x-2"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={damageIncreaseCheckboxes[damage.id] > 0}
+                        onChange={(e) =>
+                          setDamageIncreaseCheckboxes({
+                            ...damageIncreaseCheckboxes,
+                            [damage.id]: e.target.checked ? damage.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {damage.name} ({damage.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-green-50 rounded border">
+                  <div className="text-xs font-medium text-green-800">
+                    合計: {totalDamageIncrease}%
+                  </div>
+                </div>
+              </div>
+              <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   敵被ダメージ上昇率
                 </label>
@@ -415,6 +549,33 @@ const DamageOptimizer: React.FC = () => {
                   allowNegative={false}
                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+              <div>
+                <div className="space-y-1">
+                  {enemyDamageIncreaseData.enemyDamageIncreases.map((enemy) => (
+                    <div key={enemy.id} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={enemyDamageIncreaseCheckboxes[enemy.id] > 0}
+                        onChange={(e) =>
+                          setEnemyDamageIncreaseCheckboxes({
+                            ...enemyDamageIncreaseCheckboxes,
+                            [enemy.id]: e.target.checked ? enemy.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {enemy.name} ({enemy.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-orange-50 rounded border">
+                  <div className="text-xs font-medium text-orange-800">
+                    合計: {totalEnemyDamageIncrease}%
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -528,6 +689,36 @@ const DamageOptimizer: React.FC = () => {
                 />
               </div>
               <div>
+                <div className="space-y-1">
+                  {defenseDebuffData.defenseDebuffs.map((debuff) => (
+                    <div
+                      key={debuff.id}
+                      className="flex items-center space-x-2"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={defenseDebuffCheckboxes[debuff.id] > 0}
+                        onChange={(e) =>
+                          setDefenseDebuffCheckboxes({
+                            ...defenseDebuffCheckboxes,
+                            [debuff.id]: e.target.checked ? debuff.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {debuff.name} ({debuff.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-red-50 rounded border">
+                  <div className="text-xs font-medium text-red-800">
+                    合計: {totalDefenseDebuff}%
+                  </div>
+                </div>
+              </div>
+              <div>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -572,6 +763,33 @@ const DamageOptimizer: React.FC = () => {
                 />
               </div>
               <div>
+                <div className="space-y-1">
+                  {criticalRateData.criticalRates.map((crit) => (
+                    <div key={crit.id} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={criticalRateCheckboxes[crit.id] > 0}
+                        onChange={(e) =>
+                          setCriticalRateCheckboxes({
+                            ...criticalRateCheckboxes,
+                            [crit.id]: e.target.checked ? crit.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {crit.name} ({crit.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-purple-50 rounded border">
+                  <div className="text-xs font-medium text-purple-800">
+                    合計: {totalCriticalRate}%
+                  </div>
+                </div>
+              </div>
+              <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   クリティカル倍率 (%)
                 </label>
@@ -587,6 +805,33 @@ const DamageOptimizer: React.FC = () => {
                   allowNegative={false}
                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+              <div>
+                <div className="space-y-1">
+                  {criticalMultiplierData.criticalMultipliers.map((mult) => (
+                    <div key={mult.id} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={criticalMultiplierCheckboxes[mult.id] > 0}
+                        onChange={(e) =>
+                          setCriticalMultiplierCheckboxes({
+                            ...criticalMultiplierCheckboxes,
+                            [mult.id]: e.target.checked ? mult.value : 0,
+                          })
+                        }
+                        className="mr-1"
+                      />
+                      <span className="text-xs text-gray-600">
+                        {mult.name} ({mult.value}%)
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 p-2 bg-indigo-50 rounded border">
+                  <div className="text-xs font-medium text-indigo-800">
+                    合計: {totalCriticalMultiplier}%
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -635,8 +880,8 @@ const DamageOptimizer: React.FC = () => {
                       (100 +
                         attackMultiplier.attackMultiplierPlus +
                         attackMultiplier.attributeAttackMultiplierPlus +
-                        attackMultiplier.damageIncreaseRate +
-                        attackMultiplier.enemyDamageIncreaseRate) /
+                        totalDamageIncrease +
+                        totalEnemyDamageIncrease) /
                       100
                     ).toFixed(3)}
                   </span>
@@ -649,7 +894,7 @@ const DamageOptimizer: React.FC = () => {
                         0,
                         (1 + enemyDefense.additionalDefenseCoeff / 100) *
                           (1 - enemyDefense.penetration / 100) -
-                          enemyDefense.defenseDebuff / 100
+                          totalDefenseDebuff / 100
                       );
                       const numerator =
                         enemyDefense.baseDefense *
@@ -665,8 +910,8 @@ const DamageOptimizer: React.FC = () => {
                   <span className="font-medium">
                     {(
                       1 +
-                      (Math.min(critical.criticalRate, 100) / 100) *
-                        ((critical.criticalMultiplier - 100) / 100)
+                      (Math.min(totalCriticalRate, 100) / 100) *
+                        ((totalCriticalMultiplier - 100) / 100)
                     ).toFixed(3)}
                   </span>
                 </div>

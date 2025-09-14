@@ -1,0 +1,9 @@
+{
+  "enemyDamageIncreases": [
+    {
+      "id": "enemy1",
+      "name": "屈従HL",
+      "value": 19.6
+    }
+  ]
+}

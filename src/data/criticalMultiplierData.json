@@ -1,0 +1,9 @@
+{
+  "criticalMultipliers": [
+    {
+      "id": "mult1",
+      "name": "ディオニュソス特性",
+      "value": 30.0
+    }
+  ]
+}

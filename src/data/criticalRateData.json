@@ -1,0 +1,29 @@
+{
+  "criticalRates": [
+    {
+      "id": "crit1",
+      "name": "感電",
+      "value": 10.0
+    },
+    {
+      "id": "crit2",
+      "name": "リベリオン",
+      "value": 15.7
+    },
+    {
+      "id": "crit3",
+      "name": "レボリューション",
+      "value": 10.9
+    },
+    {
+      "id": "crit4",
+      "name": "サキュバス特性",
+      "value": 11.7
+    },
+    {
+      "id": "crit5",
+      "name": "アメノウズメ特性",
+      "value": 10.0
+    }
+  ]
+}
