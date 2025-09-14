@@ -2,211 +2,275 @@
  * ダメージ最適化に関する計算関数をまとめたユーティリティ
  */
 
-// ダメージ最適化の設定型
-export interface DamageOptimizationConfig {
+// 攻撃力計算用の型
+export interface AttackPowerConfig {
+  characterBaseAttack: number; // キャラ基礎値
+  weaponAttack: number; // 武器攻撃力
+  attackBuff: number; // バフ
+  attackConstant: number; // 定数
+}
+
+// 攻撃倍率+計算用の型
+export interface AttackMultiplierConfig {
+  baseMultiplier: number; // 100（基本値）
+  attackMultiplierPlus: number; // 攻撃倍率+
+  attributeAttackMultiplierPlus: number; // 属性攻撃倍率+
+  damageIncreaseRate: number; // 与ダメージ上昇率
+  enemyDamageIncreaseRate: number; // 敵被ダメージ上昇率
+}
+
+// 敵防御力計算用の型
+export interface EnemyDefenseConfig {
+  baseDefense: number; // 敵防御力
+  additionalDefenseCoeff: number; // 追加防御係数
+  penetration: number; // 貫通
+  defenseDebuff: number; // 防御デバフ
+  isWindAttack: boolean; // 風襲時かどうか
+}
+
+// クリティカル期待値計算用の型
+export interface CriticalConfig {
+  criticalRate: number; // クリティカル発生率
+  criticalMultiplier: number; // クリティカル倍率
+}
+
+// 弱点係数計算用の型
+export type WeaknessType = "weak" | "normal" | "resist";
+
+// 弱点係数計算用の型
+export interface WeaknessConfig {
+  weaknessType: WeaknessType; // 弱点タイプ
+}
+
+// ランダム係数計算用の型
+export interface RandomCoeffConfig {
+  minRandomCoeff: number; // 最小ランダム係数
+  maxRandomCoeff: number; // 最大ランダム係数
+}
+
+// ダメージ計算の設定型
+export interface DamageCalculationConfig {
   characterId: string;
   skillId: string;
   enemyId: string;
-  attackPower: number;
+  attackPower: AttackPowerConfig; // 攻撃力計算用の設定
+  attackMultiplier: AttackMultiplierConfig; // 攻撃倍率+計算用の設定
+  enemyDefense: EnemyDefenseConfig; // 敵防御力計算用の設定
+  critical: CriticalConfig; // クリティカル期待値計算用の設定
+  weakness: WeaknessConfig; // 弱点係数計算用の設定
+  randomCoeff: RandomCoeffConfig; // ランダム係数計算用の設定
   skillCoeff: number;
-  attackMultiplier: number;
   finalAttackMultiplier: number;
-  weaknessCoeff: number;
-  randomCoeff: number;
   otherCoeff: number;
-  crt: number;
-  enemyDefense: number;
 }
 
 // 最適化結果の型
 export interface OptimizationResult {
   maxDamage: number;
-  optimalConfig: DamageOptimizationConfig;
+  optimalConfig: DamageCalculationConfig;
   recommendations: string[];
 }
 
 /**
+ * 攻撃力計算関数
+ * ((キャラ基礎値 + 武器攻撃力) × バフ + 定数)
+ */
+export const calculateAttackPower = (config: AttackPowerConfig): number => {
+  const { characterBaseAttack, weaponAttack, attackBuff, attackConstant } =
+    config;
+  return (characterBaseAttack + weaponAttack) * attackBuff + attackConstant;
+};
+
+/**
+ * 攻撃倍率+計算関数
+ * 100% + 攻撃倍率+ + 属性攻撃倍率+ + 与ダメージ上昇率 + 敵被ダメージ上昇率
+ */
+export const calculateAttackMultiplier = (
+  config: AttackMultiplierConfig
+): number => {
+  const {
+    baseMultiplier = 100,
+    attackMultiplierPlus,
+    attributeAttackMultiplierPlus,
+    damageIncreaseRate,
+    enemyDamageIncreaseRate,
+  } = config;
+  return (
+    (baseMultiplier +
+      attackMultiplierPlus +
+      attributeAttackMultiplierPlus +
+      damageIncreaseRate +
+      enemyDamageIncreaseRate) /
+    100
+  );
+};
+
+/**
+ * 敵防御力計算関数
+ * 1 - {敵防御力 * [(100% + 追加防御係数) * (100% - 貫通) - 防御デバフ] * (風襲時88%)} / {敵防御力 * [(100% + 追加防御係数) * (100% - 貫通) - 防御デバフ] * (風襲時88%) + 1400}
+ */
+export const calculateEnemyDefense = (config: EnemyDefenseConfig): number => {
+  const {
+    baseDefense,
+    additionalDefenseCoeff,
+    penetration,
+    defenseDebuff,
+    isWindAttack,
+  } = config;
+
+  // 風襲時の係数
+  const windCoeff = isWindAttack ? 0.88 : 1.0;
+
+  // 分子: 敵防御力 * [(100% + 追加防御係数) * (100% - 貫通) - 防御デバフ] * (風襲時88%)
+  const numerator =
+    baseDefense *
+    ((1 + additionalDefenseCoeff) * (1 - penetration) - defenseDebuff) *
+    windCoeff;
+
+  // 分母: 分子 + 1400
+  const denominator = numerator + 1400;
+
+  // 最終結果: 1 - 分子 / 分母
+  return 1 - numerator / denominator;
+};
+
+/**
+ * クリティカル期待値計算関数
+ * クリティカル発生率 * (クリティカル倍率 - 100%) （ただしクリティカル発生率は100%以上は切り捨て）
+ */
+export const calculateCriticalExpectation = (
+  config: CriticalConfig
+): number => {
+  const { criticalRate, criticalMultiplier } = config;
+
+  // クリティカル発生率を100%で切り捨て
+  const cappedCriticalRate = Math.min(criticalRate, 100);
+
+  // クリティカル期待値計算
+  return (cappedCriticalRate / 100) * (criticalMultiplier - 100);
+};
+
+/**
+ * 弱点係数計算関数
+ * 弱点なら1.2、通常なら1.0、耐性なら0.5
+ */
+export const calculateWeaknessCoeff = (config: WeaknessConfig): number => {
+  const { weaknessType } = config;
+
+  switch (weaknessType) {
+    case "weak":
+      return 1.2;
+    case "normal":
+      return 1.0;
+    case "resist":
+      return 0.5;
+    default:
+      return 1.0;
+  }
+};
+
+/**
+ * ランダム係数計算関数
+ * 0.95～1.05の範囲でランダムに決定
+ */
+export const calculateRandomCoeff = (config: RandomCoeffConfig): number => {
+  const { minRandomCoeff, maxRandomCoeff } = config;
+
+  // 指定された範囲でランダムな値を生成
+  return Math.random() * (maxRandomCoeff - minRandomCoeff) + minRandomCoeff;
+};
+
+/**
+ * ランダム係数の期待値計算関数
+ * 最適化時は期待値を使用
+ */
+export const calculateRandomCoeffExpectation = (
+  config: RandomCoeffConfig
+): number => {
+  const { minRandomCoeff, maxRandomCoeff } = config;
+
+  // 期待値は最小値と最大値の平均
+  return (minRandomCoeff + maxRandomCoeff) / 2;
+};
+
+/**
  * ダメージ計算の基本関数
  */
-export const calculateDamage = (config: DamageOptimizationConfig): number => {
+export const calculateDamage = (config: DamageCalculationConfig): number => {
   const {
     attackPower,
     skillCoeff,
     attackMultiplier,
     finalAttackMultiplier,
-    weaknessCoeff,
+    weakness,
     randomCoeff,
     otherCoeff,
-    crt,
+    critical,
     enemyDefense,
   } = config;
 
-  // 基本ダメージ計算式
-  const baseDamage = attackPower * skillCoeff;
-  const multiplierDamage =
-    baseDamage * attackMultiplier * finalAttackMultiplier;
-  const weaknessDamage = multiplierDamage * weaknessCoeff;
-  const randomDamage = weaknessDamage * randomCoeff;
-  const otherDamage = randomDamage * otherCoeff;
-  const crtDamage = otherDamage * (1 + crt);
+  // 攻撃力計算
+  const calculatedAttackPower = calculateAttackPower(attackPower);
 
-  // 防御力による減算
-  const finalDamage = Math.max(1, crtDamage - enemyDefense);
+  // 攻撃倍率+計算
+  const calculatedAttackMultiplier =
+    calculateAttackMultiplier(attackMultiplier);
+
+  // 敵防御力計算
+  const calculatedEnemyDefense = calculateEnemyDefense(enemyDefense);
+
+  // クリティカル期待値計算
+  const calculatedCriticalExpectation = calculateCriticalExpectation(critical);
+
+  // 弱点係数計算
+  const calculatedWeaknessCoeff = calculateWeaknessCoeff(weakness);
+
+  // ランダム係数計算（期待値を使用）
+  const calculatedRandomCoeff = calculateRandomCoeffExpectation(randomCoeff);
+
+  // 基本ダメージ計算式
+  const baseDamage = calculatedAttackPower * skillCoeff;
+  const multiplierDamage =
+    baseDamage * calculatedAttackMultiplier * finalAttackMultiplier;
+  const weaknessDamage = multiplierDamage * calculatedWeaknessCoeff;
+  const randomDamage = weaknessDamage * calculatedRandomCoeff;
+  const otherDamage = randomDamage * otherCoeff;
+  const crtDamage = otherDamage * calculatedCriticalExpectation;
+
+  // 防御力による減算（敵防御力は係数として適用）
+  const finalDamage = Math.max(1, crtDamage * calculatedEnemyDefense);
 
   return Math.floor(finalDamage);
 };
 
 /**
- * ダメージ最適化のメイン関数
+ * 最適化用の基本ダメージ係数計算関数
+ * 攻撃力計算 * 攻撃倍率+計算 * 敵防御力計算 * クリティカル期待値計算
+ * この値を比較して最適化の材料にします
  */
-export const optimizeDamage = (
-  baseConfig: DamageOptimizationConfig,
-  constraints: {
-    maxAttackPower?: number;
-    maxSkillCoeff?: number;
-    maxAttackMultiplier?: number;
-    maxFinalAttackMultiplier?: number;
-    maxWeaknessCoeff?: number;
-    maxRandomCoeff?: number;
-    maxOtherCoeff?: number;
-    maxCrt?: number;
-  } = {}
-): OptimizationResult => {
-  let maxDamage = 0;
-  let optimalConfig = { ...baseConfig };
-  const recommendations: string[] = [];
+export const calculateOptimizationFactor = (
+  config: DamageCalculationConfig
+): number => {
+  const { attackPower, attackMultiplier, enemyDefense, critical } = config;
 
-  // 各パラメータの最適化（簡易版）
-  const optimizedConfig = { ...baseConfig };
+  // 攻撃力計算
+  const calculatedAttackPower = calculateAttackPower(attackPower);
 
-  // 攻撃力の最適化
-  if (constraints.maxAttackPower) {
-    optimizedConfig.attackPower = constraints.maxAttackPower;
-    recommendations.push(`攻撃力を最大値 ${constraints.maxAttackPower} に設定`);
-  }
+  // 攻撃倍率+計算
+  const calculatedAttackMultiplier =
+    calculateAttackMultiplier(attackMultiplier);
 
-  // スキル係数の最適化
-  if (constraints.maxSkillCoeff) {
-    optimizedConfig.skillCoeff = constraints.maxSkillCoeff;
-    recommendations.push(
-      `スキル係数を最大値 ${constraints.maxSkillCoeff} に設定`
-    );
-  }
+  // 敵防御力計算
+  const calculatedEnemyDefense = calculateEnemyDefense(enemyDefense);
 
-  // 攻撃倍率の最適化
-  if (constraints.maxAttackMultiplier) {
-    optimizedConfig.attackMultiplier = constraints.maxAttackMultiplier;
-    recommendations.push(
-      `攻撃倍率を最大値 ${constraints.maxAttackMultiplier} に設定`
-    );
-  }
+  // クリティカル期待値計算
+  const calculatedCriticalExpectation = calculateCriticalExpectation(critical);
 
-  // 最終攻撃倍率の最適化
-  if (constraints.maxFinalAttackMultiplier) {
-    optimizedConfig.finalAttackMultiplier =
-      constraints.maxFinalAttackMultiplier;
-    recommendations.push(
-      `最終攻撃倍率を最大値 ${constraints.maxFinalAttackMultiplier} に設定`
-    );
-  }
-
-  // 弱点係数の最適化
-  if (constraints.maxWeaknessCoeff) {
-    optimizedConfig.weaknessCoeff = constraints.maxWeaknessCoeff;
-    recommendations.push(
-      `弱点係数を最大値 ${constraints.maxWeaknessCoeff} に設定`
-    );
-  }
-
-  // ランダム係数の最適化
-  if (constraints.maxRandomCoeff) {
-    optimizedConfig.randomCoeff = constraints.maxRandomCoeff;
-    recommendations.push(
-      `ランダム係数を最大値 ${constraints.maxRandomCoeff} に設定`
-    );
-  }
-
-  // その他係数の最適化
-  if (constraints.maxOtherCoeff) {
-    optimizedConfig.otherCoeff = constraints.maxOtherCoeff;
-    recommendations.push(
-      `その他係数を最大値 ${constraints.maxOtherCoeff} に設定`
-    );
-  }
-
-  // クリティカル率の最適化
-  if (constraints.maxCrt) {
-    optimizedConfig.crt = constraints.maxCrt;
-    recommendations.push(`クリティカル率を最大値 ${constraints.maxCrt} に設定`);
-  }
-
-  maxDamage = calculateDamage(optimizedConfig);
-  optimalConfig = optimizedConfig;
-
-  return {
-    maxDamage,
-    optimalConfig,
-    recommendations,
-  };
-};
-
-/**
- * 複数の設定を比較して最適なものを選択
- */
-export const compareConfigurations = (
-  configs: DamageOptimizationConfig[]
-): OptimizationResult => {
-  let bestConfig = configs[0];
-  let maxDamage = calculateDamage(bestConfig);
-
-  for (const config of configs) {
-    const damage = calculateDamage(config);
-    if (damage > maxDamage) {
-      maxDamage = damage;
-      bestConfig = config;
-    }
-  }
-
-  return {
-    maxDamage,
-    optimalConfig: bestConfig,
-    recommendations: [`設定 ${configs.indexOf(bestConfig) + 1} が最適です`],
-  };
-};
-
-/**
- * ダメージ計算の詳細分析
- */
-export const analyzeDamageBreakdown = (config: DamageOptimizationConfig) => {
-  const {
-    attackPower,
-    skillCoeff,
-    attackMultiplier,
-    finalAttackMultiplier,
-    weaknessCoeff,
-    randomCoeff,
-    otherCoeff,
-    crt,
-    enemyDefense,
-  } = config;
-
-  const baseDamage = attackPower * skillCoeff;
-  const multiplierDamage =
-    baseDamage * attackMultiplier * finalAttackMultiplier;
-  const weaknessDamage = multiplierDamage * weaknessCoeff;
-  const randomDamage = weaknessDamage * randomCoeff;
-  const otherDamage = randomDamage * otherCoeff;
-  const crtDamage = otherDamage * (1 + crt);
-  const finalDamage = Math.max(1, crtDamage - enemyDefense);
-
-  return {
-    baseDamage: Math.floor(baseDamage),
-    multiplierDamage: Math.floor(multiplierDamage),
-    weaknessDamage: Math.floor(weaknessDamage),
-    randomDamage: Math.floor(randomDamage),
-    otherDamage: Math.floor(otherDamage),
-    crtDamage: Math.floor(crtDamage),
-    finalDamage: Math.floor(finalDamage),
-    defenseReduction: Math.floor(crtDamage - finalDamage),
-  };
+  // 最適化用の基本ダメージ係数
+  return (
+    calculatedAttackPower *
+    calculatedAttackMultiplier *
+    calculatedEnemyDefense *
+    calculatedCriticalExpectation
+  );
 };
