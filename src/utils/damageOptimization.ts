@@ -74,17 +74,22 @@ export interface OptimizationResult {
 /**
  * 攻撃力計算関数
  * ((キャラ基礎値 + 武器攻撃力) × バフ + 定数)
+ * 攻撃バフは%で渡されるため、100%を内部で足してから100で割って使用
  */
 export const calculateAttackPower = (config: AttackPowerConfig): number => {
   const { characterBaseAttack, weaponAttack, attackBuff, attackConstant } =
     config;
-  return (characterBaseAttack + weaponAttack) * attackBuff + attackConstant;
+  return (
+    (characterBaseAttack + weaponAttack) * ((100 + attackBuff) / 100) +
+    attackConstant
+  );
 };
 
 /**
  * キャラ基礎攻撃力算出関数
  * 攻撃力計算結果からキャラ基礎攻撃力を逆算
  * キャラ基礎攻撃力 = (攻撃力計算結果 - 攻撃定数) ÷ 攻撃バフ - 武器攻撃力
+ * 攻撃バフは%で渡されるため、100%を内部で足してから100で割って使用
  */
 export const calculateCharacterBaseAttack = (
   targetAttackPower: number,
@@ -92,12 +97,15 @@ export const calculateCharacterBaseAttack = (
   attackBuff: number,
   attackConstant: number
 ): number => {
-  // 攻撃バフが0の場合はエラーを避けるため1を返す
-  if (attackBuff === 0) {
+  // 攻撃バフが-100以下の場合はエラーを避けるため1を返す
+  if (attackBuff <= -100) {
     return 1;
   }
 
-  return (targetAttackPower - attackConstant) / attackBuff - weaponAttack;
+  return (
+    (targetAttackPower - attackConstant) / ((100 + attackBuff) / 100) -
+    weaponAttack
+  );
 };
 
 /**
@@ -141,10 +149,14 @@ export const calculateEnemyDefense = (config: EnemyDefenseConfig): number => {
   const windCoeff = isWindAttack ? 0.88 : 1.0;
 
   // 分子: 敵防御力 * [(100% + 追加防御係数) * (100% - 貫通) - 防御デバフ] * (風襲時88%)
-  const numerator =
-    baseDefense *
-    ((1 + additionalDefenseCoeff) * (1 - penetration) - defenseDebuff) *
-    windCoeff;
+  // 追加防御係数、貫通、防御デバフは%で渡されるため、100で割って使用
+  // 防御デバフを減算した時の最小値は0
+  const defenseMultiplier = Math.max(
+    0,
+    (1 + additionalDefenseCoeff / 100) * (1 - penetration / 100) -
+      defenseDebuff / 100
+  );
+  const numerator = baseDefense * defenseMultiplier * windCoeff;
 
   // 分母: 分子 + 1400
   const denominator = numerator + 1400;
@@ -155,7 +167,7 @@ export const calculateEnemyDefense = (config: EnemyDefenseConfig): number => {
 
 /**
  * クリティカル期待値計算関数
- * クリティカル発生率 * (クリティカル倍率 - 100%) （ただしクリティカル発生率は100%以上は切り捨て）
+ * 1 + (クリティカル発生率 × (クリティカル倍率 - 1)) （ただしクリティカル発生率は100%以上は切り捨て）
  */
 export const calculateCriticalExpectation = (
   config: CriticalConfig
@@ -165,8 +177,8 @@ export const calculateCriticalExpectation = (
   // クリティカル発生率を100%で切り捨て
   const cappedCriticalRate = Math.min(criticalRate, 100);
 
-  // クリティカル期待値計算
-  return (cappedCriticalRate / 100) * (criticalMultiplier - 100);
+  // クリティカル期待値計算（最終的な攻撃力の倍率）
+  return 1 + (cappedCriticalRate / 100) * ((criticalMultiplier - 100) / 100);
 };
 
 /**
