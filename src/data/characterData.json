@@ -18,6 +18,12 @@
     "role": "支配"
   },
   {
+    "id": "closer--tropical",
+    "name": "CLOSER-T",
+    "image": "closer--tropical.png",
+    "role": "支配"
+  },
+  {
     "id": "code",
     "name": "CODE",
     "image": "code.png",
@@ -64,6 +70,12 @@
     "name": "MOKO",
     "image": "moko.png",
     "role": "優越"
+  },
+  {
+    "id": "moko--peach-summer",
+    "name": "MOKO-PS",
+    "image": "moko--peach-summer.png",
+    "role": "救援"
   },
   {
     "id": "mona",
