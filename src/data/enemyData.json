@@ -175,6 +175,61 @@
       "hp": 9999999,
       "def": 940,
       "additional_def_coeff": 160.5
+    },
+    {
+      "id": "nidhogg2.1",
+      "version": "2.1",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-22",
+      "end_at": "2025-09-29",
+      "name": "ニーズホッグ",
+      "hp": 9999999,
+      "def": 1730,
+      "additional_def_coeff": 158.2
+    },
+    {
+      "id": "yurlungur2.1",
+      "version": "2.1",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-22",
+      "end_at": "2025-09-29",
+      "name": "ユルング",
+      "hp": 9999999,
+      "def": 940,
+      "additional_def_coeff": 160.5
+    },
+    {
+      "id": "atavaka2.1",
+      "version": "2.1",
+      "stage": "閼兇夢の扉",
+      "start_at": "2025-09-22",
+      "end_at": "2025-09-29",
+      "name": "アタバク",
+      "hp": 9999999,
+      "def": 3305,
+      "additional_def_coeff": 159.1
+    },
+    {
+      "id": "baphomet2.1",
+      "version": "2.1",
+      "stage": "心の海",
+      "start_at": "2025-09-22",
+      "end_at": "2025-09-29",
+      "name": "バフォメット",
+      "hp": 9999999,
+      "def": 2140,
+      "additional_def_coeff": 159.5
+    },
+    {
+      "id": "zaogongen2.1",
+      "version": "2.1",
+      "stage": "心の海",
+      "start_at": "2025-09-22",
+      "end_at": "2025-09-29",
+      "name": "ザオウゴンゲン",
+      "hp": 9999999,
+      "def": 535,
+      "additional_def_coeff": 159.5
     }
   ]
 }
