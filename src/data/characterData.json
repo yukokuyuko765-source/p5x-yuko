@@ -66,6 +66,12 @@
     "role": "救援"
   },
   {
+    "id": "messa",
+    "name": "MESSA",
+    "image": "messa.jpeg",
+    "role": "反抗"
+  },
+  {
     "id": "moko",
     "name": "MOKO",
     "image": "moko.png",
