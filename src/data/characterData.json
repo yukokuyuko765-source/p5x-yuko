@@ -96,6 +96,12 @@
     "role": "反抗"
   },
   {
+    "id": "navi",
+    "name": "NAVI",
+    "image": "navi.png",
+    "role": "解明"
+  },
+  {
     "id": "okyann",
     "name": "OKYANN",
     "image": "okyann.png",
