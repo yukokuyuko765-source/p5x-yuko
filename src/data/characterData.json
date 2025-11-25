@@ -12,6 +12,12 @@
     "role": "救援"
   },
   {
+    "id": "cherish",
+    "name": "CHERISH",
+    "image": "cherish.jpeg",
+    "role": "防衛"
+  },
+  {
     "id": "closer",
     "name": "CLOSER",
     "image": "closer.png",
@@ -100,6 +106,12 @@
     "name": "NAVI",
     "image": "navi.png",
     "role": "解明"
+  },
+  {
+    "id": "noir",
+    "name": "NOIR",
+    "image": "noir.png",
+    "role": "支配"
   },
   {
     "id": "okyann",
