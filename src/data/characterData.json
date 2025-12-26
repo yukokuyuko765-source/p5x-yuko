@@ -54,6 +54,12 @@
     "role": "支配"
   },
   {
+    "id": "justine&caroline",
+    "name": "JUSTINE&CAROLINE",
+    "image": "justine&caroline.jpg",
+    "role": "自律"
+  },
+  {
     "id": "key",
     "name": "KEY",
     "image": "key.png",
