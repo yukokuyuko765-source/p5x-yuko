@@ -108,6 +108,12 @@
     "role": "反抗"
   },
   {
+    "id": "mont--ice-storm",
+    "name": "MONT-IS",
+    "image": "mont--ice-storm.jpeg",
+    "role": "反抗"
+  },
+  {
     "id": "navi",
     "name": "NAVI",
     "image": "navi.png",
